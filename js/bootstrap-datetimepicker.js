@@ -857,7 +857,7 @@
 		},
 		
 		reset: function(e) {
-			this._setDate(null, null);
+			this._setDate(null, 'date');
 		}
 	};
 
@@ -925,7 +925,7 @@
 			return [31, (DPGlobal.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
 		},
 		validParts: /hh?|ii?|ss?|dd?|mm?|MM?|yy(?:yy)?/g,
-		nonpunctuation: /[^ -\/:-@\[-`{-~\t\n\r]+/g,
+		nonpunctuation: /[^ -\/:-@\[-`{-~\t\n\rTZ]+/g,
 		parseFormat: function(format){
 			// IE treats \0 as a string end in inputs (truncating the value),
 			// so it's a bad format delimiter, anyway
@@ -938,14 +938,14 @@
 		},
 		parseDate: function(date, format, language) {
 			if (date instanceof Date) return date;
-			console.log(date);
+			//console.log(date);
 			if (/^\d{4}\-\d{2}\-\d{2}$/.test(date)) {
 				format = this.parseFormat('yyyy-mm-dd');
 			}
-			if (/^\d{4}\-\d{2}\-\d{2} \d{2}\:\d{2}$/.test(date)) {
+			if (/^\d{4}\-\d{2}\-\d{2}[T ]\d{2}\:\d{2}$/.test(date)) {
 				format = this.parseFormat('yyyy-mm-dd hh:ii');
 			}
-			if (/^\d{4}\-\d{2}\-\d{2} \d{2}\:\d{2}\:\d{2}$/.test(date)) {
+			if (/^\d{4}\-\d{2}\-\d{2}[T ]\d{2}\:\d{2}\:\d{2}[Z]{0,1}$/.test(date)) {
 				format = this.parseFormat('yyyy-mm-dd hh:ii:ss');
 			}
 			if (/^[-+]\d+[dmwy]([\s,]+[-+]\d+[dmwy])*$/.test(date)) {
@@ -1000,7 +1000,6 @@
 				val, filtered, part;
 			setters_map['M'] = setters_map['MM'] = setters_map['mm'] = setters_map['m'];
 			setters_map['dd'] = setters_map['d'];
-			console.log(format, parts);
 			date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);//date.getHours(), date.getMinutes(), date.getSeconds());
 			if (parts.length == format.parts.length) {
 				for (var i=0, cnt = format.parts.length; i < cnt; i++) {
@@ -1034,7 +1033,6 @@
 						setters_map[s](date, parsed[s])
 				}
 			}
-			console.log(date);
 			return date;
 		},
 		formatDate: function(date, format, language){
