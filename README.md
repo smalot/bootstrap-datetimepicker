@@ -33,13 +33,13 @@ This view allows to select the day in the selected month.
 
 ## Day view
 
-![Datetimepicker day view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_decade.png)
+![Datetimepicker day view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_day.png)
 
 This view allows to select the hour in the selected day.
 
 ## Hour year view
 
-![Datetimepicker hour view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_decade.png)
+![Datetimepicker hour view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_hour.png)
 
 This view allows to select the preset of minutes in the selected hour.
 
