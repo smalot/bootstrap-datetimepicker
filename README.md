@@ -3,7 +3,7 @@ bootstrap-datetimepicker
 
 # Project
 
-This project is a fork of [bootstrap-datepicker project][1].
+This project is a fork of [bootstrap-datepicker project](https://github.com/eternicode/bootstrap-datepicker).
 
 
 # Home
@@ -19,15 +19,7 @@ Attached to a field with the format specified via options:
 <input type="text" value="2012-05-15 21:05" id="datepicker">
 ```
 ```javascript
-$('#datepicker').datepicker({
+$('#datepicker').datetimepicker({
     format: 'yyyy-mm-dd hh:ii'
 });
 ```
-
-
-
-
-
-
-
-[1] https://github.com/eternicode/bootstrap-datepicker
