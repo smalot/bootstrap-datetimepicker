@@ -1113,5 +1113,17 @@
 						'</div>';
 
 	$.fn.datetimepicker.DPGlobal = DPGlobal;
+	
+	/* TYPEAHEAD DATA-API
+     	 * ================== */
+
+    $(function () {
+        $('body').on('click.datetimepicker.data-api', '[data-provide="datetimepicker"]', function (e) {
+            var $this = $(this)
+            if ($this.data('datetimepicker')) return;
+            e.preventDefault();
+            $this.datetimepicker().datetimepicker('show');
+        });
+    });
 
 }( window.jQuery );
