@@ -48,8 +48,8 @@
 		}
 		this.linkField = options.linkField||this.element.data('link-field')||false;
 		this.linkFormat = DPGlobal.parseFormat(options.linkFormat||this.element.data('link-format')||'yyyy-mm-dd hh:ii:ss');
-		this.minView = options.minView||0;
-		this.maxView = options.maxView||DPGlobal.modes.length-1;
+		this.minView = options.minView||this.element.data('date-min-view')||0;
+		this.maxView = options.maxView||this.element.data('date-max-view')||DPGlobal.modes.length-1;
 		
 		this._attachEvents();
 
@@ -1113,5 +1113,17 @@
 						'</div>';
 
 	$.fn.datetimepicker.DPGlobal = DPGlobal;
+	
+	/* TYPEAHEAD DATA-API
+     	 * ================== */
+
+    $(function () {
+        $('body').on('click.datetimepicker.data-api', '[data-provide="datetimepicker"]', function (e) {
+            var $this = $(this)
+            if ($this.data('datetimepicker')) return;
+            e.preventDefault();
+            $this.datetimepicker().datetimepicker('show');
+        });
+    });
 
 }( window.jQuery );
