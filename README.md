@@ -1,9 +1,13 @@
 bootstrap-datetimepicker
 ========================
 
-# Project
+[Homepage](http://www.malot.fr/bootstrap-datetimepicker/)
 
-This project is a fork of [bootstrap-datetimepicker project](https://github.com/eternicode/bootstrap-datetimepicker).
+[Demo page](http://www.malot.fr/bootstrap-datetimepicker/demo.php)
+
+# Project forked
+
+This project is a fork of [bootstrap-datepicker project](https://github.com/eternicode/bootstrap-datepicker).
 
 
 # Home
