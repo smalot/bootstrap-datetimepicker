@@ -210,6 +210,12 @@ Boolean.  Default: true
 
 Whether or not to force parsing of the input value when the picker is closed.  That is, when an invalid date is left in the input field by the user, the picker will forcibly parse that value, and set the input's value to the new, valid date, conforming to the given `format`.
 
+### minuteStep
+
+Number.  Default: 5
+
+The increment used to build the hour view. A button is created for each <code>minuteStep</code> minutes.
+
 ## Markup
 
 Format as component.
