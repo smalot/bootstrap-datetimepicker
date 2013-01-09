@@ -46,7 +46,7 @@ This view allows to select the hour in the selected day.
 ![Datetimepicker hour view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_hour.png)
 
 This view allows to select the preset of minutes in the selected hour.
-The range of 5 minutes has been selected to restrict buttons quantity to an acceptable value.
+The range of 5 minutes (by default) has been selected to restrict buttons quantity to an acceptable value, but it can be overrided by the <code>minuteStep</code> property.
 
 # Example
 
