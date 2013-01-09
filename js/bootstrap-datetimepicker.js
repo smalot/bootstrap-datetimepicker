@@ -48,6 +48,7 @@
 		}
 		this.linkField = options.linkField||this.element.data('link-field')||false;
 		this.linkFormat = DPGlobal.parseFormat(options.linkFormat||this.element.data('link-format')||'yyyy-mm-dd hh:ii:ss');
+		this.minuteStep = options.minuteStep||this.element.data('minute-step')||5;
 		this.minView = options.minView||0;
 		this.maxView = options.maxView||DPGlobal.modes.length-1;
 		
@@ -453,7 +454,7 @@
 			this.picker.find('.datetimepicker-hours td').html(html.join(''));
 
 			html = [];
-			for(var i=0;i<60;i+=5) {
+			for(var i=0;i<60;i+=this.minuteStep) {
 				clsName = '';
 				if (Math.floor(minutes/5) == Math.floor(i/5)) {
 					clsName += ' active';
