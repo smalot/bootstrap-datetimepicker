@@ -1114,7 +1114,7 @@
 
 	$.fn.datetimepicker.DPGlobal = DPGlobal;
 	
-	/* TYPEAHEAD DATA-API
+	/* DATETIMEPICKER DATA-API
      	 * ================== */
 
     $(function () {
