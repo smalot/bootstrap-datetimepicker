@@ -49,13 +49,34 @@
 		this.linkField = options.linkField || this.element.data('link-field') || false;
 		this.linkFormat = DPGlobal.parseFormat(options.linkFormat || this.element.data('link-format') || 'yyyy-mm-dd hh:ii:ss');
 		this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
-		this.minView = DPGlobal.convertViewMode(options.minView || this.element.data('date-min-view') || 0);
-		this.maxView = DPGlobal.convertViewMode(options.maxView || this.element.data('date-max-view') || DPGlobal.modes.length-1);
-		this.startViewMode = DPGlobal.convertViewMode(options.startView || this.element.data('date-start-view') || 2);
-		this.viewMode = this.startViewMode;
 		this.pickerReferer = options.pickerReferer || this.element.data('picker-referer') || 'default';
 
 		this._attachEvents();
+
+		this.minView = 0;
+		if ('minView' in options) {
+			this.minView = options.minView;
+		} else if ('minView' in this.element.data()) {
+			this.minView = this.element.data('min-view');
+		}
+		this.minView = DPGlobal.convertViewMode(this.minView);
+
+		this.maxView = DPGlobal.modes.length-1;
+		if ('maxView' in options) {
+			this.maxView = options.maxView;
+		} else if ('maxView' in this.element.data()) {
+			this.maxView = this.element.data('max-view');
+		}
+		this.maxView = DPGlobal.convertViewMode(this.maxView);
+
+		this.startViewMode = 2;
+		if ('startView' in options) {
+			this.startViewMode = options.startView;
+		} else if ('startView' in this.element.data()) {
+			this.startViewMode = this.element.data('start-view');
+		}
+		this.startViewMode = DPGlobal.convertViewMode(this.startViewMode);
+		this.viewMode = this.startViewMode;
 
 		this.forceParse = true;
 		if ('forceParse' in options) {
