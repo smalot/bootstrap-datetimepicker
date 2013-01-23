@@ -53,6 +53,7 @@
 		this.maxView = DPGlobal.convertViewMode(options.maxView || this.element.data('date-max-view') || DPGlobal.modes.length-1);
 		this.startViewMode = DPGlobal.convertViewMode(options.startView || this.element.data('date-start-view') || 2);
 		this.viewMode = this.startViewMode;
+		this.pickerReferer = options.pickerReferer || this.element.data('picker-referer') || 'default';
 
 		this._attachEvents();
 
@@ -70,7 +71,7 @@
 								mousedown: $.proxy(this.mousedown, this)
 							});
 
-		if(this.isInline) {
+		if (this.isInline) {
 			this.picker.addClass('datetimepicker-inline');
 		} else {
 			this.picker.addClass('datetimepicker-dropdown dropdown-menu');
@@ -303,7 +304,10 @@
 			var zIndex = parseInt(this.element.parents().filter(function() {
 							return $(this).css('z-index') != 'auto';
 						}).first().css('z-index'))+10;
-			var offset = this.component ? this.component.offset() : this.element.offset();
+			var offset = this.element.offset();
+			if (this.component && this.pickerReferer == 'default') {
+				offset = this.component.offset();
+			}
 			this.picker.css({
 				top: offset.top + this.height,
 				left: offset.left,
