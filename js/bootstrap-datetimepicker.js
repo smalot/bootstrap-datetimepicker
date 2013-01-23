@@ -34,10 +34,10 @@
 		var that = this;
 
 		this.element = $(element);
-		this.language = options.language||this.element.data('date-language')||"en";
+		this.language = options.language || this.element.data('date-language') || "en";
 		this.language = this.language in dates ? this.language : "en";
-		this.isRTL = dates[this.language].rtl||false;
-		this.format = DPGlobal.parseFormat(options.format||this.element.data('date-format')||'yyyy-mm-dd hh:ii');
+		this.isRTL = dates[this.language].rtl || false;
+		this.format = DPGlobal.parseFormat(options.format || this.element.data('date-format') || 'yyyy-mm-dd hh:ii');
 		this.isInline = false;
 		this.isInput = this.element.is('input');
 		this.component = this.element.is('.date') ? this.element.find('.add-on .icon-th').parent() : false;
@@ -46,12 +46,14 @@
 		if (this.component && this.component.length === 0) {
 			this.component = false;
 		}
-		this.linkField = options.linkField||this.element.data('link-field')||false;
-		this.linkFormat = DPGlobal.parseFormat(options.linkFormat||this.element.data('link-format')||'yyyy-mm-dd hh:ii:ss');
-		this.minuteStep = options.minuteStep||this.element.data('minute-step')||5;
-		this.minView = options.minView||this.element.data('date-min-view')||0;
-		this.maxView = options.maxView||this.element.data('date-max-view')||DPGlobal.modes.length-1;
-		
+		this.linkField = options.linkField || this.element.data('link-field') || false;
+		this.linkFormat = DPGlobal.parseFormat(options.linkFormat || this.element.data('link-format') || 'yyyy-mm-dd hh:ii:ss');
+		this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
+		this.minView = DPGlobal.convertViewMode(options.minView || this.element.data('date-min-view') || 0);
+		this.maxView = DPGlobal.convertViewMode(options.maxView || this.element.data('date-max-view') || DPGlobal.modes.length-1);
+		this.startViewMode = DPGlobal.convertViewMode(options.startView || this.element.data('date-start-view') || 2);
+		this.viewMode = this.startViewMode;
+
 		this._attachEvents();
 
 		this.forceParse = true;
@@ -99,41 +101,17 @@
 			this.keyboardNavigation = this.element.data('date-keyboard-navigation');
 		}
 
-		this.viewMode = this.startViewMode = 2;
-		switch(options.startView || this.element.data('date-start-view')){
-			case 4:
-			case 'decade':
-				this.viewMode = this.startViewMode = 4;
-				break;
-			case 3:
-			case 'year':
-				this.viewMode = this.startViewMode = 3;
-				break;
-			case 2:
-			case 'day':
-				this.viewMode = this.startViewMode = 2;
-				break;
-			case 1:
-			case 'hour':
-				this.viewMode = this.startViewMode = 1;
-				break;
-			case 0:
-			case 'minute':
-				this.viewMode = this.startViewMode = 0;
-				break;
-		}
+		this.todayBtn = (options.todayBtn || this.element.data('date-today-btn') || false);
+		this.todayHighlight = (options.todayHighlight || this.element.data('date-today-highlight') || false);
 
-		this.todayBtn = (options.todayBtn||this.element.data('date-today-btn')||false);
-		this.todayHighlight = (options.todayHighlight||this.element.data('date-today-highlight')||false);
-
-		this.weekStart = ((options.weekStart||this.element.data('date-weekstart')||dates[this.language].weekStart||0) % 7);
+		this.weekStart = ((options.weekStart || this.element.data('date-weekstart') || dates[this.language].weekStart || 0) % 7);
 		this.weekEnd = ((this.weekStart + 6) % 7);
 		this.startDate = -Infinity;
 		this.endDate = Infinity;
 		this.daysOfWeekDisabled = [];
-		this.setStartDate(options.startDate||this.element.data('date-startdate'));
-		this.setEndDate(options.endDate||this.element.data('date-enddate'));
-		this.setDaysOfWeekDisabled(options.daysOfWeekDisabled||this.element.data('date-days-of-week-disabled'));
+		this.setStartDate(options.startDate || this.element.data('date-startdate'));
+		this.setEndDate(options.endDate || this.element.data('date-enddate'));
+		this.setDaysOfWeekDisabled(options.daysOfWeekDisabled || this.element.data('date-days-of-week-disabled'));
 		this.fillDow();
 		this.fillMonths();
 		this.update();
@@ -235,7 +213,7 @@
 			if (
 				this.forceParse &&
 				(
-					this.isInput && this.element.val() ||
+					this.isInput && this.element.val()  || 
 					this.hasInput && this.element.find('input').val()
 				)
 			)
@@ -291,7 +269,7 @@
 		},
 
 		setStartDate: function(startDate){
-			this.startDate = startDate||-Infinity;
+			this.startDate = startDate || -Infinity;
 			if (this.startDate !== -Infinity) {
 				this.startDate = DPGlobal.parseDate(this.startDate, this.format, this.language);
 			}
@@ -300,7 +278,7 @@
 		},
 
 		setEndDate: function(endDate){
-			this.endDate = endDate||Infinity;
+			this.endDate = endDate || Infinity;
 			if (this.endDate !== Infinity) {
 				this.endDate = DPGlobal.parseDate(this.endDate, this.format, this.language);
 			}
@@ -309,7 +287,7 @@
 		},
 
 		setDaysOfWeekDisabled: function(daysOfWeekDisabled){
-			this.daysOfWeekDisabled = daysOfWeekDisabled||[];
+			this.daysOfWeekDisabled = daysOfWeekDisabled || [];
 			if (!$.isArray(this.daysOfWeekDisabled)) {
 				this.daysOfWeekDisabled = this.daysOfWeekDisabled.split(/,\s*/);
 			}
@@ -431,7 +409,7 @@
 				if (prevMonth.valueOf() == currentDate) {
 					clsName += ' active';
 				}
-				if (prevMonth.valueOf() < this.startDate || prevMonth.valueOf() > this.endDate ||
+				if (prevMonth.valueOf() < this.startDate || prevMonth.valueOf() > this.endDate  || 
 					$.inArray(prevMonth.getUTCDay(), this.daysOfWeekDisabled) !== -1) {
 					clsName += ' disabled';
 				}
@@ -584,14 +562,14 @@
 								});
 							} else if (target.is('.year')) {
 								this.viewDate.setUTCDate(1);
-								var year = parseInt(target.text(), 10)||0;
+								var year = parseInt(target.text(), 10) || 0;
 								this.viewDate.setUTCFullYear(year);
 								this.element.trigger({
 									type: 'changeYear',
 									date: this.viewDate
 								});
 							} else if (target.is('.hour')){
-								var hours = parseInt(target.text(), 10)||0;
+								var hours = parseInt(target.text(), 10) || 0;
 								var year = this.viewDate.getUTCFullYear(),
 									month = this.viewDate.getUTCMonth(),
 									day = this.viewDate.getUTCDate(),
@@ -599,7 +577,7 @@
 									seconds = this.viewDate.getUTCSeconds();
 								this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
 							} else if (target.is('.minute')){
-								var minutes = parseInt(target.text().substr(target.text().indexOf(':')+1), 10)||0;
+								var minutes = parseInt(target.text().substr(target.text().indexOf(':')+1), 10) || 0;
 								var year = this.viewDate.getUTCFullYear(),
 									month = this.viewDate.getUTCMonth(),
 									day = this.viewDate.getUTCDate(),
@@ -624,7 +602,7 @@
 						break;
 					case 'td':
 						if (target.is('.day') && !target.is('.disabled')){
-							var day = parseInt(target.text(), 10)||1;
+							var day = parseInt(target.text(), 10) || 1;
 							var year = this.viewDate.getUTCFullYear(),
 								month = this.viewDate.getUTCMonth(),
 								hours = this.viewDate.getUTCHours(),
@@ -939,7 +917,6 @@
 		},
 		parseDate: function(date, format, language) {
 			if (date instanceof Date) return date;
-			//console.log(date);
 			if (/^\d{4}\-\d{2}\-\d{2}$/.test(date)) {
 				format = this.parseFormat('yyyy-mm-dd');
 			}
@@ -1064,6 +1041,32 @@
 				date.push(val[format.parts[i]]);
 			}
 			return date.join('');
+		},
+		convertViewMode: function(viewMode){
+			switch (viewMode) {
+				case 4:
+				case 'decade':
+					viewMode = 4;
+					break;
+				case 3:
+				case 'year':
+					viewMode = 3;
+					break;
+				case 2:
+				case 'month':
+					viewMode = 2;
+					break;
+				case 1:
+				case 'day':
+					viewMode = 1;
+					break;
+				case 0:
+				case 'hour':
+					viewMode = 0;
+					break;
+			}
+
+			return viewMode;
 		},
 		headTemplate: '<thead>'+
 							'<tr>'+
