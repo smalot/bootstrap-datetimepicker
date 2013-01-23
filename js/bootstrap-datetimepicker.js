@@ -49,8 +49,8 @@
 		this.linkField = options.linkField||this.element.data('link-field')||false;
 		this.linkFormat = DPGlobal.parseFormat(options.linkFormat||this.element.data('link-format')||'yyyy-mm-dd hh:ii:ss');
 		this.minuteStep = options.minuteStep||this.element.data('minute-step')||5;
-		this.minView = options.minView||0;
-		this.maxView = options.maxView||DPGlobal.modes.length-1;
+		this.minView = options.minView||this.element.data('date-min-view')||0;
+		this.maxView = options.maxView||this.element.data('date-max-view')||DPGlobal.modes.length-1;
 		
 		this._attachEvents();
 
