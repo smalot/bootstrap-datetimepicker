@@ -405,10 +405,8 @@
 						.toggle(this.todayBtn !== false);
 			this.updateNavArrows();
 			this.fillMonths();
-			var prevMonth = UTCDate(year, month-1, 28,0,0,0,0),
-				day = DPGlobal.getDaysInMonth(prevMonth.getUTCFullYear(), prevMonth.getUTCMonth());
-			prevMonth.setUTCDate(day);
-			prevMonth.setUTCDate(day - (prevMonth.getUTCDay() - this.weekStart + 7)%7);
+			var prevMonth = UTCDate(year, month, 0,0,0,0,0);
+			prevMonth.setUTCDate(prevMonth.getDate() - (prevMonth.getUTCDay() - this.weekStart + 7)%7);
 			var nextMonth = new Date(prevMonth);
 			nextMonth.setUTCDate(nextMonth.getUTCDate() + 42);
 			nextMonth = nextMonth.valueOf();
@@ -434,7 +432,7 @@
 				if (prevMonth.valueOf() == currentDate) {
 					clsName += ' active';
 				}
-				if (prevMonth.valueOf() < this.startDate || prevMonth.valueOf() > this.endDate  || 
+				if ((prevMonth.valueOf() + 86400000) < this.startDate || prevMonth.valueOf() > this.endDate ||
 					$.inArray(prevMonth.getUTCDay(), this.daysOfWeekDisabled) !== -1) {
 					clsName += ' disabled';
 				}
@@ -448,8 +446,12 @@
 
 			html = [];
 			for (var i=0;i<24;i++) {
+				var actual = UTCDate(year, month, dayMonth, i);
 				clsName = '';
-				if (hours == i) {
+				// We want the previous hour for the startDate
+				if ((actual.valueOf() + 3600000) < this.startDate || actual.valueOf() > this.endDate) {
+					clsName += ' disabled';
+				} else if (hours == i) {
 					clsName += ' active';
 				}
 				html.push('<span class="hour'+clsName+'">'+i+':00</span>');
@@ -458,8 +460,11 @@
 
 			html = [];
 			for(var i=0;i<60;i+=this.minuteStep) {
+				var actual = UTCDate(year, month, dayMonth, hours, i);
 				clsName = '';
-				if (Math.floor(minutes/5) == Math.floor(i/5)) {
+				if (actual.valueOf() < this.startDate || actual.valueOf() > this.endDate) {
+					clsName += ' disabled';
+				} else if (Math.floor(minutes/this.minuteStep) == Math.floor(i/this.minuteStep)) {
 					clsName += ' active';
 				}
 				html.push('<span class="minute'+clsName+'">'+hours+':'+(i<10?'0'+i:i)+'</span>');
@@ -941,7 +946,8 @@
 			return {separators: separators, parts: parts};
 		},
 		parseDate: function(date, format, language) {
-			if (date instanceof Date) return date;
+			if (date instanceof Date) return new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
+			//console.log(date);
 			if (/^\d{4}\-\d{2}\-\d{2}$/.test(date)) {
 				format = this.parseFormat('yyyy-mm-dd');
 			}
