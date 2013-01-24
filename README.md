@@ -216,6 +216,12 @@ Number.  Default: 5
 
 The increment used to build the hour view. A button is created for each <code>minuteStep</code> minutes.
 
+### pickerReferer
+
+String.  Default: 'default'
+
+The referer element to place the picker for the component implementation. If you want to place the picker just under the input field, just specify <code>input</code>.
+
 ## Markup
 
 Format as component.
