@@ -49,9 +49,47 @@
 		this.linkField = options.linkField || this.element.data('link-field') || false;
 		this.linkFormat = DPGlobal.parseFormat(options.linkFormat || this.element.data('link-format') || 'yyyy-mm-dd hh:ii:ss');
 		this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
-		this.minView = DPGlobal.convertViewMode(options.minView || this.element.data('date-min-view') || 0);
-		this.maxView = DPGlobal.convertViewMode(options.maxView || this.element.data('date-max-view') || DPGlobal.modes.length-1);
-		this.startViewMode = DPGlobal.convertViewMode(options.startView || this.element.data('date-start-view') || 2);
+		this.minView = 0;
+		if ('minView' in options) {
+            this.minView = options.minView;
+        } else if ('date-min-view' in this.element.data()) {
+            this.minView = this.element.data('date-min-view');
+        }
+        var _maxView = DPGlobal.modes.length-1;
+		if ('maxView' in options) {
+            _maxView = options.maxView;
+        } else if ('date-max-view' in this.element.data()) {
+            _maxView = this.element.data('date-max-view');
+        }
+		this.maxView = DPGlobal.convertViewMode(_maxView);
+        var _startView = 2;
+		if ('startView' in options) {
+            _startView = options.startView;
+        } else if ('date-start-view' in this.element.data()) {
+            _startView = this.element.data('date-start-view');
+        }
+		this.startViewMode = DPGlobal.convertViewMode(_startView);
+
+        this.timeTitle = 'Select Time'; // time only title
+		if ('timeTitle' in options) {
+            this.timeTitle = options.timeTitle;
+        } else if ('date-time-title' in this.element.data()) {
+            this.timeTitle = this.element.data('date-time-title');
+        }
+
+        this.timeOnly = false;
+		if ('timeOnly' in options) {
+            this.timeOnly = options.timeOnly;
+        } else if ('date-time-only' in this.element.data()) {
+            this.timeOnly = this.element.data('date-time-only');
+        }
+        this.timeOnly = this.timeOnly === true || this.timeOnly ==='true';
+        if (this.timeOnly) {
+        	this.startViewMode = 0;
+        	this.maxView = 0;
+        	this.minView = 0;
+        }
+
 		this.viewMode = this.startViewMode;
 		this.pickerReferer = options.pickerReferer || this.element.data('picker-referer') || 'default';
 
@@ -372,13 +410,17 @@
 				endYear = this.endDate !== Infinity ? this.endDate.getUTCFullYear() : Infinity,
 				endMonth = this.endDate !== Infinity ? this.endDate.getUTCMonth() : Infinity,
 				currentDate = (new UTCDate(this.date.getUTCFullYear(), this.date.getUTCMonth(), this.date.getUTCDate())).valueOf(),
-				today = new Date();
+				today = new Date(),
+				timeTitle = dayMonth+' '+dates[this.language].months[month]+' '+year;
+				if (this.isTimeOnly()) {
+					timeTitle = this.timeTitle;
+				}
 			this.picker.find('.datetimepicker-days thead th:eq(1)')
 						.text(dates[this.language].months[month]+' '+year);
 			this.picker.find('.datetimepicker-hours thead th:eq(1)')
-						.text(dayMonth+' '+dates[this.language].months[month]+' '+year);
+						.text(timeTitle);
 			this.picker.find('.datetimepicker-minutes thead th:eq(1)')
-						.text(dayMonth+' '+dates[this.language].months[month]+' '+year);
+						.text(timeTitle);
 			this.picker.find('tfoot th.today')
 						.text(dates[this.language].today)
 						.toggle(this.todayBtn !== false);
@@ -841,6 +883,10 @@
 		
 		reset: function(e) {
 			this._setDate(null, 'date');
+		},
+
+		isTimeOnly: function() {
+			return this.startViewMode === 0 && this.minView === 0 && this.maxView === 0;
 		}
 	};
 
