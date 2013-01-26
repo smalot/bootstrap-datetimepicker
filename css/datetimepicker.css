@@ -28,7 +28,7 @@
 .datetimepicker.datetimepicker-rtl table tr td span {
   float: right;
 }
-.datetimepicker-dropdown {
+.datetimepicker-dropdown, .datetimepicker-dropdown-left {
   top: 0;
   left: 0;
 }
@@ -52,6 +52,27 @@
   position: absolute;
   top: -6px;
   left: 7px;
+}
+.datetimepicker-dropdown-left:before {
+  content: '';
+  display: inline-block;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #ccc;
+  border-bottom-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  top: -7px;
+  right: 6px;
+}
+.datetimepicker-dropdown-left:after {
+  content: '';
+  display: inline-block;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid #ffffff;
+  position: absolute;
+  top: -6px;
+  right: 7px;
 }
 .datetimepicker > div {
   display: none;

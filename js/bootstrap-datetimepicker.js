@@ -49,7 +49,7 @@
 		this.linkField = options.linkField || this.element.data('link-field') || false;
 		this.linkFormat = DPGlobal.parseFormat(options.linkFormat || this.element.data('link-format') || 'yyyy-mm-dd hh:ii:ss');
 		this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
-		this.pickerReferer = options.pickerReferer || this.element.data('picker-referer') || 'default';
+		this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
 
 		this._attachEvents();
 
@@ -95,7 +95,11 @@
 		if (this.isInline) {
 			this.picker.addClass('datetimepicker-inline');
 		} else {
-			this.picker.addClass('datetimepicker-dropdown dropdown-menu');
+			if (this.component && this.pickerPosition == 'bottom-left') {
+				this.picker.addClass('datetimepicker-dropdown-left dropdown-menu');
+			} else {
+				this.picker.addClass('datetimepicker-dropdown dropdown-menu');
+			}
 		}
 		if (this.isRTL){
 			this.picker.addClass('datetimepicker-rtl');
@@ -321,17 +325,24 @@
 		},
 
 		place: function(){
-						if(this.isInline) return;
+			if(this.isInline) return;
 			var zIndex = parseInt(this.element.parents().filter(function() {
 							return $(this).css('z-index') != 'auto';
 						}).first().css('z-index'))+10;
-			var offset = this.element.offset();
-			if (this.component && this.pickerReferer == 'default') {
+			var offset, left;
+			if (this.component) {
 				offset = this.component.offset();
+				left = offset.left;
+				if (this.pickerPosition == 'bottom-left') {
+					left += this.component.outerWidth() - this.picker.outerWidth();
+				}
+			} else {
+				offset = this.element.offset();
+				left = offset.left;
 			}
 			this.picker.css({
 				top: offset.top + this.height,
-				left: offset.left,
+				left: left,
 				zIndex: zIndex
 			});
 		},
