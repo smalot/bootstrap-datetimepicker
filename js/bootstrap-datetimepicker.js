@@ -581,8 +581,7 @@
 
 								this.viewMode = this.startViewMode;
 								this.showMode(0);
-								var which = this.todayBtn == 'linked' ? null : 'view';
-								this._setDate(date, which);
+								this._setDate(date);
 								break;
 						}
 						break;
