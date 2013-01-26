@@ -284,3 +284,87 @@ test('DaysOfWeekDisabled', function(){
     target = picker.find('.datetimepicker-days tbody td:nth(26)');
     ok(target.hasClass('disabled'), 'Day of week is disabled');
 });
+
+test('startDate: Custom value', function(){
+    var input = $('<input />')
+                .appendTo('#qunit-fixture')
+                .val('2013-01-25')
+                .datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    startView: 2,
+                    startDate: "2013-01-24 15:30"
+                }),
+        dp = input.data('datetimepicker'),
+        picker = dp.picker,
+        target;
+
+    input.focus();
+    ok(picker.find('.datetimepicker-days tbody tr:nth(3) td:nth(2)').hasClass('disabled'), 'The previous day is disabled');
+    target = picker.find('.datetimepicker-days tbody tr:nth(3) td:nth(4)')
+    ok(!target.hasClass('disabled'), 'The starting day is enabled');
+
+    target.click()
+    ok(picker.find('.datetimepicker-hours tbody span:nth(14)').hasClass('disabled'), 'The previous hour is disabled');
+    target = picker.find('.datetimepicker-hours tbody span:nth(15)')
+    ok(!target.hasClass('disabled'), 'The starting hour is enabled');
+
+    target.click()
+    ok(picker.find('.datetimepicker-minutes tbody span:nth(5)').hasClass('disabled'), 'The previous minute is disabled');
+    ok(!picker.find('.datetimepicker-minutes tbody span:nth(6)').hasClass('disabled'), 'The starting minute is enabled');
+});
+
+test('startDate: Custom value', function(){
+    var input = $('<input />')
+                .appendTo('#qunit-fixture')
+                .val('2013-01-25')
+                .datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    startView: 2,
+                    startDate: "2013-01-24 15:30"
+                }),
+        dp = input.data('datetimepicker'),
+        picker = dp.picker,
+        target;
+
+    input.focus();
+    ok(picker.find('.datetimepicker-days tbody tr:nth(3) td:nth(3)').hasClass('disabled'), 'The previous day is disabled');
+    target = picker.find('.datetimepicker-days tbody tr:nth(3) td:nth(4)')
+    ok(!target.hasClass('disabled'), 'The starting day is enabled');
+
+    target.click()
+    ok(picker.find('.datetimepicker-hours tbody span:nth(14)').hasClass('disabled'), 'The previous hour is disabled');
+    target = picker.find('.datetimepicker-hours tbody span:nth(15)')
+    ok(!target.hasClass('disabled'), 'The starting hour is enabled');
+
+    target.click()
+    ok(picker.find('.datetimepicker-minutes tbody span:nth(5)').hasClass('disabled'), 'The previous minute is disabled');
+    ok(!picker.find('.datetimepicker-minutes tbody span:nth(6)').hasClass('disabled'), 'The starting minute is enabled');
+});
+
+test('endDate: Custom value', function(){
+    var input = $('<input />')
+                .appendTo('#qunit-fixture')
+                .val('2013-01-25')
+                .datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    startView: 2,
+                    endDate: "2013-01-24 15:30"
+                }),
+        dp = input.data('datetimepicker'),
+        picker = dp.picker,
+        target;
+
+    input.focus();
+    ok(picker.find('.datetimepicker-days tbody tr:nth(3) td:nth(5)').hasClass('disabled'), 'The next day is disabled');
+    target = picker.find('.datetimepicker-days tbody tr:nth(3) td:nth(4)')
+    ok(!target.hasClass('disabled'), 'The last day is enabled');
+
+    target.click()
+    ok(picker.find('.datetimepicker-hours tbody span:nth(16)').hasClass('disabled'), 'The next hour is disabled');
+    target = picker.find('.datetimepicker-hours tbody span:nth(15)')
+    ok(!target.hasClass('disabled'), 'The last hour is enabled');
+
+    target.click()
+    ok(picker.find('.datetimepicker-minutes tbody span:nth(7)').hasClass('disabled'), 'The next minute is disabled');
+    ok(!picker.find('.datetimepicker-minutes tbody span:nth(6)').hasClass('disabled'), 'The last minute is enabled');
+});
