@@ -40,7 +40,7 @@
 		this.format = DPGlobal.parseFormat(options.format || this.element.data('date-format') || 'yyyy-mm-dd hh:ii');
 		this.isInline = false;
 		this.isInput = this.element.is('input');
-		this.component = this.element.is('.date') ? this.element.find('.add-on .icon-th').parent() : false;
+		this.component = this.element.is('.date') ? this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar').parent() : false;
 		this.componentReset = this.element.is('.date') ? this.element.find('.add-on .icon-remove').parent() : false;
 		this.hasInput = this.component && this.element.find('input').length;
 		if (this.component && this.component.length === 0) {
