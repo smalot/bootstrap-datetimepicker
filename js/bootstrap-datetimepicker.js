@@ -50,6 +50,7 @@
 		this.linkFormat = DPGlobal.parseFormat(options.linkFormat || this.element.data('link-format') || 'yyyy-mm-dd hh:ii:ss');
 		this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
 		this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
+		this.outOfRange = options.outOfRange || false;
 
 		this._attachEvents();
 
@@ -519,15 +520,53 @@
 		updateNavArrows: function() {
 			var d = new Date(this.viewDate),
 				year = d.getUTCFullYear(),
-				month = d.getUTCMonth();
+				month = d.getUTCMonth(),
+				day = d.getUTCDate(),
+				hour = d.getUTCHours();
 			switch (this.viewMode) {
-				case 2:
-					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear() && month <= this.startDate.getUTCMonth()) {
+				case 0:
+					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear() 
+													 && month <= this.startDate.getUTCMonth()
+													 && day <= this.startDate.getUTCDate()
+													 && hour <= this.startDate.getUTCHours()) {
 						this.picker.find('.prev').css({visibility: 'hidden'});
 					} else {
 						this.picker.find('.prev').css({visibility: 'visible'});
 					}
-					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear() && month >= this.endDate.getUTCMonth()) {
+					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear() 
+												  && month >= this.endDate.getUTCMonth()
+												  && day >= this.endDate.getUTCDate()
+												  && hour >= this.endDate.getUTCHours()) {
+						this.picker.find('.next').css({visibility: 'hidden'});
+					} else {
+						this.picker.find('.next').css({visibility: 'visible'});
+					}
+					break;
+				case 1:
+					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear() 
+													 && month <= this.startDate.getUTCMonth()
+													 && day <= this.startDate.getUTCDate()) {
+						this.picker.find('.prev').css({visibility: 'hidden'});
+					} else {
+						this.picker.find('.prev').css({visibility: 'visible'});
+					}
+					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear() 
+												  && month >= this.endDate.getUTCMonth()
+												  && day >= this.endDate.getUTCDate()) {
+						this.picker.find('.next').css({visibility: 'hidden'});
+					} else {
+						this.picker.find('.next').css({visibility: 'visible'});
+					}
+					break;
+				case 2:
+					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear() 
+													 && month <= this.startDate.getUTCMonth()) {
+						this.picker.find('.prev').css({visibility: 'hidden'});
+					} else {
+						this.picker.find('.prev').css({visibility: 'visible'});
+					}
+					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear() 
+												  && month >= this.endDate.getUTCMonth()) {
 						this.picker.find('.next').css({visibility: 'hidden'});
 					} else {
 						this.picker.find('.next').css({visibility: 'visible'});
