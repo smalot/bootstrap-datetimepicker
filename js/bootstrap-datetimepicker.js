@@ -37,7 +37,8 @@
 		this.language = options.language || this.element.data('date-language') || "en";
 		this.language = this.language in dates ? this.language : "en";
 		this.isRTL = dates[this.language].rtl || false;
-		this.format = DPGlobal.parseFormat(options.format || this.element.data('date-format') || 'yyyy-mm-dd hh:ii');
+		this.formatType = options.formatType || this.element.data('format-type') || 'standard';
+		this.format = DPGlobal.parseFormat(options.format || this.element.data('date-format') || DPGlobal.getDefaultFormat(this.formatType, 'input'), this.formatType);
 		this.isInline = false;
 		this.isInput = this.element.is('input');
 		this.component = this.element.is('.date') ? this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar').parent() : false;
@@ -47,7 +48,7 @@
 			this.component = false;
 		}
 		this.linkField = options.linkField || this.element.data('link-field') || false;
-		this.linkFormat = DPGlobal.parseFormat(options.linkFormat || this.element.data('link-format') || 'yyyy-mm-dd hh:ii:ss');
+		this.linkFormat = DPGlobal.parseFormat(options.linkFormat || this.element.data('link-format') || DPGlobal.getDefaultFormat(this.formatType, 'link'), this.formatType);
 		this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
 		this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
 
@@ -78,7 +79,7 @@
 		this.startViewMode = DPGlobal.convertViewMode(this.startViewMode);
 		this.viewMode = this.startViewMode;
 
-		this.forceParse = true;
+		this.forceParse = false;
 		if ('forceParse' in options) {
 			this.forceParse = options.forceParse;
 		} else if ('dateForceParse' in this.element.data()) {
@@ -302,13 +303,13 @@
 
 		getFormattedDate: function(format) {
 			if(format == undefined) format = this.format;
-			return DPGlobal.formatDate(this.date, format, this.language);
+			return DPGlobal.formatDate(this.date, format, this.language, this.formatType);
 		},
 
 		setStartDate: function(startDate){
 			this.startDate = startDate || -Infinity;
 			if (this.startDate !== -Infinity) {
-				this.startDate = DPGlobal.parseDate(this.startDate, this.format, this.language);
+				this.startDate = DPGlobal.parseDate(this.startDate, this.format, this.language, this.formatType);
 			}
 			this.update();
 			this.updateNavArrows();
@@ -317,7 +318,7 @@
 		setEndDate: function(endDate){
 			this.endDate = endDate || Infinity;
 			if (this.endDate !== Infinity) {
-				this.endDate = DPGlobal.parseDate(this.endDate, this.format, this.language);
+				this.endDate = DPGlobal.parseDate(this.endDate, this.format, this.language, this.formatType);
 			}
 			this.update();
 			this.updateNavArrows();
@@ -367,7 +368,7 @@
 				date = this.isInput ? this.element.prop('value') : this.element.data('date') || this.element.find('input').prop('value');
 			}
 
-			this.date = DPGlobal.parseDate(date, this.format, this.language);
+			this.date = DPGlobal.parseDate(date, this.format, this.language, this.formatType);
 
 			if(fromArgs) this.setValue();
 
@@ -964,6 +965,8 @@
 			daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
 			months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 			monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+			meridiem: ["am", "pm"],
+			suffix: ["st", "nd", "rd", "th"],
 			today: "Today"
 		}
 	};
@@ -1001,28 +1004,51 @@
 		getDaysInMonth: function (year, month) {
 			return [31, (DPGlobal.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
 		},
-		validParts: /hh?|ii?|ss?|dd?|mm?|MM?|yy(?:yy)?/g,
+		getDefaultFormat: function (type, field) {
+			if (type == "standard") {
+				if (field == 'input')
+					return 'yyyy-mm-dd hh:ii';
+				else
+					return 'yyyy-mm-dd hh:ii:ss';
+			} else if (type == "php") {
+				if (field == 'input')
+					return 'Y-m-d H:i';
+				else
+					return 'Y-m-d H:i:s';
+			} else {
+				throw new Error("Invalid format type.");
+			}
+		},
+		validParts: function (type) {
+			if (type == "standard") {
+				return /hh?|ii?|ss?|dd?|mm?|MM?|yy(?:yy)?/g;
+			} else if (type == "php") {
+				return /[dDjlNwzFmMnStyYaABgGhHis]/g;
+			} else {
+				throw new Error("Invalid format type.");
+			}
+		},
 		nonpunctuation: /[^ -\/:-@\[-`{-~\t\n\rTZ]+/g,
-		parseFormat: function(format){
+		parseFormat: function(format, type){
 			// IE treats \0 as a string end in inputs (truncating the value),
 			// so it's a bad format delimiter, anyway
-			var separators = format.replace(this.validParts, '\0').split('\0'),
-				parts = format.match(this.validParts);
+			var separators = format.replace(this.validParts(type), '\0').split('\0'),
+				parts = format.match(this.validParts(type));
 			if (!separators || !separators.length || !parts || parts.length == 0){
 				throw new Error("Invalid date format.");
 			}
 			return {separators: separators, parts: parts};
 		},
-		parseDate: function(date, format, language) {
+		parseDate: function(date, format, language, type) {
 			if (date instanceof Date) return new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
 			if (/^\d{4}\-\d{1,2}\-\d{1,2}$/.test(date)) {
-				format = this.parseFormat('yyyy-mm-dd');
+				format = this.parseFormat('yyyy-mm-dd', type);
 			}
 			if (/^\d{4}\-\d{1,2}\-\d{1,2}[T ]\d{1,2}\:\d{1,2}$/.test(date)) {
-				format = this.parseFormat('yyyy-mm-dd hh:ii');
+				format = this.parseFormat('yyyy-mm-dd hh:ii', type);
 			}
 			if (/^\d{4}\-\d{1,2}\-\d{1,2}[T ]\d{1,2}\:\d{1,2}\:\d{1,2}[Z]{0,1}$/.test(date)) {
-				format = this.parseFormat('yyyy-mm-dd hh:ii:ss');
+				format = this.parseFormat('yyyy-mm-dd hh:ii:ss', type);
 			}
 			if (/^[-+]\d+[dmwy]([\s,]+[-+]\d+[dmwy])*$/.test(date)) {
 				var part_re = /([-+]\d+)([dmwy])/,
@@ -1111,26 +1137,71 @@
 			}
 			return date;
 		},
-		formatDate: function(date, format, language){
+		formatDate: function(date, format, language, type){
 			if (date == null) {
 				return '';
 			}
-			var val = {
-				h: date.getUTCHours(),
-				i: date.getUTCMinutes(),
-				s: date.getUTCSeconds(),
-				d: date.getUTCDate(),
-				m: date.getUTCMonth() + 1,
-				M: dates[language].monthsShort[date.getUTCMonth()],
-				MM: dates[language].months[date.getUTCMonth()],
-				yy: date.getUTCFullYear().toString().substring(2),
-				yyyy: date.getUTCFullYear()
-			};
-			val.hh = (val.h < 10 ? '0' : '') + val.h;
-			val.ii = (val.i < 10 ? '0' : '') + val.i;
-			val.ss = (val.s < 10 ? '0' : '') + val.s;
-			val.dd = (val.d < 10 ? '0' : '') + val.d;
-			val.mm = (val.m < 10 ? '0' : '') + val.m;
+			var val;
+			if (type == 'standard') {
+				val = {
+					// year
+					yy: date.getUTCFullYear().toString().substring(2),
+					yyyy: date.getUTCFullYear(),
+					// month
+					m: date.getUTCMonth() + 1,
+					M: dates[language].monthsShort[date.getUTCMonth()],
+					MM: dates[language].months[date.getUTCMonth()],
+					// day
+					d: date.getUTCDate(),
+					// hour
+					h: date.getUTCHours(),
+					// minute
+					i: date.getUTCMinutes(),
+					// second
+					s: date.getUTCSeconds(),
+				};
+				val.hh = (val.h < 10 ? '0' : '') + val.h;
+				val.ii = (val.i < 10 ? '0' : '') + val.i;
+				val.ss = (val.s < 10 ? '0' : '') + val.s;
+				val.dd = (val.d < 10 ? '0' : '') + val.d;
+				val.mm = (val.m < 10 ? '0' : '') + val.m;
+			} else if (type == 'php') {
+				// php format
+				val = {
+					// year
+					y: date.getUTCFullYear().toString().substring(2),
+					Y: date.getUTCFullYear(),
+					// month
+					F: dates[language].months[date.getUTCMonth()],
+					M: dates[language].monthsShort[date.getUTCMonth()],
+					n: date.getUTCMonth() + 1,
+					t: DPGlobal.getDaysInMonth(date.getUTCFullYear(), date.getUTCMonth()),
+					// day
+					j: date.getUTCDate(),
+					l: dates[language].days[date.getUTCDay()],
+					D: dates[language].daysShort[date.getUTCDay()],
+					w: date.getUTCDay(), // 0 -> 6
+					N: (date.getUTCDay()==0?7:date.getUTCDay()),       // 1 -> 7
+					S: (date.getUTCDate()%10<=dates[language].suffix.length?dates[language].suffix[date.getUTCDate()%10-1]:''),
+					// hour
+					a: (date.getUTCHours() < 12?dates[language].meridiem[0]:dates[language].meridiem[1]),
+					g: date.getUTCHours() % 12,
+					G: date.getUTCHours(),
+					// minute
+					i: date.getUTCMinutes(),
+					// second
+					s: date.getUTCSeconds()
+				};
+				val.m  = (val.n < 10 ? '0' : '') + val.n;
+				val.d = (val.j < 10 ? '0' : '') + val.j;
+				val.A = (val.a + '').toUpperCase();
+				val.h = (val.g < 10 ? '0' : '') + val.g;
+				val.H = (val.G < 10 ? '0' : '') + val.G;
+				val.i = (val.i < 10 ? '0' : '') + val.i;
+				val.s = (val.s < 10 ? '0' : '') + val.s;
+			} else {
+				throw new Error("Invalid format type.");
+			}
 			var date = [],
 				seps = $.extend([], format.separators);
 			for (var i=0, cnt = format.parts.length; i < cnt; i++) {
