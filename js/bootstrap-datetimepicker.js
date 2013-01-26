@@ -1184,7 +1184,7 @@
 					N: (date.getUTCDay()==0?7:date.getUTCDay()),       // 1 -> 7
 					S: (date.getUTCDate()%10<=dates[language].suffix.length?dates[language].suffix[date.getUTCDate()%10-1]:''),
 					// hour
-					a: (date.getUTCHours()<12&&dates[language].meridiem.length?dates[language].meridiem[0]:dates[language].meridiem[1]),
+					a: (dates[language].meridiem.length==2?dates[language].meridiem[date.getUTCHours()<12?0:1]:''),
 					g: (date.getUTCHours()%12==0?12:date.getUTCHours()%12),
 					G: date.getUTCHours(),
 					// minute

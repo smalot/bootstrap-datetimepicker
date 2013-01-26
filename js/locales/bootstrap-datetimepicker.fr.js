@@ -10,6 +10,8 @@
 		months: ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"],
 		monthsShort: ["Jan", "Fev", "Mar", "Avr", "Mai", "Jui", "Jul", "Aou", "Sep", "Oct", "Nov", "Dec"],
 		today: "Aujourd'hui",
+		suffix: [],
+		meridiem: ["am", "pm"],
 		weekStart: 1,
 		format: "dd/mm/yyyy"
 	};

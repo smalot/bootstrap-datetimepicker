@@ -11,6 +11,8 @@
         months: ["Sausis", "Vasaris", "Kovas", "Balandis", "Gegužė", "Birželis", "Liepa", "Rugpjūtis", "Rugsėjis", "Spalis", "Lapkritis", "Gruodis"],
         monthsShort: ["Sau", "Vas", "Kov", "Bal", "Geg", "Bir", "Lie", "Rugp", "Rugs", "Spa", "Lap", "Gru"],
         today: "Šiandien",
+		suffix: [],
+		meridiem: [],
         weekStart: 1
     };
 }(jQuery));
