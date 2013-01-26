@@ -270,8 +270,19 @@
 		},
 
 		setUTCDate: function(d) {
-			this.date = d;
-			this.setValue();
+			if (d >= this.startDate && d <= this.endDate) {
+				this.date = d;
+				this.setValue();
+				this.viewDate = this.date;
+				this.fill();
+			} else {
+				this.element.trigger({
+					type: 'outOfRange',
+					date: d,
+					startDate: this.startDate,
+					endDate: this.endDate
+				});
+			}
 		},
 
 		setValue: function() {
@@ -592,6 +603,15 @@
 			e.preventDefault();
 			var target = $(e.target).closest('span, td, th');
 			if (target.length == 1) {
+				if (target.is('.disabled')) {
+					this.element.trigger({
+						type: 'outOfRange',
+						date: this.viewDate,
+						startDate: this.startDate,
+						endDate: this.endDate
+					});
+					return;
+				}
 				switch(target[0].nodeName.toLowerCase()) {
 					case 'th':
 						switch(target[0].className) {
@@ -995,14 +1015,13 @@
 		},
 		parseDate: function(date, format, language) {
 			if (date instanceof Date) return new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
-			//console.log(date);
-			if (/^\d{4}\-\d{2}\-\d{2}$/.test(date)) {
+			if (/^\d{4}\-\d{1,2}\-\d{1,2}$/.test(date)) {
 				format = this.parseFormat('yyyy-mm-dd');
 			}
-			if (/^\d{4}\-\d{2}\-\d{2}[T ]\d{2}\:\d{2}$/.test(date)) {
+			if (/^\d{4}\-\d{1,2}\-\d{1,2}[T ]\d{1,2}\:\d{1,2}$/.test(date)) {
 				format = this.parseFormat('yyyy-mm-dd hh:ii');
 			}
-			if (/^\d{4}\-\d{2}\-\d{2}[T ]\d{2}\:\d{2}\:\d{2}[Z]{0,1}$/.test(date)) {
+			if (/^\d{4}\-\d{1,2}\-\d{1,2}[T ]\d{1,2}\:\d{1,2}\:\d{1,2}[Z]{0,1}$/.test(date)) {
 				format = this.parseFormat('yyyy-mm-dd hh:ii:ss');
 			}
 			if (/^[-+]\d+[dmwy]([\s,]+[-+]\d+[dmwy])*$/.test(date)) {
