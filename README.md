@@ -216,11 +216,17 @@ Number.  Default: 5
 
 The increment used to build the hour view. A button is created for each <code>minuteStep</code> minutes.
 
-### pickerReferer
+### pickerReferer : deprecated
 
 String.  Default: 'default'
 
 The referer element to place the picker for the component implementation. If you want to place the picker just under the input field, just specify <code>input</code>.
+
+### pickerPosition
+
+String. Default: 'bottom-right' (other supported value : 'bottom-left')
+
+This option allows to place the picker just under the input field for the component implementation instead of the default position which is at the bottom right of the button.
 
 ## Markup
 
@@ -378,6 +384,10 @@ Fired when the *view* year is changed from decade view.
 ### changeMonth
 
 Fired when the *view* month is changed from year view.
+
+### outOfRange
+
+Fired when you pick a date before the *startDate* or after the *endDate* or when you specify a date via the method *setDate* or *setUTCDate*..
 
 ## Keyboard support
 
