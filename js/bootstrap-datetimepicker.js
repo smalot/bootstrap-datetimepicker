@@ -1184,8 +1184,8 @@
 					N: (date.getUTCDay()==0?7:date.getUTCDay()),       // 1 -> 7
 					S: (date.getUTCDate()%10<=dates[language].suffix.length?dates[language].suffix[date.getUTCDate()%10-1]:''),
 					// hour
-					a: (date.getUTCHours() < 12?dates[language].meridiem[0]:dates[language].meridiem[1]),
-					g: date.getUTCHours() % 12,
+					a: (date.getUTCHours()<12&&dates[language].meridiem.length?dates[language].meridiem[0]:dates[language].meridiem[1]),
+					g: (date.getUTCHours()%12==0?12:date.getUTCHours()%12),
 					G: date.getUTCHours(),
 					// minute
 					i: date.getUTCMinutes(),
@@ -1194,7 +1194,7 @@
 				};
 				val.m  = (val.n < 10 ? '0' : '') + val.n;
 				val.d = (val.j < 10 ? '0' : '') + val.j;
-				val.A = (val.a + '').toUpperCase();
+				val.A = val.a.toString().toUpperCase();
 				val.h = (val.g < 10 ? '0' : '') + val.g;
 				val.H = (val.G < 10 ? '0' : '') + val.G;
 				val.i = (val.i < 10 ? '0' : '') + val.i;
