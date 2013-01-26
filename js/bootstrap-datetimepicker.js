@@ -50,7 +50,6 @@
 		this.linkFormat = DPGlobal.parseFormat(options.linkFormat || this.element.data('link-format') || 'yyyy-mm-dd hh:ii:ss');
 		this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
 		this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
-		this.outOfRange = options.outOfRange || false;
 
 		this._attachEvents();
 
