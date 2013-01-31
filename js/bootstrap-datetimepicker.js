@@ -4,6 +4,7 @@
  * Copyright 2012 Stefan Petre
  * Improvements by Andrew Rowls
  * Improvements by Sébastien Malot
+ * Project URL : http://www.malot.fr/bootstrap-datetimepicker
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,7 +80,7 @@
 		this.startViewMode = DPGlobal.convertViewMode(this.startViewMode);
 		this.viewMode = this.startViewMode;
 
-		this.forceParse = false;
+		this.forceParse = true;
 		if ('forceParse' in options) {
 			this.forceParse = options.forceParse;
 		} else if ('dateForceParse' in this.element.data()) {
@@ -365,12 +366,17 @@
 				date = arguments[0];
 				fromArgs = true;
 			} else {
-				date = this.isInput ? this.element.prop('value') : this.element.data('date') || this.element.find('input').prop('value');
+				date = this.isInput ? this.element.prop('value') : this.element.data('date') || this.element.find('input').prop('value') || new Date();
+			}
+
+			if (!date) {
+				date = new Date();
+				fromArgs = false;
 			}
 
 			this.date = DPGlobal.parseDate(date, this.format, this.language, this.formatType);
 
-			if(fromArgs) this.setValue();
+			if (fromArgs) this.setValue();
 
 			if (this.date < this.startDate) {
 				this.viewDate = new Date(this.startDate);
@@ -428,8 +434,12 @@
 						.toggle(this.todayBtn !== false);
 			this.updateNavArrows();
 			this.fillMonths();
-			var prevMonth = UTCDate(year, month, 0,0,0,0,0);
-			prevMonth.setUTCDate(prevMonth.getDate() - (prevMonth.getUTCDay() - this.weekStart + 7)%7);
+			/*var prevMonth = UTCDate(year, month, 0,0,0,0,0);
+			prevMonth.setUTCDate(prevMonth.getDate() - (prevMonth.getUTCDay() - this.weekStart + 7)%7);*/
+			var prevMonth = UTCDate(year, month-1, 28,0,0,0,0),
+                day = DPGlobal.getDaysInMonth(prevMonth.getUTCFullYear(), prevMonth.getUTCMonth());
+		    prevMonth.setUTCDate(day);
+      		prevMonth.setUTCDate(day - (prevMonth.getUTCDay() - this.weekStart + 7)%7);
 			var nextMonth = new Date(prevMonth);
 			nextMonth.setUTCDate(nextMonth.getUTCDate() + 42);
 			nextMonth = nextMonth.valueOf();
@@ -1040,7 +1050,10 @@
 			return {separators: separators, parts: parts};
 		},
 		parseDate: function(date, format, language, type) {
-			if (date instanceof Date) return new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
+			if (date instanceof Date) {
+				var dateUTC = new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
+				return dateUTC;
+			}
 			if (/^\d{4}\-\d{1,2}\-\d{1,2}$/.test(date)) {
 				format = this.parseFormat('yyyy-mm-dd', type);
 			}
@@ -1076,7 +1089,7 @@
 				return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
 			}
 			var parts = date && date.match(this.nonpunctuation) || [],
-				date = new Date(),
+				date = new Date(0, 0, 0, 0, 0, 0),
 				parsed = {},
 				setters_order = ['hh', 'h', 'ii', 'i', 'ss', 's', 'yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'd', 'dd'],
 				setters_map = {
@@ -1102,7 +1115,7 @@
 				val, filtered, part;
 			setters_map['M'] = setters_map['MM'] = setters_map['mm'] = setters_map['m'];
 			setters_map['dd'] = setters_map['d'];
-			date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0);//date.getHours(), date.getMinutes(), date.getSeconds());
+			date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
 			if (parts.length == format.parts.length) {
 				for (var i=0, cnt = format.parts.length; i < cnt; i++) {
 					val = parseInt(parts[i], 10);
@@ -1192,7 +1205,7 @@
 					// second
 					s: date.getUTCSeconds()
 				};
-				val.m  = (val.n < 10 ? '0' : '') + val.n;
+				val.m = (val.n < 10 ? '0' : '') + val.n;
 				val.d = (val.j < 10 ? '0' : '') + val.j;
 				val.A = val.a.toString().toUpperCase();
 				val.h = (val.g < 10 ? '0' : '') + val.g;
