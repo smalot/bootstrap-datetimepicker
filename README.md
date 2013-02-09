@@ -1,13 +1,13 @@
 bootstrap-datetimepicker
 ========================
 
-[Homepage](http://www.malot.fr/bootstrap-datetimepicker/)
+[Homepage](http://www.fritzy.ca/bootstrap-datetimepicker/)
 
-[Demo page](http://www.malot.fr/bootstrap-datetimepicker/demo.php)
+[Demo page](http://fritzy.ca/bootstrap-datetimepicker/demo.php)
 
 # Project forked
 
-This project is a fork of [bootstrap-datepicker project](https://github.com/eternicode/bootstrap-datepicker).
+This project is a fork of [bootstrap-datepicker project](https://github.com/smalot/bootstrap-datepicker).
 
 
 # Home
@@ -19,31 +19,37 @@ As 'bootstrap-datetimepicker' is restricted to the date scope (day, month, year)
 
 ## Month view
 
-![Datetimepicker month view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_month.png)
+![Datetimepicker month view](https://raw.github.com/Trifid/bootstrap-datetimepicker/master/screenshot/standard_month.png)
 
 This view allows to select the year in a range of 10 years.
 
 ## Year view
 
-![Datetimepicker year view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_year.png)
+![Datetimepicker year view](https://raw.github.com/Trifid/bootstrap-datetimepicker/master/screenshot/standard_year.png)
 
 This view allows to select the month in the selected year.
 
 ## Decade year view
 
-![Datetimepicker decade year view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_decade.png)
+![Datetimepicker decade year view](https://raw.github.com/Trifid/bootstrap-datetimepicker/master/screenshot/standard_decade.png)
 
 This view allows to select the day in the selected month.
 
 ## Day view
 
-![Datetimepicker day view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_day.png)
+![Datetimepicker day view](https://raw.github.com/Trifid/bootstrap-datetimepicker/master/screenshot/standard_day.png)
 
 This view allows to select the hour in the selected day.
 
+## Day view with hours options
+
+![Datetimepicker day view](https://raw.github.com/Trifid/bootstrap-datetimepicker/master/screenshot/block_day.png)
+
+This view allows to select the start of a time blcok by hour in the selected day.
+
 ## Hour view
 
-![Datetimepicker hour view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_hour.png)
+![Datetimepicker hour view](https://raw.github.com/Trifid/bootstrap-datetimepicker/master/screenshot/standard_hour.png)
 
 This view allows to select the preset of minutes in the selected hour.
 The range of 5 minutes (by default) has been selected to restrict buttons quantity to an acceptable value, but it can be overrided by the <code>minuteStep</code> property.
@@ -216,6 +222,21 @@ Number.  Default: 5
 
 The increment used to build the hour view. A button is created for each <code>minuteStep</code> minutes.
 
+### startHour
+
+Number. Default: 0
+
+The first hour shown in the day view. 
+
+### stepHour
+
+Number.  Default: 1
+
+The increment used to build the day view. A buton is created for each <code>stepHour</code> hours.
+
+## endHour
+
+Number. The maximum hour that will be shown in the day view.
 ### pickerReferer : deprecated
 
 String.  Default: 'default'
