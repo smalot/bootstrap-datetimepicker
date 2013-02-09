@@ -1,9 +1,11 @@
 bootstrap-datetimepicker
 ========================
 
-[Homepage](http://www.fritzy.ca/bootstrap-datetimepicker/)
+[Homepage](http://www.malot.fr/bootstrap-datetimepicker/)
 
-[Demo page](http://fritzy.ca/bootstrap-datetimepicker/demo.php)
+[Demo page](http://www.malot.fr/bootstrap-datetimepicker/demo.php)
+
+[My demo page with the block selection.](http://www.fritzy.ca/bootstrap-datetimepicker/sample/)
 
 # Project forked
 
