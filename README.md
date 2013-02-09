@@ -45,7 +45,7 @@ This view allows to select the hour in the selected day.
 
 ![Datetimepicker day view](https://raw.github.com/Trifid/bootstrap-datetimepicker/master/screenshot/block_day.png)
 
-This view allows to select the start of a time blcok by hour in the selected day.
+This view allows to select the start of a time block by hour in the selected day.
 
 ## Hour view
 
