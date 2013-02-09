@@ -4,6 +4,8 @@
  * Copyright 2012 Stefan Petre
  * Improvements by Andrew Rowls
  * Improvements by Sébastien Malot
+ * Improvements by duschang27
+ * Improvements by John Elliott
  * Project URL : http://www.malot.fr/bootstrap-datetimepicker
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,6 +43,7 @@
 		this.formatType = options.formatType || this.element.data('format-type') || 'standard';
 		this.format = DPGlobal.parseFormat(options.format || this.element.data('date-format') || DPGlobal.getDefaultFormat(this.formatType, 'input'), this.formatType);
 		this.isInline = false;
+		this.isVisible = false;
 		this.isInput = this.element.is('input');
 		this.component = this.element.is('.date') ? this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar').parent() : false;
 		this.componentReset = this.element.is('.date') ? this.element.find('.add-on .icon-remove').parent() : false;
@@ -52,7 +55,9 @@
 		this.linkFormat = DPGlobal.parseFormat(options.linkFormat || this.element.data('link-format') || DPGlobal.getDefaultFormat(this.formatType, 'link'), this.formatType);
 		this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
 		this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
-
+		this.startHour = options.startHour || 0;
+		this.stepHour = options.stepHour || 1;
+		this.endHour = options.endHour || 24;
 		this._attachEvents();
 
 		this.minView = 0;
@@ -200,7 +205,7 @@
 				el.on(ev);
 			}
 		},
-		
+
 		_detachEvents: function(){
 			for (var i=0, el, ev; i<this._events.length; i++){
 				el = this._events[i][0];
@@ -222,6 +227,7 @@
 				e.stopPropagation();
 				e.preventDefault();
 			}
+			this.isVisible = true;
 			this.element.trigger({
 				type: 'show',
 				date: this.date
@@ -229,6 +235,7 @@
 		},
 
 		hide: function(e){
+			if(!this.isVisible) return;
 			if(this.isInline) return;
 			this.picker.hide();
 			$(window).off('resize', this.place);
@@ -241,11 +248,12 @@
 			if (
 				this.forceParse &&
 				(
-					this.isInput && this.element.val()  || 
+					this.isInput && this.element.val()  ||
 					this.hasInput && this.element.find('input').val()
 				)
 			)
-				this.setValue();
+			this.setValue();
+			this.isVisible = false;
 			this.element.trigger({
 				type: 'hide',
 				date: this.date
@@ -478,7 +486,7 @@
 			this.picker.find('.datetimepicker-days tbody').empty().append(html.join(''));
 
 			html = [];
-			for (var i=0;i<24;i++) {
+			for (var i=this.startHour;i<this.endHour;i=i+this.stepHour) {
 				var actual = UTCDate(year, month, dayMonth, i);
 				clsName = '';
 				// We want the previous hour for the startDate
@@ -546,7 +554,7 @@
 				hour = d.getUTCHours();
 			switch (this.viewMode) {
 				case 0:
-					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear() 
+					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
 													 && month <= this.startDate.getUTCMonth()
 													 && day <= this.startDate.getUTCDate()
 													 && hour <= this.startDate.getUTCHours()) {
@@ -554,7 +562,7 @@
 					} else {
 						this.picker.find('.prev').css({visibility: 'visible'});
 					}
-					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear() 
+					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
 												  && month >= this.endDate.getUTCMonth()
 												  && day >= this.endDate.getUTCDate()
 												  && hour >= this.endDate.getUTCHours()) {
@@ -564,14 +572,14 @@
 					}
 					break;
 				case 1:
-					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear() 
+					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
 													 && month <= this.startDate.getUTCMonth()
 													 && day <= this.startDate.getUTCDate()) {
 						this.picker.find('.prev').css({visibility: 'hidden'});
 					} else {
 						this.picker.find('.prev').css({visibility: 'visible'});
 					}
-					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear() 
+					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
 												  && month >= this.endDate.getUTCMonth()
 												  && day >= this.endDate.getUTCDate()) {
 						this.picker.find('.next').css({visibility: 'hidden'});
@@ -580,13 +588,13 @@
 					}
 					break;
 				case 2:
-					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear() 
+					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
 													 && month <= this.startDate.getUTCMonth()) {
 						this.picker.find('.prev').css({visibility: 'hidden'});
 					} else {
 						this.picker.find('.prev').css({visibility: 'visible'});
 					}
-					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear() 
+					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
 												  && month >= this.endDate.getUTCMonth()) {
 						this.picker.find('.next').css({visibility: 'hidden'});
 					} else {
@@ -943,7 +951,7 @@
 			this.picker.find('>div').hide().filter('.datetimepicker-'+DPGlobal.modes[this.viewMode].clsName).css('display', 'block');
 			this.updateNavArrows();
 		},
-		
+
 		reset: function(e) {
 			this._setDate(null, 'date');
 		}
