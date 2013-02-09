@@ -41,6 +41,7 @@
 		this.formatType = options.formatType || this.element.data('format-type') || 'standard';
 		this.format = DPGlobal.parseFormat(options.format || this.element.data('date-format') || DPGlobal.getDefaultFormat(this.formatType, 'input'), this.formatType);
 		this.isInline = false;
+		this.isVisible = false;
 		this.isInput = this.element.is('input');
 		this.component = this.element.is('.date') ? this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar').parent() : false;
 		this.componentReset = this.element.is('.date') ? this.element.find('.add-on .icon-remove').parent() : false;
@@ -222,6 +223,7 @@
 				e.stopPropagation();
 				e.preventDefault();
 			}
+			this.isVisible = true;
 			this.element.trigger({
 				type: 'show',
 				date: this.date
@@ -229,6 +231,7 @@
 		},
 
 		hide: function(e){
+			if(!this.isVisible) return;
 			if(this.isInline) return;
 			this.picker.hide();
 			$(window).off('resize', this.place);
@@ -246,6 +249,7 @@
 				)
 			)
 				this.setValue();
+			this.isVisible = false;
 			this.element.trigger({
 				type: 'hide',
 				date: this.date
