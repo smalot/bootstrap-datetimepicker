@@ -234,7 +234,7 @@ Number.  Default: 1
 
 The increment used to build the day view. A buton is created for each <code>stepHour</code> hours.
 
-## endHour
+### endHour
 
 Number. The maximum hour that will be shown in the day view.
 ### pickerReferer : deprecated
