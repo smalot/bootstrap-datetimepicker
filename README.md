@@ -9,7 +9,7 @@ bootstrap-datetimepicker
 
 # Project forked
 
-This project is a fork of [bootstrap-datepicker project](https://github.com/smalot/bootstrap-datepicker).
+This project is a fork of [bootstrap-datetimepicker project](https://github.com/smalot/bootstrap-datetimepicker).
 
 
 # Home
