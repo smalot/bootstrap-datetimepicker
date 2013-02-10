@@ -473,7 +473,7 @@
 				if (prevMonth.valueOf() == currentDate) {
 					clsName += ' active';
 				}
-				if ((prevMonth.valueOf() + 86400000) < this.startDate || prevMonth.valueOf() > this.endDate ||
+				if ((prevMonth.valueOf() + 86400000) <= this.startDate || prevMonth.valueOf() > this.endDate ||
 					$.inArray(prevMonth.getUTCDay(), this.daysOfWeekDisabled) !== -1) {
 					clsName += ' disabled';
 				}
