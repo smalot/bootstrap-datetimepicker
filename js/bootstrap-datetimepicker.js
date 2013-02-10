@@ -692,6 +692,7 @@
 									day = this.viewDate.getUTCDate(),
 									minutes = this.viewDate.getUTCMinutes(),
 									seconds = this.viewDate.getUTCSeconds();
+									if(this.minView == 1 ){minutes = 0;seconds = 0}
 								this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
 							} else if (target.is('.minute')){
 								var minutes = parseInt(target.text().substr(target.text().indexOf(':')+1), 10) || 0;
