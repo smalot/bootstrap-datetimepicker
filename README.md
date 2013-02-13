@@ -224,19 +224,19 @@ Number.  Default: 5
 
 The increment used to build the hour view. A button is created for each <code>minuteStep</code> minutes.
 
-### startHour
+### hourMin
 
 Number. Default: 0
 
 The first hour shown in the day view. 
 
-### stepHour
+### hourStep
 
 Number.  Default: 1
 
 The increment used to build the day view. A buton is created for each <code>stepHour</code> hours.
 
-### endHour
+### hourMax
 
 Number. The maximum hour that will be shown in the day view.
 ### pickerReferer : deprecated

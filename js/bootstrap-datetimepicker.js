@@ -55,9 +55,9 @@
 		this.linkFormat = DPGlobal.parseFormat(options.linkFormat || this.element.data('link-format') || DPGlobal.getDefaultFormat(this.formatType, 'link'), this.formatType);
 		this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
 		this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
-		this.startHour = options.startHour || 0;
-		this.stepHour = options.stepHour || 1;
-		this.endHour = options.endHour || 24;
+		this.hourMin = options.hourMin || 0;
+		this.hourStep = options.hourStep || 1;
+		this.hourMax = options.hourMax || 24;
 		this._attachEvents();
 
 		this.minView = 0;
@@ -486,7 +486,7 @@
 			this.picker.find('.datetimepicker-days tbody').empty().append(html.join(''));
 
 			html = [];
-			for (var i=this.startHour;i<this.endHour;i=i+this.stepHour) {
+			for (var i=this.hourMin;i<this.hourMax;i=i+this.hourStep) {
 				var actual = UTCDate(year, month, dayMonth, i);
 				clsName = '';
 				// We want the previous hour for the startDate
