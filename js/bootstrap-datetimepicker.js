@@ -673,6 +673,10 @@
 									type: 'changeMonth',
 									date: this.viewDate
 								});
+								if (this.minView == 3){
+								  var year = this.viewDate.getUTCFullYear();
+								  this._setDate(UTCDate(year, month, 1, 0, 0, 0, 0));
+								}
 							} else if (target.is('.year')) {
 								this.viewDate.setUTCDate(1);
 								var year = parseInt(target.text(), 10) || 0;
