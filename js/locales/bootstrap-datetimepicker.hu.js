@@ -1,6 +1,6 @@
 /**
- * Danish translation for bootstrap-datetimepicker
- * Christian Pedersen <http://github.com/chripede>
+ * Hungarian translation for bootstrap-datetimepicker
+ * darevish <http://github.com/darevish>
  */
 ;(function($){
 	$.fn.datetimepicker.dates['hu'] = {
@@ -11,6 +11,7 @@
 		monthsShort: ["Jan", "Feb", "Már", "Ápr", "Máj", "Jún", "Júl", "Aug", "Sze", "Okt", "Nov", "Dec"],
 		today: "Ma",
 		suffix: [],
-		meridiem: []
+		meridiem: [],
+		weekStart: 1
 	};
 }(jQuery));
