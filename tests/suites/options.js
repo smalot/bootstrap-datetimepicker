@@ -17,7 +17,8 @@ test('Autoclose', function(){
                 .datetimepicker({
                     format: 'yyyy-mm-dd',
                     autoclose: true,
-					minView: 2
+					minView: 2,
+                    viewSelect: 2
                 }),
         dp = input.data('datetimepicker'),
         picker = dp.picker,
@@ -41,7 +42,8 @@ test('Startview: year view (integer)', function(){
                 .val('2012-03-05')
                 .datetimepicker({
                     format: 'yyyy-mm-dd',
-                    startView: 3
+                    startView: 3,
+                    viewSelect: 2
                 }),
         dp = input.data('datetimepicker'),
         picker = dp.picker,
@@ -59,7 +61,8 @@ test('Startview: year view (string)', function(){
                 .val('2012-03-05')
                 .datetimepicker({
                     format: 'yyyy-mm-dd',
-                    startView: 'year'
+                    startView: 'year',
+                    viewSelect: 2
                 }),
         dp = input.data('datetimepicker'),
         picker = dp.picker,
@@ -292,7 +295,8 @@ test('startDate: Custom value', function(){
                 .datetimepicker({
                     format: 'yyyy-mm-dd',
                     startView: 2,
-                    startDate: "2013-01-24 15:30"
+                    startDate: "2013-01-24 15:30",
+                    viewSelect: 2
                 }),
         dp = input.data('datetimepicker'),
         picker = dp.picker,
@@ -320,7 +324,8 @@ test('startDate: Custom value', function(){
                 .datetimepicker({
                     format: 'yyyy-mm-dd',
                     startView: 2,
-                    startDate: "2013-01-24 15:30"
+                    startDate: "2013-01-24 15:30",
+                    viewSelect: 2
                 }),
         dp = input.data('datetimepicker'),
         picker = dp.picker,
@@ -348,7 +353,8 @@ test('endDate: Custom value', function(){
                 .datetimepicker({
                     format: 'yyyy-mm-dd',
                     startView: 2,
-                    endDate: "2013-01-24 15:30"
+                    endDate: "2013-01-24 15:30",
+                    viewSelect: 2
                 }),
         dp = input.data('datetimepicker'),
         picker = dp.picker,

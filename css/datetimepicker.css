@@ -247,11 +247,19 @@
   height: 26px;
   line-height: 26px;
 }
+.datetimepicker .datetimepicker-hours table tr td span.hour_am,
+.datetimepicker .datetimepicker-hours table tr td span.hour_pm {
+  width: 14.6%;
+}
+.datetimepicker .datetimepicker-hours fieldset legend,
+.datetimepicker .datetimepicker-minutes fieldset legend {
+  margin-bottom: inherit;
+  line-height: 30px;
+}
 .datetimepicker .datetimepicker-minutes span {
   height: 26px;
   line-height: 26px;
 }
-
 .datetimepicker table tr td span:hover {
   background: #eeeeee;
 }

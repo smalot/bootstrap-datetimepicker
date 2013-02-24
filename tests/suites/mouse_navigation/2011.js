@@ -5,7 +5,7 @@ module('Mouse Navigation 2011', {
         */
         this.input = $('<input type="text" value="31-03-2011">')
                         .appendTo('#qunit-fixture')
-                        .datetimepicker({format: "dd-mm-yyyy"})
+                        .datetimepicker({format: "dd-mm-yyyy", viewSelect: 2})
                         .focus(); // Activate for visibility checks
         this.dp = this.input.data('datetimepicker')
         this.picker = this.dp.picker;

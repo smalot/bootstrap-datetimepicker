@@ -5,7 +5,7 @@ module('Component', {
                                 '<span class="add-on"><i class="icon-th"></i></span>'+
                             '</div>')
                         .appendTo('#qunit-fixture')
-                        .datetimepicker({format: "dd-mm-yyyy"});
+                        .datetimepicker({format: "dd-mm-yyyy", viewSelect: 2});
         this.input = this.component.find('input');
         this.addon = this.component.find('.add-on');
         this.dp = this.component.data('datetimepicker')
