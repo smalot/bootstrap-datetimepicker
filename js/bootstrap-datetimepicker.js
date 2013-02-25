@@ -750,7 +750,7 @@
                                         hours += 12;
                                     }
                                 }
-                                this.viewDate.setHours(hours);
+                                this.viewDate.setUTCHours(hours);
 								this.element.trigger({
 									type: 'changeHour',
 									date: this.viewDate
@@ -760,7 +760,7 @@
                                 }
 							} else if (target.is('.minute')){
 								minutes = parseInt(target.text().substr(target.text().indexOf(':')+1), 10) || 0;
-                                this.viewDate.setMinutes(minutes);
+                                this.viewDate.setUTCMinutes(minutes);
 								this.element.trigger({
 									type: 'changeMinute',
 									date: this.viewDate
