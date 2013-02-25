@@ -234,7 +234,7 @@ The first hour shown in the day view.
 
 Number.  Default: 1
 
-The increment used to build the day view. A buton is created for each <code>stepHour</code> hours.
+The increment used to build the day view. A buton is created for each <code>hourStep</code> hours.
 
 ### hourMax
 
