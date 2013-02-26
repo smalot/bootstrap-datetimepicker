@@ -17,11 +17,11 @@ As 'bootstrap-datetimepicker' is restricted to the date scope (day, month, year)
 
 # Screenshots
 
-## Month view
+## Decade year view
 
-![Datetimepicker month view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_month.png)
+![Datetimepicker decade year view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_decade.png)
 
-This view allows to select the year in a range of 10 years.
+This view allows to select the day in the selected month.
 
 ## Year view
 
@@ -29,11 +29,11 @@ This view allows to select the year in a range of 10 years.
 
 This view allows to select the month in the selected year.
 
-## Decade year view
+## Month view
 
-![Datetimepicker decade year view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_decade.png)
+![Datetimepicker month view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_month.png)
 
-This view allows to select the day in the selected month.
+This view allows to select the year in a range of 10 years.
 
 ## Day view
 
@@ -47,6 +47,17 @@ This view allows to select the hour in the selected day.
 
 This view allows to select the preset of minutes in the selected hour.
 The range of 5 minutes (by default) has been selected to restrict buttons quantity to an acceptable value, but it can be overrided by the <code>minuteStep</code> property.
+
+## Day view - meridian
+
+![Datetimepicker day view meridian](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_day_meridian.png)
+
+Meridian is supported in both the day and hour views.
+To use it, just enable the <code>showMeridian</code> property.
+
+## Hour view - meridian
+
+![Datetimepicker hour view meridian](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_hour_meridian.png)
 
 # Example
 
@@ -124,7 +135,26 @@ You can also specify an ISO-8601 valid datetime, despite of the given `format` :
 
 String.  Default: 'mm/dd/yyyy'
 
-The date format, combination of h, hh, i, ii, s, ss, d, dd, m, mm, M, MM, yy, yyyy.
+The date format, combination of p, P, h, hh, i, ii, s, ss, d, dd, m, mm, M, MM, yy, yyyy.
+
+ * p : meridian in lower case ('am' or 'pm') - according to locale file
+ * P : meridian in upper case ('AM' or 'PM') - according to locale file
+ * s : seconds without leading zeros
+ * ss : seconds, 2 digits with leading zeros
+ * i : minutes without leading zeros
+ * ii : minutes, 2 digits with leading zeros
+ * h : hour without leading zeros - 24-hour format
+ * hh : hour, 2 digits with leading zeros - 24-hour format
+ * H : hour without leading zeros - 12-hour format
+ * HH : hour, 2 digits with leading zeros - 12-hour format
+ * d : day of the month without leading zeros
+ * dd : day of the month, 2 digits with leading zeros
+ * m : numeric representation of month without leading zeros
+ * mm : numeric representation of the month, 2 digits with leading zeros
+ * M : short textual representation of a month, three letters
+ * MM : full textual representation of a month, such as January or March
+ * yy : two digit representation of a year
+ * yyyy : full numeric representation of a year, 4 digits
 
 ### weekStart
 
@@ -227,6 +257,18 @@ The referer element to place the picker for the component implementation. If you
 String. Default: 'bottom-right' (other supported value : 'bottom-left')
 
 This option allows to place the picker just under the input field for the component implementation instead of the default position which is at the bottom right of the button.
+
+### viewSelect
+
+String. Default: <same as maxView> (supported values are: 'decade', 'year', 'month', 'day', 'hour')
+
+With this option you can select the view from which the date will be selected. By default it's the last one, however you can choose the first one, so at each click the date will be updated.
+
+### showMeridian
+
+Boolean. Default: false
+
+This option will enable meridian views for day and hour views.
 
 ## Markup
 
