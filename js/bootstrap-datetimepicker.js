@@ -82,7 +82,7 @@
 		this.startViewMode = DPGlobal.convertViewMode(this.startViewMode);
 		this.viewMode = this.startViewMode;
 
-        this.viewSelect = this.maxView;
+        this.viewSelect = this.minView;
         if ('viewSelect' in options) {
             this.viewSelect = options.viewSelect;
         } else if ('viewSelect' in this.element.data()) {
@@ -727,7 +727,7 @@
 									type: 'changeMonth',
 									date: this.viewDate
 								});
-                                if (this.viewSelect <= 1) {
+                                if (this.viewSelect >= 3) {
 								    this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
                                 }
 							} else if (target.is('.year')) {
@@ -738,7 +738,7 @@
 									type: 'changeYear',
 									date: this.viewDate
 								});
-                                if (this.viewSelect <= 0) {
+                                if (this.viewSelect >= 4) {
                                     this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
                                 }
 							} else if (target.is('.hour')){
@@ -755,7 +755,7 @@
 									type: 'changeHour',
 									date: this.viewDate
 								});
-                                if (this.viewSelect <= 3) {
+                                if (this.viewSelect >= 1) {
 								    this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
                                 }
 							} else if (target.is('.minute')){
@@ -765,7 +765,7 @@
 									type: 'changeMinute',
 									date: this.viewDate
 								});
-                                if (this.viewSelect <= 4) {
+                                if (this.viewSelect >= 0) {
 								    this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
                                 }
 							}
@@ -814,7 +814,7 @@
                                 type: 'changeDay',
                                 date: this.viewDate
                             });
-                            if (this.viewSelect <= 2) {
+                            if (this.viewSelect >= 2) {
 							    this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
                             }
 						}
