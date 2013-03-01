@@ -57,33 +57,26 @@
 		autoclose: 1,
 		todayHighlight: 1,
 		startView: 2,
-		forceParse: 0
+		forceParse: 0,
+		showMeridian: true
+
     });
 			$( ".datepicker_startdate" ).datetimepicker({
 			dateFormat: 'yy-mm-dd',
 			timeFormat: 'HH:mm',
 			showMinute: false,
-			startHour: 8,
-			endHour: 23,
-			stepHour: 5,
+			hourMin: 8,
+			hourMax: 23,
+			hourStep: 5,
 			minView: 1,
 			startView: 1,
 			autoclose: true,
-			forceParse: 0
+			forceParse: true,
+			showMeridian: true
 		
     });
-		});
-	/*	$('.form_time').datetimepicker({
-        language:  'fr',
-        weekStart: 1,
-        todayBtn:  1,
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 1,
-		minView: 0,
-		maxView: 1,
-		forceParse: 0
-    });*/
+});
+
 </script>
 
 </body>

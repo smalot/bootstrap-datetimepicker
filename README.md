@@ -5,11 +5,9 @@ bootstrap-datetimepicker
 
 [Demo page](http://www.malot.fr/bootstrap-datetimepicker/demo.php)
 
-[My demo page with the block selection.](http://www.fritzy.ca/bootstrap-datetimepicker/sample/)
-
 # Project forked
 
-This project is a fork of [bootstrap-datetimepicker project](https://github.com/smalot/bootstrap-datetimepicker).
+This project is a fork of [bootstrap-datepicker project](https://github.com/eternicode/bootstrap-datepicker).
 
 
 # Home
@@ -19,27 +17,27 @@ As 'bootstrap-datetimepicker' is restricted to the date scope (day, month, year)
 
 # Screenshots
 
-## Month view
-
-![Datetimepicker month view](https://raw.github.com/Trifid/bootstrap-datetimepicker/master/screenshot/standard_month.png)
-
-This view allows to select the year in a range of 10 years.
-
-## Year view
-
-![Datetimepicker year view](https://raw.github.com/Trifid/bootstrap-datetimepicker/master/screenshot/standard_year.png)
-
-This view allows to select the month in the selected year.
-
 ## Decade year view
 
-![Datetimepicker decade year view](https://raw.github.com/Trifid/bootstrap-datetimepicker/master/screenshot/standard_decade.png)
+![Datetimepicker decade year view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_decade.png)
 
 This view allows to select the day in the selected month.
 
+## Year view
+
+![Datetimepicker year view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_year.png)
+
+This view allows to select the month in the selected year.
+
+## Month view
+
+![Datetimepicker month view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_month.png)
+
+This view allows to select the year in a range of 10 years.
+
 ## Day view
 
-![Datetimepicker day view](https://raw.github.com/Trifid/bootstrap-datetimepicker/master/screenshot/standard_day.png)
+![Datetimepicker day view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_day.png)
 
 This view allows to select the hour in the selected day.
 
@@ -51,10 +49,21 @@ This view allows to select the start of a time block by hour in the selected day
 
 ## Hour view
 
-![Datetimepicker hour view](https://raw.github.com/Trifid/bootstrap-datetimepicker/master/screenshot/standard_hour.png)
+![Datetimepicker hour view](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_hour.png)
 
 This view allows to select the preset of minutes in the selected hour.
 The range of 5 minutes (by default) has been selected to restrict buttons quantity to an acceptable value, but it can be overrided by the <code>minuteStep</code> property.
+
+## Day view - meridian
+
+![Datetimepicker day view meridian](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_day_meridian.png)
+
+Meridian is supported in both the day and hour views.
+To use it, just enable the <code>showMeridian</code> property.
+
+## Hour view - meridian
+
+![Datetimepicker hour view meridian](https://raw.github.com/smalot/bootstrap-datetimepicker/master/screenshot/standard_hour_meridian.png)
 
 # Example
 
@@ -132,7 +141,26 @@ You can also specify an ISO-8601 valid datetime, despite of the given `format` :
 
 String.  Default: 'mm/dd/yyyy'
 
-The date format, combination of h, hh, i, ii, s, ss, d, dd, m, mm, M, MM, yy, yyyy.
+The date format, combination of p, P, h, hh, i, ii, s, ss, d, dd, m, mm, M, MM, yy, yyyy.
+
+ * p : meridian in lower case ('am' or 'pm') - according to locale file
+ * P : meridian in upper case ('AM' or 'PM') - according to locale file
+ * s : seconds without leading zeros
+ * ss : seconds, 2 digits with leading zeros
+ * i : minutes without leading zeros
+ * ii : minutes, 2 digits with leading zeros
+ * h : hour without leading zeros - 24-hour format
+ * hh : hour, 2 digits with leading zeros - 24-hour format
+ * H : hour without leading zeros - 12-hour format
+ * HH : hour, 2 digits with leading zeros - 12-hour format
+ * d : day of the month without leading zeros
+ * dd : day of the month, 2 digits with leading zeros
+ * m : numeric representation of month without leading zeros
+ * mm : numeric representation of the month, 2 digits with leading zeros
+ * M : short textual representation of a month, three letters
+ * MM : full textual representation of a month, such as January or March
+ * yy : two digit representation of a year
+ * yyyy : full numeric representation of a year, 4 digits
 
 ### weekStart
 
@@ -218,12 +246,6 @@ Boolean.  Default: true
 
 Whether or not to force parsing of the input value when the picker is closed.  That is, when an invalid date is left in the input field by the user, the picker will forcibly parse that value, and set the input's value to the new, valid date, conforming to the given `format`.
 
-### minuteStep
-
-Number.  Default: 5
-
-The increment used to build the hour view. A button is created for each <code>minuteStep</code> minutes.
-
 ### hourMin
 
 Number. Default: 0
@@ -239,6 +261,13 @@ The increment used to build the day view. A buton is created for each <code>hour
 ### hourMax
 
 Number. The maximum hour that will be shown in the day view.
+
+### minuteStep
+
+Number.  Default: 5
+
+The increment used to build the hour view. A button is created for each <code>minuteStep</code> minutes.
+
 ### pickerReferer : deprecated
 
 String.  Default: 'default'
@@ -250,6 +279,18 @@ The referer element to place the picker for the component implementation. If you
 String. Default: 'bottom-right' (other supported value : 'bottom-left')
 
 This option allows to place the picker just under the input field for the component implementation instead of the default position which is at the bottom right of the button.
+
+### viewSelect
+
+String. Default: <same as maxView> (supported values are: 'decade', 'year', 'month', 'day', 'hour')
+
+With this option you can select the view from which the date will be selected. By default it's the last one, however you can choose the first one, so at each click the date will be updated.
+
+### showMeridian
+
+Boolean. Default: false
+
+This option will enable meridian views for day and hour views.
 
 ## Markup
 
