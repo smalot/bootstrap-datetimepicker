@@ -707,6 +707,10 @@
 								this.viewMode = this.startViewMode;
 								this.showMode(0);
 								this._setDate(date);
+								this.fill();
+								if (this.autoclose) {
+									this.hide();
+								}
 								break;
 						}
 						break;
@@ -1252,7 +1256,7 @@
 					MM: dates[language].months[date.getUTCMonth()],
 					// day
 					d: date.getUTCDate(),
-					P: (dates[language].meridiem.length==2?dates[language].meridiem[date.getUTCHours()<12?0:1]:''),
+					p: (dates[language].meridiem.length==2?dates[language].meridiem[date.getUTCHours()<12?0:1]:''),
 					// hour
 					h: date.getUTCHours(),
 					// minute
@@ -1262,7 +1266,7 @@
 				};
                 val.H  = (val.h%12==0? 12 : val.h%12);
                 val.HH = (val.H < 10 ? '0' : '') + val.H;
-                val.p  = val.P.toUpperCase();
+                val.P  = val.p.toUpperCase();
 				val.hh = (val.h < 10 ? '0' : '') + val.h;
 				val.ii = (val.i < 10 ? '0' : '') + val.i;
 				val.ss = (val.s < 10 ? '0' : '') + val.s;
