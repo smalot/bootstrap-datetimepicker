@@ -726,6 +726,7 @@
 							if (target.is('.month')) {
 								this.viewDate.setUTCDate(1);
 								month = target.parent().find('span').index(target);
+                                day   = this.viewDate.getUTCDate();
 								this.viewDate.setUTCMonth(month);
 								this.element.trigger({
 									type: 'changeMonth',
