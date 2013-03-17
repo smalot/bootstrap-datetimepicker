@@ -1165,7 +1165,7 @@
 		},
 		validParts: function (type) {
 			if (type == "standard") {
-				return /hh?|HH?|p|P|ii?|ss?|dd?|mm?|MM?|yy(?:yy)?/g;
+				return /hh?|HH?|p|P|ii?|ss?|dd?|DD?|mm?|MM?|yy(?:yy)?/g;
 			} else if (type == "php") {
 				return /[dDjlNwzFmMnStyYaABgGhHis]/g;
 			} else {
@@ -1225,7 +1225,7 @@
 			var parts = date && date.match(this.nonpunctuation) || [],
 				date = new Date(0, 0, 0, 0, 0, 0),
 				parsed = {},
-				setters_order = ['hh', 'h', 'ii', 'i', 'ss', 's', 'yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'd', 'dd', 'H', 'HH', 'p', 'P'],
+				setters_order = ['hh', 'h', 'ii', 'i', 'ss', 's', 'yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'D', 'DD', 'd', 'dd', 'H', 'HH', 'p', 'P'],
 				setters_map = {
 					hh: function(d,v){ return d.setUTCHours(v); },
 					h:  function(d,v){ return d.setUTCHours(v); },
@@ -1308,6 +1308,8 @@
 					MM: dates[language].months[date.getUTCMonth()],
 					// day
 					d: date.getUTCDate(),
+					D: dates[language].daysShort[date.getUTCDay()],
+					DD: dates[language].days[date.getUTCDay()],
 					p: (dates[language].meridiem.length==2?dates[language].meridiem[date.getUTCHours()<12?0:1]:''),
 					// hour
 					h: date.getUTCHours(),
