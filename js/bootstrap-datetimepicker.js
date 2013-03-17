@@ -858,10 +858,18 @@
 			}
 		},
 
+		moveMinute: function(date, dir){
+			if (!dir) return date;
+			var new_date = new Date(date.valueOf());
+			//dir = dir > 0 ? 1 : -1;
+			new_date.setUTCMinutes(new_date.getUTCMinutes() + (dir * this.minuteStep));
+			return new_date;
+		},
+
 		moveHour: function(date, dir){
 			if (!dir) return date;
 			var new_date = new Date(date.valueOf());
-			dir = dir > 0 ? 1 : -1;
+			//dir = dir > 0 ? 1 : -1;
 			new_date.setUTCHours(new_date.getUTCHours() + dir);
 			return new_date;
 		},
@@ -869,7 +877,7 @@
 		moveDate: function(date, dir){
 			if (!dir) return date;
 			var new_date = new Date(date.valueOf());
-			dir = dir > 0 ? 1 : -1;
+			//dir = dir > 0 ? 1 : -1;
 			new_date.setUTCDate(new_date.getUTCDate() + dir);
 			return new_date;
 		},
@@ -940,18 +948,28 @@
 				case 39: // right
 					if (!this.keyboardNavigation) break;
 					dir = e.keyCode == 37 ? -1 : 1;
-					if (e.ctrlKey){
+                    viewMode = this.viewMode;
+                    if (e.ctrlKey) {
+                        viewMode += 2;
+                    } else if (e.shiftKey) {
+                        viewMode += 1;
+                    }
+                    if (viewMode == 4) {
 						newDate = this.moveYear(this.date, dir);
 						newViewDate = this.moveYear(this.viewDate, dir);
-					} else if (e.shiftKey){
+                    } else if (viewMode == 3) {
 						newDate = this.moveMonth(this.date, dir);
 						newViewDate = this.moveMonth(this.viewDate, dir);
-					} else {
-						newDate = new Date(this.date);
-						newDate.setUTCDate(this.date.getUTCDate() + dir);
-						newViewDate = new Date(this.viewDate);
-						newViewDate.setUTCDate(this.viewDate.getUTCDate() + dir);
-					}
+                    } else if (viewMode == 2) {
+						newDate = this.moveDate(this.date, dir);
+						newViewDate = this.moveDate(this.viewDate, dir);
+                    } else if (viewMode == 1) {
+						newDate = this.moveHour(this.date, dir);
+						newViewDate = this.moveHour(this.viewDate, dir);
+                    } else if (viewMode == 0) {
+						newDate = this.moveMinute(this.date, dir);
+						newViewDate = this.moveMinute(this.viewDate, dir);
+                    }
 					if (this.dateWithinRange(newDate)){
 						this.date = newDate;
 						this.viewDate = newViewDate;
@@ -965,18 +983,33 @@
 				case 40: // down
 					if (!this.keyboardNavigation) break;
 					dir = e.keyCode == 38 ? -1 : 1;
-					if (e.ctrlKey){
+                    viewMode = this.viewMode;
+                    if (e.ctrlKey) {
+                        viewMode += 2;
+                    } else if (e.shiftKey) {
+                        viewMode += 1;
+                    }
+                    if (viewMode == 4) {
 						newDate = this.moveYear(this.date, dir);
 						newViewDate = this.moveYear(this.viewDate, dir);
-					} else if (e.shiftKey){
+                    } else if (viewMode == 3) {
 						newDate = this.moveMonth(this.date, dir);
 						newViewDate = this.moveMonth(this.viewDate, dir);
-					} else {
-						newDate = new Date(this.date);
-						newDate.setUTCDate(this.date.getUTCDate() + dir * 7);
-						newViewDate = new Date(this.viewDate);
-						newViewDate.setUTCDate(this.viewDate.getUTCDate() + dir * 7);
-					}
+                    } else if (viewMode == 2) {
+						newDate = this.moveDate(this.date, dir * 7);
+						newViewDate = this.moveDate(this.viewDate, dir * 7);
+                    } else if (viewMode == 1) {
+                        if (this.showMeridian) {
+                            newDate = this.moveHour(this.date, dir * 6);
+                            newViewDate = this.moveHour(this.viewDate, dir * 6);
+                        } else {
+                            newDate = this.moveHour(this.date, dir * 4);
+                            newViewDate = this.moveHour(this.viewDate, dir * 4);
+                        }
+                    } else if (viewMode == 0) {
+						newDate = this.moveMinute(this.date, dir * 4);
+						newViewDate = this.moveMinute(this.viewDate, dir * 4);
+                    }
 					if (this.dateWithinRange(newDate)){
 						this.date = newDate;
 						this.viewDate = newViewDate;
@@ -987,7 +1020,19 @@
 					}
 					break;
 				case 13: // enter
-					this.hide();
+                    if (this.viewMode != 0) {
+                        var oldViewMode = this.viewMode;
+                        this.showMode(-1);
+                        this.fill();
+                        if (oldViewMode == this.viewMode && this.autoclose) {
+                            this.hide();
+                        }
+                    } else {
+                        this.fill();
+                        if (this.autoclose) {
+					        this.hide();
+                        }
+                    }
 					e.preventDefault();
 					break;
 				case 9: // tab
