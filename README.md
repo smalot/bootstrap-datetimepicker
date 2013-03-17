@@ -272,6 +272,12 @@ Boolean. Default: false
 
 This option will enable meridian views for day and hour views.
 
+### initialDate
+
+Date or String. Default: new Date()
+
+You can initialize the viewer with a date. By default it's now, so you can specify yesterday or today at midnight ...
+
 ## Markup
 
 Format as component.
