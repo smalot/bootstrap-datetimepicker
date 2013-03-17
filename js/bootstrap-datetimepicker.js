@@ -54,6 +54,7 @@
 		this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
 		this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
         this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
+        this.initialDate = options.initialDate || new Date();
 
 		this._attachEvents();
 
@@ -379,7 +380,7 @@
 				date = arguments[0];
 				fromArgs = true;
 			} else {
-				date = this.isInput ? this.element.prop('value') : this.element.data('date') || this.element.find('input').prop('value') || new Date();
+				date = this.isInput ? this.element.prop('value') : this.element.data('date') || this.element.find('input').prop('value') || this.initialDate;
 			}
 
 			if (!date) {
