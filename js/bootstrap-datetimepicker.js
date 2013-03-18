@@ -26,7 +26,7 @@
 	}
 	function UTCToday(){
 		var today = new Date();
-		return UTCDate(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), today.getUTCHours(), today.getUTCMinutes(), today.getUTCSeconds());
+		return UTCDate(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), today.getUTCHours(), today.getUTCMinutes(), today.getUTCSeconds(), 0);
 	}
 
 	// Picker object
@@ -526,7 +526,7 @@
 			html = [];
             txt = '', meridian = '', meridianOld = '';
 			for(var i=0;i<60;i+=this.minuteStep) {
-				var actual = UTCDate(year, month, dayMonth, hours, i);
+				var actual = UTCDate(year, month, dayMonth, hours, i, 0);
 				clsName = '';
 				if (actual.valueOf() < this.startDate || actual.valueOf() > this.endDate) {
 					clsName += ' disabled';
@@ -703,7 +703,7 @@
 								break;
 							case 'today':
 								var date = new Date();
-								date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
+								date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), 0);
 
 								this.viewMode = this.startViewMode;
 								this.showMode(0);
@@ -1186,6 +1186,7 @@
 		parseDate: function(date, format, language, type) {
 			if (date instanceof Date) {
 				var dateUTC = new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
+                dateUTC.setMilliseconds(0);
 				return dateUTC;
 			}
 			if (/^\d{4}\-\d{1,2}\-\d{1,2}$/.test(date)) {
@@ -1220,10 +1221,10 @@
 							break;
 					}
 				}
-				return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds());
+				return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), 0);
 			}
 			var parts = date && date.match(this.nonpunctuation) || [],
-				date = new Date(0, 0, 0, 0, 0, 0),
+				date = new Date(0, 0, 0, 0, 0, 0, 0),
 				parsed = {},
 				setters_order = ['hh', 'h', 'ii', 'i', 'ss', 's', 'yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'D', 'DD', 'd', 'dd', 'H', 'HH', 'p', 'P'],
 				setters_map = {
