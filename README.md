@@ -262,7 +262,7 @@ This option allows to place the picker just under the input field for the compon
 
 ### viewSelect
 
-String. Default: <same as maxView> (supported values are: 'decade', 'year', 'month', 'day', 'hour')
+Number or String. Default: <code>same as minView</code> (supported values are: 'decade', 'year', 'month', 'day', 'hour')
 
 With this option you can select the view from which the date will be selected. By default it's the last one, however you can choose the first one, so at each click the date will be updated.
 
@@ -271,6 +271,12 @@ With this option you can select the view from which the date will be selected. B
 Boolean. Default: false
 
 This option will enable meridian views for day and hour views.
+
+### initialDate
+
+Date or String. Default: new Date()
+
+You can initialize the viewer with a date. By default it's now, so you can specify yesterday or today at midnight ...
 
 ## Markup
 
