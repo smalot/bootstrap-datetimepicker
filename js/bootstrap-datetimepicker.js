@@ -56,6 +56,13 @@
         this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
 
 		this._attachEvents();
+		
+	    this.formatViewType = "datetime";
+	    if ('formatViewType' in options) {
+	        this.formatViewType = options.formatViewType;
+	    } else if ('formatViewType' in this.element.data()) {
+	        this.formatViewType = this.element.data('formatViewType');
+	    }
 
 		this.minView = 0;
 		if ('minView' in options) {
@@ -438,11 +445,21 @@
 				today = new Date();
 			this.picker.find('.datetimepicker-days thead th:eq(1)')
 						.text(dates[this.language].months[month]+' '+year);
-			this.picker.find('.datetimepicker-hours thead th:eq(1)')
-						.text(dayMonth+' '+dates[this.language].months[month]+' '+year);
-			this.picker.find('.datetimepicker-minutes thead th:eq(1)')
-						.text(dayMonth+' '+dates[this.language].months[month]+' '+year);
-			this.picker.find('tfoot th.today')
+		    if (this.formatViewType == "time") {
+		        var hoursDisplay = (hours%12?hours%12:12 < 10 ? '0' : '') + hours%12?hours%12:12;
+		        var minutesDisplay = (minutes < 10 ? '0' : '') + minutes;
+		        var meridianDisplay = dates[this.language].meridiem[hours < 12 ? 0 : 1];
+		        this.picker.find('.datetimepicker-hours thead th:eq(1)')
+		            .text(hoursDisplay + ':' + minutesDisplay + ' ' + meridianDisplay.toUpperCase());
+		        this.picker.find('.datetimepicker-minutes thead th:eq(1)')
+		            .text(hoursDisplay + ':' + minutesDisplay + ' ' + meridianDisplay.toUpperCase());
+		    } else {
+		        this.picker.find('.datetimepicker-hours thead th:eq(1)')
+		            .text(dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
+		        this.picker.find('.datetimepicker-minutes thead th:eq(1)')
+		            .text(dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);		        
+		    }
+		    this.picker.find('tfoot th.today')
 						.text(dates[this.language].today)
 						.toggle(this.todayBtn !== false);
 			this.updateNavArrows();
