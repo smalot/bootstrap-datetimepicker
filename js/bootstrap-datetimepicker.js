@@ -6,7 +6,7 @@
  * Improvements by Sébastien Malot
  * Project URL : http://www.malot.fr/bootstrap-datetimepicker
  *
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -788,6 +788,7 @@
 					// maybe month?
 					raccourcis = this.treater(year,month,day,hour);
 				}
+				console.log(typeof raccourcis);
 				//IF still undefined return true;
 				if(typeof raccourcis == 'undefined'){
 					return true;
@@ -795,11 +796,13 @@
 				if(raccourcis.length == 0){
 					return true;
 				}
+
 				if(typeof(raccourcis)=='object'){
 
 					if(raccourcis instanceof Array){
 						$.each(raccourcis,function(){
 							var testedValue = String(this);
+
 							if(testedValue%self.minuteStep === 0){
 								if(testedValue == min){
 									returnedValue = true;
@@ -832,17 +835,17 @@
 				if(typeof day != 'undefined' && this.availableDate[year]['0'+month].hasOwnProperty('0'+day)){
 					// maybe month+day+hour?? Dafuck!
 					if(typeof hour != 'undefined' && this.availableDate[year]['O'+month]['0'+day].hasOwnProperty('0'+hour)){
-						returned = this.availableDate[year]['O'+month]['0'+day]['0'+hour];
+						return this.availableDate[year]['O'+month]['0'+day]['0'+hour];
 					}else if(typeof hour != 'undefined' && this.availableDate[year]['O'+month]['0'+day].hasOwnProperty(hour)){
-						returned = this.availableDate[year]['O'+month]['0'+day][hour];
+						return this.availableDate[year]['O'+month]['0'+day][hour];
 					}else{
 						return this.availableDate[year]['0'+month]['0'+day];
 					}
 				}else if(typeof day != 'undefined' && this.availableDate[year]['0'+month].hasOwnProperty(day)){
 					if(typeof hour != 'undefined' && this.availableDate[year]['O'+month][day].hasOwnProperty('0'+hour)){
-						returned = this.availableDate[year]['O'+month][day]['0'+hour];
+						return this.availableDate[year]['O'+month][day]['0'+hour];
 					}else if(typeof hour != 'undefined' && this.availableDate[year]['O'+month][day].hasOwnProperty(hour)){
-						returned = this.availableDate[year]['O'+month][day][hour];
+						return this.availableDate[year]['O'+month][day][hour];
 					}else{
 						return this.availableDate[year]['0'+month][day];
 					}
@@ -851,17 +854,17 @@
 				if(typeof day != 'undefined' && this.availableDate[year][month].hasOwnProperty('0'+day)){
 					// maybe month+day+hour?? Dafuck!
 					if(typeof hour != 'undefined' && this.availableDate[year][month]['0'+day].hasOwnProperty('0'+hour)){
-						returned = this.availableDate[year][month]['0'+day]['0'+hour];
+						return this.availableDate[year][month]['0'+day]['0'+hour];
 					}else if(typeof hour != 'undefined' && this.availableDate[year][month]['0'+day].hasOwnProperty(hour)){
-						returned = this.availableDate[year][month]['0'+day][hour];
+						return this.availableDate[year][month]['0'+day][hour];
 					}else{
 						return this.availableDate[year][month]['0'+day];
 					}
 				}else if(typeof day != 'undefined' && this.availableDate[year][month].hasOwnProperty(day)){
 					if(typeof hour != 'undefined' && this.availableDate[year][month][day].hasOwnProperty('0'+hour)){
-						returned = this.availableDate[year][month][day]['0'+hour];
+						return this.availableDate[year][month][day]['0'+hour];
 					}else if(typeof hour != 'undefined' && this.availableDate[year][month][day].hasOwnProperty(hour)){
-						returned = this.availableDate[year][month][day][hour];
+						return this.availableDate[year][month][day][hour];
 					}else{
 						return this.availableDate[year][month][day];
 					}
