@@ -55,6 +55,7 @@
 		this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
         this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
         this.initialDate = options.initialDate || new Date();
+        this.availableDate = options.availableDate || undefined;
 
 		this._attachEvents();
 
@@ -413,10 +414,16 @@
 		},
 
 		fillMonths: function(){
+			var d = new Date(this.viewDate),
+				year = d.getUTCFullYear();
 			var html = '',
 			i = 0;
 			while (i < 12) {
-				html += '<span class="month">'+dates[this.language].monthsShort[i++]+'</span>';
+				var disabledMonth = false;
+				if(disabledMonth===false && typeof this.availableDate != 'undefined'){
+					disabledMonth = (this.testMonthAvailable(year,i+1)?false:true);
+				}
+				html += '<span class="month'+(disabledMonth?' disabled':'')+'">'+dates[this.language].monthsShort[i++]+'</span>';
 			}
 			this.picker.find('.datetimepicker-months td').html(html);
 		},
@@ -479,9 +486,17 @@
 				if (prevMonth.valueOf() == currentDate) {
 					clsName += ' active';
 				}
+				var disabled = false;
 				if ((prevMonth.valueOf() + 86400000) <= this.startDate || prevMonth.valueOf() > this.endDate ||
 					$.inArray(prevMonth.getUTCDay(), this.daysOfWeekDisabled) !== -1) {
-					clsName += ' disabled';
+					//clsName += ' disabled';
+					disabled = true;
+				}
+				if(!disabled && typeof this.availableDate != 'undefined'){
+					disabled = !this.testDayAvailable(prevMonth.getUTCFullYear(),prevMonth.getUTCMonth()+1,prevMonth.getUTCDate());
+				}
+				if(disabled){
+					clsName+=' disabled';
 				}
 				html.push('<td class="day'+clsName+'">'+prevMonth.getUTCDate() + '</td>');
 				if (prevMonth.getUTCDay() == this.weekEnd) {
@@ -497,9 +512,16 @@
 				var actual = UTCDate(year, month, dayMonth, i);
 				clsName = '';
 				// We want the previous hour for the startDate
+				var disabledHours = false;
 				if ((actual.valueOf() + 3600000) <= this.startDate || actual.valueOf() > this.endDate) {
+					disabledHours = true;
+				}
+				if(!disabledHours && typeof this.availableDate != 'undefined'){
+					disabledHours = !this.testHourAvailable(year, month+1, dayMonth,i);
+				}
+				if(disabledHours){
 					clsName += ' disabled';
-				} else if (hours == i) {
+				}else if (hours == i) {
 					clsName += ' active';
 				}
                 if (this.showMeridian && dates[this.language].meridiem.length == 2) {
@@ -528,9 +550,16 @@
 			for(var i=0;i<60;i+=this.minuteStep) {
 				var actual = UTCDate(year, month, dayMonth, hours, i, 0);
 				clsName = '';
-				if (actual.valueOf() < this.startDate || actual.valueOf() > this.endDate) {
+				var disabledMins = false;
+				if ((actual.valueOf() + 3600000) <= this.startDate || actual.valueOf() > this.endDate) {
+					disabledMins = true;
+				}
+				if(!disabledMins && typeof this.availableDate != 'undefined'){
+					disabledMins = !this.testMinuteAvailable(year, month+1, dayMonth,hours,i);
+				}
+				if(disabledMins){
 					clsName += ' disabled';
-				} else if (Math.floor(minutes/this.minuteStep) == Math.floor(i/this.minuteStep)) {
+				}else if (Math.floor(minutes/this.minuteStep) == Math.floor(i/this.minuteStep)) {
 					clsName += ' active';
 				}
                 if (this.showMeridian && dates[this.language].meridiem.length == 2) {
@@ -584,12 +613,270 @@
 								.find('td');
 			year -= 1;
 			for (var i = -1; i < 11; i++) {
-				html += '<span class="year'+(i == -1 || i == 10 ? ' old' : '')+(currentYear == year ? ' active' : '')+(year < startYear || year > endYear ? ' disabled' : '')+'">'+year+'</span>';
+				var disabledYear = (year < startYear || year > endYear ? true : false);
+				if(disabledYear===false && typeof this.availableDate != 'undefined'){
+					disabledYear = (this.testYearAvailable(year)?false:true);
+				}
+				html += '<span class="year'+(i == -1 || i == 10 ? ' old' : '')+(currentYear == year ? ' active' : '')+(disabledYear?' disabled':'')+'">'+year+'</span>';
 				year += 1;
 			}
 			yearCont.html(html);
 		},
+		testYearAvailable:function(year){
+			var returnedValue = false;
+			year = String(year);
+			if(typeof this.availableDate != 'undefined' && typeof this.availableDate != 'null'){
+				if(typeof(this.availableDate)=='object'){
+					if(this.availableDate instanceof Array){
+						// Is Array
+						$.each(this.availableDate,function(){
+							var testedValue = String(this);
+							if(testedValue == year){
+								returnedValue = true;
+								return false;
+							}
+						});
+					}else{
+						// Is Array
+						$.each(this.availableDate,function(index,value){
+							index = String(index);
+							if(year == index ){
+								returnedValue = true;
+								return false;
+							}
+						});
+					}
+				}
+			}
+			return returnedValue;
+		},
+		testMonthAvailable:function(year,month){
+			var returnedValue = false;
+			month = String(month);
+			if(typeof this.availableDate != 'undefined' && typeof this.availableDate != 'null'){
+				if(typeof(this.availableDate)=='object'){
+					if(this.availableDate instanceof Array){
+						returnedValue = true;
+					}else{
+						if(this.testYearAvailable(year)){
+							var raccourcis = this.treater(year);
+							if(typeof raccourcis == 'undefined'){
+								return true;
+							}
+							if(raccourcis.length == 0){
+								return true;
+							}
+							if(typeof(raccourcis)=='object'){
+								if(raccourcis instanceof Array){
+									$.each(raccourcis,function(){
+										var testedValue = String(this);
+										if(testedValue.charAt(0)=='0'&&month.charAt(0)!='0'){
+											month = '0'+month;
+										}
+										if(testedValue == month){
+											returnedValue = true;
+											return false;
+										}
+									});
+								}else{
+									$.each(raccourcis,function(index,value){
+										index = String(index);
+										if(index.charAt(0)=='0'&&month.charAt(0)!='0'){
+											month = '0'+month;
+										}
+										if(month == index){
+											returnedValue = true;
+											return false;
+										}
+									});
+								}
+							}
+						}
+					}
+				}
+			}
+			return returnedValue;
+		},
+		testDayAvailable:function(year,month,day){
+			var returnedValue = false;
+			day = String(day);
+			if(this.testMonthAvailable(year,month)){
+				var raccourcis = this.treater(year,month);
+				if(typeof raccourcis == 'undefined'){
+					return true;
+				}
+				if(raccourcis.length == 0){
+					return true;
+				}
+				if(typeof(raccourcis)=='object'){
+					if(raccourcis instanceof Array){
+						$.each(raccourcis,function(){
+							var testedValue = String(this);
 
+							if(testedValue.charAt(0)=='0'&&day.charAt(0)!='0'){
+								day = '0'+day;
+							}
+							if(testedValue == day){
+								returnedValue = true;
+								return false;
+							}
+						});
+					}else{
+						$.each(raccourcis,function(index,value){
+							index = String(index);
+							if(index.charAt(0)=='0'&&day.charAt(0)!='0'){
+								day = '0'+day;
+							}
+							if(day == index){
+								returnedValue = true;
+								return false;
+							}
+						});
+					}
+				}
+			}
+			return returnedValue;
+		},
+		testHourAvailable:function(year,month,day,hour){
+			var returnedValue = false;
+			hour = String(hour);
+			if(this.testDayAvailable(year,month,day)){
+				var raccourcis = this.treater(year,month,day);
+				if(typeof raccourcis == 'undefined'){
+					return true;
+				}
+				if(raccourcis.length == 0){
+					return true;
+				}
+				if(typeof(raccourcis)=='object'){
+					if(raccourcis instanceof Array){
+						$.each(raccourcis,function(){
+							var testedValue = String(this);
+
+							if(testedValue.charAt(0)=='0'&&hour.charAt(0)!='0'){
+								hour = '0'+hour;
+							}
+							if(testedValue == hour){
+								returnedValue = true;
+								return false;
+							}
+						});
+					}else{
+						$.each(raccourcis,function(index,value){
+							index = String(index);
+							if(index.charAt(0)=='0'&&hour.charAt(0)!='0'){
+								hour = '0'+hour;
+							}
+							if(hour == index){
+								returnedValue = true;
+								return false;
+							}
+						});
+					}
+				}
+			}
+			return returnedValue;
+		},
+		testMinuteAvailable:function(year,month,day,hour,min){
+			var returnedValue = false;
+			var self = this;
+			min = String(min);
+			if(this.testHourAvailable(year,month,day,hour)){
+				//var raccourcis = this.availableDate[year][month][day][hour];
+				var raccourcis = this.treater(year,month,day,hour);
+				if(typeof raccourcis == 'undefined'){
+					// maybe month?
+					raccourcis = this.treater(year,month,day,hour);
+				}
+				//IF still undefined return true;
+				if(typeof raccourcis == 'undefined'){
+					return true;
+				}
+				if(raccourcis.length == 0){
+					return true;
+				}
+				console.log(raccourcis);
+				if(typeof(raccourcis)=='object'){
+
+					if(raccourcis instanceof Array){
+						$.each(raccourcis,function(){
+							var testedValue = String(this);
+
+							if(testedValue%self.minuteStep === 0){
+								if(testedValue == min){
+									returnedValue = true;
+									return false;
+								}
+							}
+						});
+					}else{
+						$.each(raccourcis,function(index,value){
+							index = String(index);
+							if(index%self.minuteStep === 0){
+								if(index == min){
+									returnedValue = true;
+									return false;
+								}
+							}
+						});
+					}
+				}
+			}
+			return returnedValue;
+		},
+		treater:function(year,month,day,hour,min){
+			if(!this.availableDate.hasOwnProperty(year)){
+				return;
+			}
+			var returned = this.availableDate[year];
+			if(typeof month != 'undefined' && this.availableDate[year].hasOwnProperty('0'+month)){
+				// Maybe month + day?
+				if(typeof day != 'undefined' && this.availableDate[year]['0'+month].hasOwnProperty('0'+day)){
+					// maybe month+day+hour?? Dafuck!
+					if(typeof hour != 'undefined' && this.availableDate[year]['0'+month]['0'+day].hasOwnProperty('0'+hour)){
+						return this.availableDate[year]['0'+month]['0'+day]['0'+hour];
+					}else if(typeof hour != 'undefined' && this.availableDate[year]['O'+month]['0'+day].hasOwnProperty(hour)){
+						return this.availableDate[year]['0'+month]['0'+day][hour];
+					}else{
+						return this.availableDate[year]['0'+month]['0'+day];
+					}
+				}else if(typeof day != 'undefined' && this.availableDate[year]['0'+month].hasOwnProperty(day)){
+					if(typeof hour != 'undefined' && this.availableDate[year]['0'+month][day].hasOwnProperty('0'+hour)){
+						return this.availableDate[year]['0'+month][day]['0'+hour];
+					}else if(typeof hour != 'undefined' && this.availableDate[year]['0'+month][day].hasOwnProperty(hour)){
+						return this.availableDate[year]['0'+month][day][hour];
+					}else{
+						return this.availableDate[year]['0'+month][day];
+					}
+				}else{
+					return this.availableDate[year]['0'+month];
+				}
+			}else if(typeof month != 'undefined' && this.availableDate[year].hasOwnProperty(month)){
+				if(typeof day != 'undefined' && this.availableDate[year][month].hasOwnProperty('0'+day)){
+					// maybe month+day+hour?? Dafuck!
+					if(typeof hour != 'undefined' && this.availableDate[year][month]['0'+day].hasOwnProperty('0'+hour)){
+						return this.availableDate[year][month]['0'+day]['0'+hour];
+					}else if(typeof hour != 'undefined' && this.availableDate[year][month]['0'+day].hasOwnProperty(hour)){
+						return this.availableDate[year][month]['0'+day][hour];
+					}else{
+						return this.availableDate[year][month]['0'+day];
+					}
+				}else if(typeof day != 'undefined' && this.availableDate[year][month].hasOwnProperty(day)){
+					if(typeof hour != 'undefined' && this.availableDate[year][month][day].hasOwnProperty('0'+hour)){
+						return this.availableDate[year][month][day]['0'+hour];
+					}else if(typeof hour != 'undefined' && this.availableDate[year][month][day].hasOwnProperty(hour)){
+						return this.availableDate[year][month][day][hour];
+					}else{
+						return this.availableDate[year][month][day];
+					}
+				}else{
+					return this.availableDate[year][month];
+				}
+			}else{
+				return returned;
+			}
+			return;
+		},
 		updateNavArrows: function() {
 			var d = new Date(this.viewDate),
 				year = d.getUTCFullYear(),
