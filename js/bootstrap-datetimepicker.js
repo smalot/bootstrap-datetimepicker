@@ -795,7 +795,7 @@
 				if(raccourcis.length == 0){
 					return true;
 				}
-
+				console.log(raccourcis);
 				if(typeof(raccourcis)=='object'){
 
 					if(raccourcis instanceof Array){
@@ -833,18 +833,18 @@
 				// Maybe month + day?
 				if(typeof day != 'undefined' && this.availableDate[year]['0'+month].hasOwnProperty('0'+day)){
 					// maybe month+day+hour?? Dafuck!
-					if(typeof hour != 'undefined' && this.availableDate[year]['O'+month]['0'+day].hasOwnProperty('0'+hour)){
-						return this.availableDate[year]['O'+month]['0'+day]['0'+hour];
+					if(typeof hour != 'undefined' && this.availableDate[year]['0'+month]['0'+day].hasOwnProperty('0'+hour)){
+						return this.availableDate[year]['0'+month]['0'+day]['0'+hour];
 					}else if(typeof hour != 'undefined' && this.availableDate[year]['O'+month]['0'+day].hasOwnProperty(hour)){
-						return this.availableDate[year]['O'+month]['0'+day][hour];
+						return this.availableDate[year]['0'+month]['0'+day][hour];
 					}else{
 						return this.availableDate[year]['0'+month]['0'+day];
 					}
 				}else if(typeof day != 'undefined' && this.availableDate[year]['0'+month].hasOwnProperty(day)){
-					if(typeof hour != 'undefined' && this.availableDate[year]['O'+month][day].hasOwnProperty('0'+hour)){
-						return this.availableDate[year]['O'+month][day]['0'+hour];
-					}else if(typeof hour != 'undefined' && this.availableDate[year]['O'+month][day].hasOwnProperty(hour)){
-						return this.availableDate[year]['O'+month][day][hour];
+					if(typeof hour != 'undefined' && this.availableDate[year]['0'+month][day].hasOwnProperty('0'+hour)){
+						return this.availableDate[year]['0'+month][day]['0'+hour];
+					}else if(typeof hour != 'undefined' && this.availableDate[year]['0'+month][day].hasOwnProperty(hour)){
+						return this.availableDate[year]['0'+month][day][hour];
 					}else{
 						return this.availableDate[year]['0'+month][day];
 					}
