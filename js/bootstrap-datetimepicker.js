@@ -788,7 +788,6 @@
 					// maybe month?
 					raccourcis = this.treater(year,month,day,hour);
 				}
-				console.log(typeof raccourcis);
 				//IF still undefined return true;
 				if(typeof raccourcis == 'undefined'){
 					return true;
@@ -849,6 +848,8 @@
 					}else{
 						return this.availableDate[year]['0'+month][day];
 					}
+				}else{
+					return this.availableDate[year]['0'+month];
 				}
 			}else if(typeof month != 'undefined' && this.availableDate[year].hasOwnProperty(month)){
 				if(typeof day != 'undefined' && this.availableDate[year][month].hasOwnProperty('0'+day)){
