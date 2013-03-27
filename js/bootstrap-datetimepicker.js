@@ -1318,7 +1318,7 @@
 					// minute
 					i: date.getUTCMinutes(),
 					// second
-					s: date.getUTCSeconds(),
+					s: date.getUTCSeconds()
 				};
                 val.H  = (val.h%12==0? 12 : val.h%12);
                 val.HH = (val.H < 10 ? '0' : '') + val.H;
