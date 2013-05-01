@@ -308,11 +308,11 @@
 			var formatted = this.getFormattedDate();
 			if (!this.isInput) {
 				if (this.component){
-					this.element.find('input').prop('value', formatted);
+					this.element.find('input').val(formatted);
 				}
 				this.element.data('date', formatted);
 			} else {
-				this.element.prop('value', formatted);
+				this.element.val(formatted);
 			}
 			if (this.linkField) {
 				$('#' + this.linkField).val(this.getFormattedDate(this.linkFormat));
@@ -388,7 +388,7 @@
 				date = arguments[0];
 				fromArgs = true;
 			} else {
-				date = (this.isInput ? this.element.prop('value') : this.element.data('date') || this.element.find('input').prop('value')) || this.initialDate;
+				date = (this.isInput ? this.element.val() : this.element.data('date') || this.element.find('input').val()) || this.initialDate;
 			}
 
 			if (!date) {
