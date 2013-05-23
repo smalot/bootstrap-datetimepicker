@@ -308,7 +308,15 @@
             this.format = DPGlobal.parseFormat(format, this.formatType);
 			this.update();
 			this.updateNavArrows();
-            this._setDate(this.date, 'view');
+            var element;
+            if (this.isInput) {
+                element = this.element;
+            } else if (this.component){
+                element = this.element.find('input');
+            }
+            if (element && element.val()) {
+                this._setDate(this.date, 'view');
+            }
         },
 
 		setValue: function() {
