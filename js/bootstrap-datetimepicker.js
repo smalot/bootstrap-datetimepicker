@@ -304,6 +304,12 @@
 			}
 		},
 
+        setFormat: function(format) {
+            this.format = DPGlobal.parseFormat(format, this.formatType);
+			this.update();
+			this.updateNavArrows();
+        },
+
 		setValue: function() {
 			var formatted = this.getFormattedDate();
 			if (!this.isInput) {
