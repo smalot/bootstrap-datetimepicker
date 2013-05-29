@@ -401,7 +401,7 @@
 				date = arguments[0];
 				fromArgs = true;
 			} else {
-				date = (this.isInput ? this.element.val() : this.element.data('date') || this.element.find('input').val()) || this.initialDate;
+                date = this.element.data('date') || (this.isInput ? this.element.val() : this.element.find('input').val()) || this.initialDate;
 			}
 
 			if (!date) {
