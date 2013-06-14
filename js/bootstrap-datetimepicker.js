@@ -1095,6 +1095,13 @@
 			if (dir) {
 				var newViewMode = Math.max(0, Math.min(DPGlobal.modes.length - 1, this.viewMode + dir));
 				if (newViewMode >= this.minView && newViewMode <= this.maxView) {
+					this.element.trigger({
+						type: 'changeMode',
+						date: this.viewDate,
+						oldViewMode: this.viewMode,
+						newViewMode: newViewMode
+					});
+
 					this.viewMode = newViewMode;
 				}
 			}
