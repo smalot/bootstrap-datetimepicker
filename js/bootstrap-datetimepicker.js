@@ -846,9 +846,9 @@
 									month += 1;
 								}
 							}
-														this.viewDate.setUTCDate(day);
-														this.viewDate.setUTCMonth(month);
 														this.viewDate.setUTCFullYear(year);
+														this.viewDate.setUTCMonth(month);
+														this.viewDate.setUTCDate(day);
 														this.element.trigger({
 																type: 'changeDay',
 																date: this.viewDate
@@ -1489,5 +1489,33 @@
 						'</div>';
 
 	$.fn.datetimepicker.DPGlobal = DPGlobal;
+
+
+	/* DATETIMEPICKER NO CONFLICT
+	* =================== */
+
+	$.fn.datetimepicker.noConflict = function () {
+	    $.fn.datetimepicker = old;
+	    return this;
+	};
+
+
+	/* DATETIMEPICKER DATA-API
+	* ================== */
+
+	$(document).on(
+		'focus.datetimepicker.data-api click.datetimepicker.data-api',
+		'[data-provide="datetimepicker"]',
+		function (e) {
+		    var $this = $(this);
+		    if ($this.data('datetimepicker')) return;
+		    e.preventDefault();
+		    // component click requires us to explicitly show it
+		    $this.datetimepicker('show');
+		}
+	);
+	$(function () {
+	    $('[data-provide="datetimepicker-inline"]').datetimepicker();
+	});
 
 }( window.jQuery );
