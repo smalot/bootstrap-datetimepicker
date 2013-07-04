@@ -66,35 +66,35 @@
   border-top: 6px solid #ffffff;
   border-bottom: 0;
 }
-.datetimepicker-dropdown-bottom-right:before {
-  top: -7px;
-  right: 6px;
-}
-.datetimepicker-dropdown-bottom-right:after {
-  top: -6px;
-  right: 7px;
-}
 .datetimepicker-dropdown-bottom-left:before {
   top: -7px;
-  left: 6px;
+  right: 6px;
 }
 .datetimepicker-dropdown-bottom-left:after {
   top: -6px;
-  left: 7px;
-}
-.datetimepicker-dropdown-top-right:before {
-  bottom: -7px;
-  right: 6px;
-}
-.datetimepicker-dropdown-top-right:after {
-  bottom: -6px;
   right: 7px;
+}
+.datetimepicker-dropdown-bottom-right:before {
+  top: -7px;
+  left: 6px;
+}
+.datetimepicker-dropdown-bottom-right:after {
+  top: -6px;
+  left: 7px;
 }
 .datetimepicker-dropdown-top-left:before {
   bottom: -7px;
-  left: 6px;
+  right: 6px;
 }
 .datetimepicker-dropdown-top-left:after {
+  bottom: -6px;
+  right: 7px;
+}
+.datetimepicker-dropdown-top-right:before {
+  bottom: -7px;
+  left: 6px;
+}
+.datetimepicker-dropdown-top-right:after {
   bottom: -6px;
   left: 7px;
 }

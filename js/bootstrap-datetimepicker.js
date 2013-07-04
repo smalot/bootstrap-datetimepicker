@@ -376,7 +376,7 @@
 			if (this.component) {
 				offset = this.component.offset();
 				left = offset.left;
-				if (this.pickerPosition == 'bottom-right' || this.pickerPosition == 'top-left') {
+				if (this.pickerPosition == 'bottom-left' || this.pickerPosition == 'top-left') {
 					left += this.component.outerWidth() - this.picker.outerWidth();
 				}
 			} else {
