@@ -256,7 +256,7 @@ The referer element to place the picker for the component implementation. If you
 
 ### pickerPosition
 
-String. Default: 'bottom-right' (other supported value : 'bottom-left')
+String. Default: 'bottom-right' (supported values are: 'bottom-right', 'bottom-left', 'top-right', 'top-left')
 
 This option allows to place the picker just under the input field for the component implementation instead of the default position which is at the bottom right of the button.
 
