@@ -443,6 +443,8 @@ Fired when you pick a date before the *startDate* or after the *endDate* or when
 
 The datetimepicker includes some keyboard navigation:
 
+
+
 ### up, down, left, right arrow keys
 
 By themselves, left/right will move backward/forward one day, up/down will move back/forward one week.
@@ -460,6 +462,36 @@ The escape key can be used to hide and re-show the datetimepicker; this is neces
 ### enter
 
 When the picker is visible, enter will simply hide it.  When the picker is not visible, enter will have normal effects -- submitting the current form, etc.
+
+## Mouse Wheel View Navigation
+
+In order to make this plugin easier to set different part of date time, mouse wheel has been used to navigate through different views. Scroll up your mouse wheel to navigate to the decade year view. Scroll down will lead to the minute view. 
+
+### Dependency
+
+To enalbe this feature. [jQuery Mouse Wheel Plugin](https://github.com/brandonaaron/jquery-mousewheel) must be included before using this feature. 
+
+### Options
+
+#### wheelViewModeNavigation
+
+Boolean.  Default: false
+
+Whether or not to enable navigating through different view mode using mouse wheel.
+
+#### wheelViewModeNavigationDelay
+
+Integer.  Default: 100
+
+Time delays between the next respond to the wheel command, it controls the speed between switching in different views. Unit is in million seconds.
+
+#### About viewSelect option
+
+The recommended value for viewSelect option is 4 when this feature is enable. That means you can easily update any the value in every view. This option value is applied in the demo page.
+
+### Feature Demo
+
+A simple [Demo](http://lyonlai.github.io/bootstrap-datetimepicker/demo.html) page is given to show it's simple idea. 
 
 ## I18N
 
