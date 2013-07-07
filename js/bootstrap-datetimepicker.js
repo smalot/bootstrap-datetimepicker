@@ -89,6 +89,14 @@
             this.wheelViewModeNavigation = this.element.data('view-mode-wheel-navigation');
         }
 
+        this.wheelViewModeNavigationInverseDirection = false;
+
+        if('wheelViewModeNavigationInverseDirection' in options){
+            this.wheelViewModeNavigationInverseDirection = options.wheelViewModeNavigationInverseDirection;
+        }else if('wheelViewModeNavigationInverseDirection' in this.element.data()){
+            this.wheelViewModeNavigationInverseDirection = this.element.data('view-mode-wheel-navigation-inverse-dir');
+        }
+
         this.wheelViewModeNavigationDelay = 100;
         if('wheelViewModeNavigationDelay' in options){
             this.wheelViewModeNavigationDelay = options.wheelViewModeNavigationDelay;
@@ -736,7 +744,12 @@
 
             var delta = originalEvent.wheelDelta;
 
-            var mode = delta > 0 ? -1:(delta === 0)?0:1;
+            var mode = delta > 0 ? 1:(delta === 0)?0:-1;
+
+            if(this.wheelViewModeNavigationInverseDirection)
+            {
+                mode = -mode;
+            }
 
             this.showMode(mode);
 
