@@ -479,6 +479,12 @@ Boolean.  Default: false
 
 Whether or not to enable navigating through different view mode using mouse wheel.
 
+#### wheelViewModeNavigationInverseDirection
+
+Boolean.  Default: false
+
+Whether or not to reverse the direction of scrolling. Default is scroll up to the decade view.
+
 #### wheelViewModeNavigationDelay
 
 Integer.  Default: 100
