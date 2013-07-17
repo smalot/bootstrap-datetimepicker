@@ -72,6 +72,35 @@ test('yyyy: Year, four-digit.', function(){
     equal(this.input.val().split('-')[0], '2012');
 });
 
+test('H: 12 hour when language has meridiems', function(){
+    this.input
+        .val('2012-March-5 16:00:00')
+        .datetimepicker({format: 'yyyy-mm-dd H:ii p'})
+        .datetimepicker('setValue');
+    ok(this.input.val().match(/4:00 pm/));
+});
+
+test('H: 24 hour when language has no meridiems', function(){
+
+    $.fn.datetimepicker.dates['pt-BR'] = {
+      days: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
+      daysShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
+      daysMin: ["Do", "Se", "Te", "Qu", "Qu", "Se", "Sa", "Do"],
+      months: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+      monthsShort: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"],
+      today: "Hoje",
+      suffix: [],
+      meridiem: []
+    };
+
+    this.input
+        .val('2012-March-5 16:00:00')
+        .datetimepicker({format: 'yyyy-mm-dd H:ii p', language: 'pt-BR'})
+        .datetimepicker('setValue');
+    ok(this.input.val().match(/16:00/));
+});
+
+
 test('dd-mm-yyyy: Regression: Prevent potential month overflow in small-to-large formats (Mar 31, 2012 -> Mar 01, 2012)', function(){
     this.input
         .val('31-03-2012')
