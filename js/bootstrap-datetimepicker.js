@@ -272,6 +272,7 @@
 		remove: function() {
 			this._detachEvents();
 			this.picker.remove();
+			delete this.picker;
 			delete this.element.data().datetimepicker;
 		},
 
