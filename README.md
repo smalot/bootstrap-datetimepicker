@@ -336,9 +336,17 @@ $('#datetimepicker').datetimepicker('hide');
 
 ### update
 
-Arguments: None
+Arguments: 
 
-Update the datetimepicker with the current input value.
+* currentDate (Date).
+
+Update the datetimepicker with the specified date.
+
+```javascript
+$('#datetimepicker').datetimepicker('update', new Date());
+```
+
+Omit currentDate to update the datetimepicker with the current input value.
 
 ```javascript
 $('#datetimepicker').datetimepicker('update');
