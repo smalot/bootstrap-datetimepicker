@@ -1,0 +1,5 @@
+{
+  "name": "bootstrap-datetimepicker",
+  "version": "1.0.0",
+  "main": ["js/bootstrap-datetimepicker.min.js", "css/datetimepicker.css"]
+}
