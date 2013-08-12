@@ -484,6 +484,15 @@ $.fn.datetimepicker.dates['en'] = {
 };
 ```
 
+You can override the default date format in the language configuration with `format` attribute.
+Example:
+
+```javascript
+$.fn.datetimepicker.dates['pt-BR'] = {
+    format: 'dd/mm/yyyy'
+};
+```
+
 Right-to-left languages may also include `rtl: true` to make the calendar display appropriately.
 
 If your browser (or those of your users) is displaying characters wrong, chances are the browser is loading the javascript file with a non-unicode encoding.  Simply add `charset="UTF-8"` to your `script` tag:
