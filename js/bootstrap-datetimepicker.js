@@ -66,7 +66,7 @@
 					this.formatViewType = this.element.data('formatViewType');
 			}
 
-		this.minView = 0;
+		this.minView = DPGlobal.format2MiniView(this.format.parts.join('-'));
 		if ('minView' in options) {
 			this.minView = options.minView;
 		} else if ('minView' in this.element.data()) {
@@ -104,7 +104,7 @@
             this.wheelViewModeNavigationDelay = this.element.data('view-mode-wheel-navigation-delay');
         }
 
-		this.startViewMode = 2;
+		this.startViewMode = this.minView;
 		if ('startView' in options) {
 			this.startViewMode = options.startView;
 		} else if ('startView' in this.element.data()) {
@@ -1284,6 +1284,20 @@
 			}
 		},
 		nonpunctuation: /[^ -\/:-@\[-`{-~\t\n\rTZ]+/g,
+	        format2MiniView: function (format) {
+	            format = format.toLowerCase();
+	            var minView = 0;
+	            if (/h+/.test(format)) {
+	                minView = 1;
+	            } else if (/d+/.test(format)) {
+	                minView = 2;
+	            } else if (/m+/.test(format)) {
+	                minView = 3;
+	            } else if (/y+/.test(format)) {
+	                minView = 4;
+	            }
+	            return minView;
+	        },		
 		parseFormat: function(format, type){
 			// IE treats \0 as a string end in inputs (truncating the value),
 			// so it's a bad format delimiter, anyway
