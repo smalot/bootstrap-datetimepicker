@@ -113,6 +113,9 @@
 .datetimepicker.months div.datetimepicker-months {
   display: block;
 }
+.datetimepicker.quarters div.datetimepicker-quarters {
+  display: block;
+}
 .datetimepicker.years div.datetimepicker-years {
   display: block;
 }
