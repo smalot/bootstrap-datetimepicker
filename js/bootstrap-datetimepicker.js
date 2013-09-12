@@ -166,8 +166,14 @@
 		}
 		if (this.isRTL){
 			this.picker.addClass('datetimepicker-rtl');
-			this.picker.find('.prev i, .next i')
+			if (this.bootcssVer == 3) {
+				this.picker.find('.prev span, .next span')
 						.toggleClass('glyphicon-arrow-left glyphicon-arrow-right');
+			}else{
+				this.picker.find('.prev i, .next i')
+						.toggleClass('icon-arrow-left icon-arrow-right');
+			};
+	
 		}
 		$(document).on('mousedown', function (e) {
 			// Clicked outside the datetimepicker, hide it
