@@ -404,9 +404,16 @@
 
 		place: function(){
 			if(this.isInline) return;
-			var zIndex = parseInt(this.element.parents().filter(function() {
-				return $(this).css('z-index') != 'auto';
-			}).first().css('z-index'))+10;
+
+			var index_highest = 0;
+			$('div').each(function() {
+			    var index_current = parseInt($(this).css("zIndex"), 10);
+			    if(index_current > index_highest) {
+			        index_highest = index_current;
+			    }
+			});
+			var zIndex = index_highest + 10;
+
 			var offset, top, left;
 			if (this.component) {
 				offset = this.component.offset();
