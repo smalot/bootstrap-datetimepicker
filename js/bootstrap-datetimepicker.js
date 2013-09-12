@@ -141,7 +141,7 @@
 			this.forceParse = this.element.data('date-force-parse');
 		}
 
-		this.picker = $((this.bootcss == 3)? DPGlobal.templateV3 : DPGlobal.template)
+		this.picker = $((this.bootcssVer == 3)? DPGlobal.templateV3 : DPGlobal.template)
 							.appendTo(this.isInline ? this.element : 'body')
 							.on({
 								click: $.proxy(this.click, this),
