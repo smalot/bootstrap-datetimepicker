@@ -1,4 +1,4 @@
-﻿/* =========================================================
+﻿/**=========================================================
  * bootstrap-datetimepicker.js
  * =========================================================
  * Copyright 2012 Stefan Petre
@@ -54,17 +54,44 @@
 		this.linkFormat = DPGlobal.parseFormat(options.linkFormat || this.element.data('link-format') || DPGlobal.getDefaultFormat(this.formatType, 'link'), this.formatType);
 		this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
 		this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
-				this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
-				this.initialDate = options.initialDate || new Date();
+		this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
+		this.initialDate = options.initialDate || new Date();
+		
+		// For toggle
+		this.isToggle = options.toggleDateTime;
+    this.pickDate = options.pickDate !== false;
+    this.pickTime = options.pickTime !== false;
+    
+    this.is12Hours = options.pick12HourFormat || false;
+    this.showSeconds = options.showSeconds !== false;
+    this.collapse = options.collapse !== false;
+    
+    if(this.isToggle) {
+      var icon = false;
+      if (this.component) {
+        icon = this.component.find('i');
+      }
+      if (this.pickTime) {
+        if (icon && icon.length) this.timeIcon = icon.data('time-icon');
+        if (!this.timeIcon) this.timeIcon = 'icon-time';
+        icon.addClass(this.timeIcon);
+      }
+      if (this.pickDate) {
+        if (icon && icon.length) this.dateIcon = icon.data('date-icon');
+        if (!this.dateIcon) this.dateIcon = 'icon-calendar';
+        icon.removeClass(this.timeIcon);
+        icon.addClass(this.dateIcon);
+      }
+    }
 
 		this._attachEvents();
 		
-			this.formatViewType = "datetime";
-			if ('formatViewType' in options) {
-					this.formatViewType = options.formatViewType;
-			} else if ('formatViewType' in this.element.data()) {
-					this.formatViewType = this.element.data('formatViewType');
-			}
+		this.formatViewType = "datetime";
+		if ('formatViewType' in options) {
+				this.formatViewType = options.formatViewType;
+		} else if ('formatViewType' in this.element.data()) {
+				this.formatViewType = this.element.data('formatViewType');
+		}
 
 		this.minView = 0;
 		if ('minView' in options) {
@@ -82,27 +109,27 @@
 		}
 		this.maxView = DPGlobal.convertViewMode(this.maxView);
 
-        this.wheelViewModeNavigation = false;
-        if('wheelViewModeNavigation' in options){
-            this.wheelViewModeNavigation = options.wheelViewModeNavigation;
-        }else if('wheelViewModeNavigation' in this.element.data()){
-            this.wheelViewModeNavigation = this.element.data('view-mode-wheel-navigation');
-        }
+      this.wheelViewModeNavigation = false;
+      if('wheelViewModeNavigation' in options){
+          this.wheelViewModeNavigation = options.wheelViewModeNavigation;
+      }else if('wheelViewModeNavigation' in this.element.data()){
+          this.wheelViewModeNavigation = this.element.data('view-mode-wheel-navigation');
+      }
 
-        this.wheelViewModeNavigationInverseDirection = false;
+      this.wheelViewModeNavigationInverseDirection = false;
 
-        if('wheelViewModeNavigationInverseDirection' in options){
-            this.wheelViewModeNavigationInverseDirection = options.wheelViewModeNavigationInverseDirection;
-        }else if('wheelViewModeNavigationInverseDirection' in this.element.data()){
-            this.wheelViewModeNavigationInverseDirection = this.element.data('view-mode-wheel-navigation-inverse-dir');
-        }
+      if('wheelViewModeNavigationInverseDirection' in options){
+          this.wheelViewModeNavigationInverseDirection = options.wheelViewModeNavigationInverseDirection;
+      }else if('wheelViewModeNavigationInverseDirection' in this.element.data()){
+          this.wheelViewModeNavigationInverseDirection = this.element.data('view-mode-wheel-navigation-inverse-dir');
+      }
 
-        this.wheelViewModeNavigationDelay = 100;
-        if('wheelViewModeNavigationDelay' in options){
-            this.wheelViewModeNavigationDelay = options.wheelViewModeNavigationDelay;
-        }else if('wheelViewModeNavigationDelay' in this.element.data()){
-            this.wheelViewModeNavigationDelay = this.element.data('view-mode-wheel-navigation-delay');
-        }
+      this.wheelViewModeNavigationDelay = 100;
+      if('wheelViewModeNavigationDelay' in options){
+          this.wheelViewModeNavigationDelay = options.wheelViewModeNavigationDelay;
+      }else if('wheelViewModeNavigationDelay' in this.element.data()){
+          this.wheelViewModeNavigationDelay = this.element.data('view-mode-wheel-navigation-delay');
+      }
 
 		this.startViewMode = 2;
 		if ('startView' in options) {
@@ -128,19 +155,44 @@
 			this.forceParse = this.element.data('date-force-parse');
 		}
 
-		this.picker = $(DPGlobal.template)
+		// DPGlobal.getTemplate = function(timeIcon, options)
+		this.picker = $(DPGlobal.getTemplate(this))
 							.appendTo(this.isInline ? this.element : 'body')
 							.on({
 								click: $.proxy(this.click, this),
 								mousedown: $.proxy(this.mousedown, this)
 							});
 
+        // this handles time picker clicks
+        this.picker.on('click', '[data-action]', $.proxy(this.doAction, this));
+        this.picker.on('mousedown', $.proxy(this.stopEvent, this));
+        if (this.isToggle && this.pickDate && this.pickTime) {
+            var self = this;
+            this.picker.on('click.togglePicker', '.accordion-toggle', function(e) {
+                e.stopPropagation();
+                var $this = $(this);
+                var $parent = $this.closest('ul');
+                var expanded = $parent.find('.collapse.in');
+                var closed = $parent.find('.collapse:not(.in)');
+        
+                if (expanded && expanded.length) {
+                    var collapseData = expanded.data('collapse');
+                    if (collapseData && collapseData.transitioning) return;
+                    expanded.collapse('hide');
+                    closed.collapse('show');
+                    $this.find('i').toggleClass(self.timeIcon + ' ' + self.dateIcon);
+                    self.element.find('.add-on i').toggleClass(self.timeIcon + ' ' + self.dateIcon);
+                }
+            });
+        }
+
         if(this.wheelViewModeNavigation)
         {
             if($.fn.mousewheel)
             {
                 this.picker.on({mousewheel: $.proxy(this.mousewheel,this)});
-            }else
+            }
+            else
             {
                 console.log("Mouse Wheel event is not supported. Please include the jQuery Mouse Wheel plugin before enabling this option");
             }
@@ -148,7 +200,8 @@
 
 		if (this.isInline) {
 			this.picker.addClass('datetimepicker-inline');
-		} else {
+		}
+		else {
 			this.picker.addClass('datetimepicker-dropdown-' + this.pickerPosition + ' dropdown-menu');
 		}
 		if (this.isRTL){
@@ -190,6 +243,9 @@
 		this.setDaysOfWeekDisabled(options.daysOfWeekDisabled || this.element.data('date-days-of-week-disabled'));
 		this.fillDow();
 		this.fillMonths();
+    this.fillHours();
+    this.fillMinutes();
+    this.fillSeconds();
 		this.update();
 		this.showMode();
 
@@ -324,7 +380,8 @@
 		},
 
 		setUTCDate: function(d) {
-			if (d >= this.startDate && d <= this.endDate) {
+			if ((!this.startDate || d >= this.startDate) && 
+			    (!this.endDate || d <= this.endDate)) {
 				this.date = d;
 				this.setValue();
 				this.viewDate = this.date;
@@ -341,7 +398,7 @@
 
         setFormat: function(format) {
             this.format = DPGlobal.parseFormat(format, this.formatType);
-            var element;
+            var element = false;
             if (this.isInput) {
                 element = this.element;
             } else if (this.component){
@@ -407,28 +464,34 @@
 			var zIndex = parseInt(this.element.parents().filter(function() {
 				return $(this).css('z-index') != 'auto';
 			}).first().css('z-index'))+10;
-			var offset, top, left;
+			var offset;
 			if (this.component) {
 				offset = this.component.offset();
-				left = offset.left;
 				if (this.pickerPosition == 'bottom-left' || this.pickerPosition == 'top-left') {
-					left += this.component.outerWidth() - this.picker.outerWidth();
+					this.picker.css("left", offset.left + this.component.outerWidth() - this.picker.outerWidth());
 				}
 			} else {
 				offset = this.element.offset();
-				left = offset.left;
+				this.picker.css("left", offset.left);
 			}
+
 			if (this.pickerPosition == 'top-left' || this.pickerPosition == 'top-right') {
-				top = offset.top - this.picker.outerHeight();
+			  this.picker.css("top", "auto");
+			  this.picker.css("bottom", $(document).height() - offset.top);
 			} else {
-				top = offset.top + this.height;
+				this.picker.css("top", offset.top + this.height);
 			}
-			this.picker.css({
-				top: top,
-				left: left,
-				zIndex: zIndex
-			});
+			
+			this.picker.css("zIndex", zIndex);
 		},
+
+    notifyChange: function(){
+      this.element.trigger({
+        type: 'changeDate',
+        date: this.getUTCDate(),
+        localDate: this.getDate()
+      });
+    },
 
 		update: function(){
 			var date, fromArgs = false;
@@ -477,6 +540,92 @@
 			this.picker.find('.datetimepicker-months td').html(html);
 		},
 
+    fillHours: function() {
+      var table = this.picker.find(
+        '.timepicker .timepicker-hours table');
+      table.parent().hide();
+      var html = '';
+      if (this.pick12HourFormat) {
+        var current = 1;
+        for (var i = 0; i < 3; ++i, ++current) {
+          html += '<tr>';
+          for (var j = 0; j < 4; j += 1) {
+             var c = current.toString();
+             html += '<td class="hour">' + padLeft(c, 2, '0') + '</td>';
+          }
+          html += '</tr>';
+        }
+      } else {
+        var current = 0;
+        for (var i = 0; i < 6; ++i) {
+          html += '<tr>';
+          for (var j = 0; j < 4; ++j, ++current) {
+             var c = current.toString();
+             html += '<td class="hour">' + padLeft(c, 2, '0') + '</td>';
+          }
+          html += '</tr>';
+        }
+      }
+      table.html(html);
+    },
+
+    fillMinutes: function() {
+      var table = this.picker.find(
+        '.timepicker .timepicker-minutes table');
+      table.parent().hide();
+      var html = '';
+      var current = 0;
+      for (var i = 0; i < 5; i++) {
+        html += '<tr>';
+        for (var j = 0; j < 4; j += 1) {
+          var c = current.toString();
+          html += '<td class="minute">' + padLeft(c, 2, '0') + '</td>';
+          current += 3;
+        }
+        html += '</tr>';
+      }
+      table.html(html);
+    },
+
+    fillSeconds: function() {
+      var table = this.picker.find(
+        '.timepicker .timepicker-seconds table');
+      table.parent().hide();
+      var html = '';
+      var current = 0;
+      for (var i = 0; i < 5; i++) {
+        html += '<tr>';
+        for (var j = 0; j < 4; j += 1) {
+          var c = current.toString();
+          html += '<td class="second">' + padLeft(c, 2, '0') + '</td>';
+          current += 3;
+        }
+        html += '</tr>';
+      }
+      table.html(html);
+    },
+
+    fillTime: function() {
+      if (!this.date)
+        return;
+      var timeComponents = this.picker.find('.timepicker span[data-time-component]');
+      var hour = this.date.getUTCHours();
+      var period = 'AM';
+      if (this.is12Hours) {
+        if (hour >= 12) period = 'PM';
+        if (hour === 0) hour = 12;
+        else if (hour != 12) hour = hour % 12;
+        this.picker.find(
+          '.timepicker [data-action=togglePeriod]').text(period);
+      }
+      hour = padLeft(hour.toString(), 2, '0');
+      var minute = padLeft(this.date.getUTCMinutes().toString(), 2, '0');
+      var second = padLeft(this.date.getUTCSeconds().toString(), 2, '0');
+      timeComponents.filter('[data-time-component=hours]').text(hour);
+      timeComponents.filter('[data-time-component=minutes]').text(minute);
+      timeComponents.filter('[data-time-component=seconds]').text(second);
+    },
+
 		fill: function() {
 			if (this.date == null || this.viewDate == null) {
 				return;
@@ -486,7 +635,7 @@
 				month = d.getUTCMonth(),
 				dayMonth = d.getUTCDate(),
 				hours = d.getUTCHours(),
-				minutes = d.getUTCMinutes(),
+        minutes = d.getUTCMinutes(),
 				startYear = this.startDate !== -Infinity ? this.startDate.getUTCFullYear() : -Infinity,
 				startMonth = this.startDate !== -Infinity ? this.startDate.getUTCMonth() : -Infinity,
 				endYear = this.endDate !== Infinity ? this.endDate.getUTCFullYear() : Infinity,
@@ -655,6 +804,9 @@
 				year += 1;
 			}
 			yearCont.html(html);
+			
+			this.fillTime();
+			
 			this.place();
 		},
 
@@ -730,7 +882,6 @@
 		},
 
         mousewheel: function(e){
-
             e.preventDefault();
             e.stopPropagation();
 
@@ -740,11 +891,8 @@
             }
 
             this.wheelPause = true;
-
             var originalEvent = e.originalEvent;
-
             var delta = originalEvent.wheelDelta;
-
             var mode = delta > 0 ? 1:(delta === 0)?0:-1;
 
             if(this.wheelViewModeNavigationInverseDirection)
@@ -755,13 +903,8 @@
             this.showMode(mode);
 
             setTimeout($.proxy(function(){
-
-                this.wheelPause = false
-
+                this.wheelPause = false;
             },this),this.wheelViewModeNavigationDelay);
-
-
-
         },
 
 		click: function(e) {
@@ -820,25 +963,25 @@
 						break;
 					case 'span':
 						if (!target.is('.disabled')) {
-														var year    = this.viewDate.getUTCFullYear(),
-																month   = this.viewDate.getUTCMonth(),
-																day     = this.viewDate.getUTCDate(),
-																hours   = this.viewDate.getUTCHours(),
-																minutes = this.viewDate.getUTCMinutes(),
-																seconds = this.viewDate.getUTCSeconds();
+							var year    = this.viewDate.getUTCFullYear(),
+									month   = this.viewDate.getUTCMonth(),
+									day     = this.viewDate.getUTCDate(),
+									hours   = this.viewDate.getUTCHours(),
+									minutes = this.viewDate.getUTCMinutes(),
+									seconds = this.viewDate.getUTCSeconds();
 
 							if (target.is('.month')) {
 								this.viewDate.setUTCDate(1);
 								month = target.parent().find('span').index(target);
-																day   = this.viewDate.getUTCDate();
+								day   = this.viewDate.getUTCDate();
 								this.viewDate.setUTCMonth(month);
 								this.element.trigger({
 									type: 'changeMonth',
 									date: this.viewDate
 								});
-																if (this.viewSelect >= 3) {
-										this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
-																}
+								if (this.viewSelect >= 3) {
+									this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
+								}
 							} else if (target.is('.year')) {
 								this.viewDate.setUTCDate(1);
 								year = parseInt(target.text(), 10) || 0;
@@ -847,36 +990,36 @@
 									type: 'changeYear',
 									date: this.viewDate
 								});
-																if (this.viewSelect >= 4) {
-																		this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
-																}
+								if (this.viewSelect >= 4) {
+										this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
+								}
 							} else if (target.is('.hour')){
 								hours = parseInt(target.text(), 10) || 0;
-																if (target.hasClass('hour_am') || target.hasClass('hour_pm')) {
-																		if (hours == 12 && target.hasClass('hour_am')) {
-																				hours = 0;
-																		} else if (hours != 12 && target.hasClass('hour_pm')) {
-																				hours += 12;
-																		}
-																}
-																this.viewDate.setUTCHours(hours);
+								if (target.hasClass('hour_am') || target.hasClass('hour_pm')) {
+										if (hours == 12 && target.hasClass('hour_am')) {
+												hours = 0;
+										} else if (hours != 12 && target.hasClass('hour_pm')) {
+												hours += 12;
+										}
+								}
+								this.viewDate.setUTCHours(hours);
 								this.element.trigger({
 									type: 'changeHour',
 									date: this.viewDate
 								});
-																if (this.viewSelect >= 1) {
+								if (this.viewSelect >= 1) {
 										this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
-																}
+								}
 							} else if (target.is('.minute')){
 								minutes = parseInt(target.text().substr(target.text().indexOf(':')+1), 10) || 0;
-																this.viewDate.setUTCMinutes(minutes);
+								this.viewDate.setUTCMinutes(minutes);
 								this.element.trigger({
 									type: 'changeMinute',
 									date: this.viewDate
 								});
-																if (this.viewSelect >= 0) {
+								if (this.viewSelect >= 0) {
 										this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
-																}
+								}
 							}
 							if (this.viewMode != 0) {
 								var oldViewMode = this.viewMode;
@@ -885,6 +1028,7 @@
 								if (oldViewMode == this.viewMode && this.autoclose) {
 									this.hide();
 								}
+								this.notifyChange();
 							} else {
 								this.fill();
 								if (this.autoclose) {
@@ -938,6 +1082,101 @@
 			}
 		},
 
+    actions: {
+      incrementHours: function(e) {
+        this.date.setUTCHours(this.date.getUTCHours() + 1);
+      },
+
+      incrementMinutes: function(e) {
+        this.date.setUTCMinutes(this.date.getUTCMinutes() + 1);
+      },
+
+      incrementSeconds: function(e) {
+        this.date.setUTCSeconds(this.date.getUTCSeconds() + 1);
+      },
+
+      decrementHours: function(e) {
+        this.date.setUTCHours(this.date.getUTCHours() - 1);
+      },
+
+      decrementMinutes: function(e) {
+        this.date.setUTCMinutes(this.date.getUTCMinutes() - 1);
+      },
+
+      decrementSeconds: function(e) {
+        this.date.setUTCSeconds(this.date.getUTCSeconds() - 1);
+      },
+
+      togglePeriod: function(e) {
+        var hour = this.date.getUTCHours();
+        if (hour >= 12) hour -= 12;
+        else hour += 12;
+        this.date.setUTCHours(hour);
+      },
+
+      showPicker: function() {
+        this.picker.find('.timepicker > div:not(.timepicker-picker)').hide();
+        this.picker.find('.timepicker .timepicker-picker').show();
+      },
+
+      showHours: function() {
+        this.picker.find('.timepicker .timepicker-picker').hide();
+        this.picker.find('.timepicker .timepicker-hours').show();
+      },
+
+      showMinutes: function() {
+        this.picker.find('.timepicker .timepicker-picker').hide();
+        this.picker.find('.timepicker .timepicker-minutes').show();
+      },
+
+      showSeconds: function() {
+        this.picker.find('.timepicker .timepicker-picker').hide();
+        this.picker.find('.timepicker .timepicker-seconds').show();
+      },
+
+      selectHour: function(e) {
+        var tgt = $(e.target);
+        var value = parseInt(tgt.text(), 10);
+        if (this.pick12HourFormat) {
+          var current = this.date.getUTCHours();
+          if (current >= 12) {
+            if (value != 12) value = (value + 12) % 24;
+          } else {
+            if (value === 12) value = 0;
+            else value = value % 12;
+          }
+        }
+        this.date.setUTCHours(value);
+        this.actions.showPicker.call(this);
+      },
+
+      selectMinute: function(e) {
+        var tgt = $(e.target);
+        var value = parseInt(tgt.text(), 10);
+        this.date.setUTCMinutes(value);
+        this.actions.showPicker.call(this);
+      },
+
+      selectSecond: function(e) {
+        var tgt = $(e.target);
+        var value = parseInt(tgt.text(), 10);
+        this.date.setUTCSeconds(value);
+        this.actions.showPicker.call(this);
+      }
+    },
+
+    doAction: function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      if (!this.date) this.date = UTCDate(1970, 0, 0, 0, 0, 0, 0);
+      var action = $(e.currentTarget).data('action');
+      var rv = this.actions[action].apply(this, arguments);
+      this.setValue();
+      this.fillTime();
+      this.notifyChange();
+      return rv;
+    },
+
 		_setDate: function(date, which){
 			if (!which || which == 'date')
 				this.date = date;
@@ -945,7 +1184,7 @@
 				this.viewDate = date;
 			this.fill();
 			this.setValue();
-			var element;
+			var element = false;
 			if (this.isInput) {
 				element = this.element;
 			} else if (this.component){
@@ -993,7 +1232,7 @@
 				day = new_date.getUTCDate(),
 				month = new_date.getUTCMonth(),
 				mag = Math.abs(dir),
-				new_month, test;
+				new_month = null, test;
 			dir = dir > 0 ? 1 : -1;
 			if (mag == 1){
 				test = dir == -1
@@ -1041,9 +1280,7 @@
 					this.show();
 				return;
 			}
-			var dateChanged = false,
-				dir, day, month,
-				newDate, newViewDate;
+			var dateChanged = false, dir, newDate = undefined, newViewDate = undefined;
 			switch(e.keyCode){
 				case 27: // escape
 					this.hide();
@@ -1162,7 +1399,7 @@
 		},
 
 		showMode: function(dir) {
-			if (dir) {
+			if (!this.isToggle && dir) {
 				var newViewMode = Math.max(0, Math.min(DPGlobal.modes.length - 1, this.viewMode + dir));
 				if (newViewMode >= this.minView && newViewMode <= this.maxView) {
 					this.element.trigger({
@@ -1184,8 +1421,8 @@
 
 				In jquery 1.7.2+ everything works fine.
 			*/
-			//this.picker.find('>div').hide().filter('.datetimepicker-'+DPGlobal.modes[this.viewMode].clsName).show();
-			this.picker.find('>div').hide().filter('.datetimepicker-'+DPGlobal.modes[this.viewMode].clsName).css('display', 'block');
+			//this.picker.find('div.datetimepickerpanel').hide().filter('.datetimepicker-'+DPGlobal.modes[this.viewMode].clsName).show();
+			this.picker.find('div.datetimepickerpanel').hide().filter('.datetimepicker-'+DPGlobal.modes[this.viewMode].clsName).css('display', 'block');
 			this.updateNavArrows();
 		},
 		
@@ -1520,43 +1757,129 @@
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
 		footTemplate: '<tfoot><tr><th colspan="7" class="today"></th></tr></tfoot>'
 	};
-	DPGlobal.template = '<div class="datetimepicker">'+
-							'<div class="datetimepicker-minutes">'+
-								'<table class=" table-condensed">'+
-									DPGlobal.headTemplate+
-									DPGlobal.contTemplate+
-									DPGlobal.footTemplate+
-								'</table>'+
-							'</div>'+
-							'<div class="datetimepicker-hours">'+
-								'<table class=" table-condensed">'+
-									DPGlobal.headTemplate+
-									DPGlobal.contTemplate+
-									DPGlobal.footTemplate+
-								'</table>'+
-							'</div>'+
-							'<div class="datetimepicker-days">'+
-								'<table class=" table-condensed">'+
-									DPGlobal.headTemplate+
-									'<tbody></tbody>'+
-									DPGlobal.footTemplate+
-								'</table>'+
-							'</div>'+
-							'<div class="datetimepicker-months">'+
-								'<table class="table-condensed">'+
-									DPGlobal.headTemplate+
-									DPGlobal.contTemplate+
-									DPGlobal.footTemplate+
-								'</table>'+
-							'</div>'+
-							'<div class="datetimepicker-years">'+
-								'<table class="table-condensed">'+
-									DPGlobal.headTemplate+
-									DPGlobal.contTemplate+
-									DPGlobal.footTemplate+
-								'</table>'+
-							'</div>'+
-						'</div>';
+	
+  function padLeft(s, l, c) {
+    if (l < s.length) return s;
+    else return Array(l - s.length + 1).join(c || ' ') + s;
+  }
+	
+	DPGlobal.dateTimeTemplate = 
+	  '<div class="datetimepickerpanel datetimepicker-minutes">'+
+			'<table class=" table-condensed">'+
+				DPGlobal.headTemplate+
+				DPGlobal.contTemplate+
+				DPGlobal.footTemplate+
+			'</table>'+
+		'</div>'+
+		'<div class="datetimepickerpanel datetimepicker-hours">'+
+			'<table class=" table-condensed">'+
+				DPGlobal.headTemplate+
+				DPGlobal.contTemplate+
+				DPGlobal.footTemplate+
+			'</table>'+
+		'</div>'+
+		'<div class="datetimepickerpanel datetimepicker-days">'+
+			'<table class=" table-condensed">'+
+				DPGlobal.headTemplate+
+				'<tbody></tbody>'+
+				DPGlobal.footTemplate+
+			'</table>'+
+		'</div>'+
+		'<div class="datetimepickerpanel datetimepicker-months">'+
+			'<table class="table-condensed">'+
+				DPGlobal.headTemplate+
+				DPGlobal.contTemplate+
+				DPGlobal.footTemplate+
+			'</table>'+
+		'</div>'+
+		'<div class="datetimepickerpanel datetimepicker-years">'+
+			'<table class="table-condensed">'+
+				DPGlobal.headTemplate+
+				DPGlobal.contTemplate+
+				DPGlobal.footTemplate+
+			'</table>'+
+		'</div>';
+
+	DPGlobal.hourTemplate = '<span data-action="showHours" data-time-component="hours" class="timepicker-hour"></span>';
+	DPGlobal.minuteTemplate = '<span data-action="showMinutes" data-time-component="minutes" class="timepicker-minute"></span>';
+	DPGlobal.secondTemplate = '<span data-action="showSeconds" data-time-component="seconds" class="timepicker-second"></span>';
+
+	DPGlobal.getTimeTemplate = function(options) {
+    return (
+      '<div class="timepicker-picker">' +
+        '<table class="table-condensed"' +
+          (options.is12Hours ? ' data-hour-format="12"' : '') +
+          '>' +
+          '<tr>' +
+            '<td><a href="#" class="btn" data-action="incrementHours"><i class="icon-chevron-up"></i></a></td>' +
+            '<td class="separator"></td>' +
+            '<td><a href="#" class="btn" data-action="incrementMinutes"><i class="icon-chevron-up"></i></a></td>' +
+            (options.showSeconds ?
+            '<td class="separator"></td>' +
+            '<td><a href="#" class="btn" data-action="incrementSeconds"><i class="icon-chevron-up"></i></a></td>': '')+
+            (options.is12Hours ? '<td class="separator"></td>' : '') +
+          '</tr>' +
+          '<tr>' +
+            '<td>' + DPGlobal.hourTemplate + '</td> ' +
+            '<td class="separator">:</td>' +
+            '<td>' + DPGlobal.minuteTemplate + '</td> ' +
+            (options.showSeconds ?
+            '<td class="separator">:</td>' +
+            '<td>' + DPGlobal.secondTemplate + '</td>' : '') +
+            (options.is12Hours ?
+            '<td class="separator"></td>' +
+            '<td>' +
+            '<button type="button" class="btn btn-primary" data-action="togglePeriod"></button>' +
+            '</td>' : '') +
+          '</tr>' +
+          '<tr>' +
+            '<td><a href="#" class="btn" data-action="decrementHours"><i class="icon-chevron-down"></i></a></td>' +
+            '<td class="separator"></td>' +
+            '<td><a href="#" class="btn" data-action="decrementMinutes"><i class="icon-chevron-down"></i></a></td>' +
+            (options.showSeconds ?
+            '<td class="separator"></td>' +
+            '<td><a href="#" class="btn" data-action="decrementSeconds"><i class="icon-chevron-down"></i></a></td>': '') +
+            (options.is12Hours ? '<td class="separator"></td>' : '') +
+          '</tr>' +
+        '</table>' +
+      '</div>' +
+      '<div class="timepicker-hours" data-action="selectHour">' +
+        '<table class="table-condensed">' +
+        '</table>'+
+      '</div>'+
+      '<div class="timepicker-minutes" data-action="selectMinute">' +
+        '<table class="table-condensed">' +
+        '</table>'+
+      '</div>'+
+      (options.showSeconds ?
+      '<div class="timepicker-seconds" data-action="selectSecond">' +
+        '<table class="table-condensed">' +
+        '</table>'+
+      '</div>': '')
+    );
+  };
+	DPGlobal.getTemplate = function(options) { 
+	  return options.isToggle ?
+      '<div class="dropdown-menu datetimepicker toggle">' +
+        '<ul>' +
+          (options.pickDate ? '<li' + (options.collapse ? ' class="collapse in"' : '') + '>' +
+            '<div class="datepicker">' +
+              DPGlobal.dateTimeTemplate +
+            '</div>' +
+          '</li>' : "") +
+          (options.pickDate && options.pickTime ?
+            '<li class="picker-switch accordion-toggle"><a><i class="' + 
+              options.timeIcon + '"></i></a></li>' : "") +
+          (options.pickTime ? '<li' + (options.collapse ? ' class="collapse"' : '') + '>' +
+            '<div class="timepicker">' +
+              DPGlobal.getTimeTemplate(options) +
+            '</div>' +
+          '</li>' : "") +
+        '</ul>' +
+      '</div>' :
+      
+      '<div class="datetimepicker">'+DPGlobal.dateTimeTemplate+"</div>";
+	};
 
 	$.fn.datetimepicker.DPGlobal = DPGlobal;
 
