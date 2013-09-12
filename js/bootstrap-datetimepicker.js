@@ -43,6 +43,7 @@
 		var that = this;
 
 		this.element = $(element);
+
 		this.language = options.language || this.element.data('date-language') || "en";
 		this.language = this.language in dates ? this.language : "en";
 		this.isRTL = dates[this.language].rtl || false;
@@ -51,8 +52,11 @@
 		this.isInline = false;
 		this.isVisible = false;
 		this.isInput = this.element.is('input');
-		this.component = this.element.is('.date') ? this.element.find('.input-group-addon .glyphicon-th, .input-group-addon .glyphicon-time, .input-group-addon .glyphicon-calendar').parent() : false;
-		this.componentReset = this.element.is('.date') ? this.element.find('.input-group-addon .glyphicon-remove').parent() : false;
+
+		this.bootcssVer = this.isInput ? (this.element.is('.form-control') ? 3 : 2) : ( this.bootcssVer = this.element.is('.input-group') ? 3 : 2 );
+
+		this.component = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-th, .input-group-addon .glyphicon-time, .input-group-addon .glyphicon-calendar').parent() : this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar').parent()) : false;
+		this.componentReset = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-remove').parent() : this.element.find('.add-on .icon-remove').parent()): false;
 		this.hasInput = this.component && this.element.find('input').length;
 		if (this.component && this.component.length === 0) {
 			this.component = false;
@@ -61,8 +65,10 @@
 		this.linkFormat = DPGlobal.parseFormat(options.linkFormat || this.element.data('link-format') || DPGlobal.getDefaultFormat(this.formatType, 'link'), this.formatType);
 		this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
 		this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
-				this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
-				this.initialDate = options.initialDate || new Date();
+		this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
+		this.initialDate = options.initialDate || new Date();
+
+		
 
 		this._attachEvents();
 		
@@ -135,7 +141,7 @@
 			this.forceParse = this.element.data('date-force-parse');
 		}
 
-		this.picker = $(DPGlobal.template)
+		this.picker = $((this.bootcss == 3)? DPGlobal.templateV3 : DPGlobal.template)
 							.appendTo(this.isInline ? this.element : 'body')
 							.on({
 								click: $.proxy(this.click, this),
@@ -1519,6 +1525,13 @@
 		},
 		headTemplate: '<thead>'+
 							'<tr>'+
+								'<th class="prev"><i class="icon-arrow-left"/></th>'+
+								'<th colspan="5" class="switch"></th>'+
+								'<th class="next"><i class="icon-arrow-right"/></th>'+
+							'</tr>'+
+						'</thead>',
+		headTemplateV3: '<thead>'+
+							'<tr>'+
 								'<th class="prev"><span class="glyphicon glyphicon-arrow-left"></span> </th>'+
 								'<th colspan="5" class="switch"></th>'+
 								'<th class="next"><span class="glyphicon glyphicon-arrow-right"></span> </th>'+
@@ -1564,7 +1577,43 @@
 								'</table>'+
 							'</div>'+
 						'</div>';
-
+	DPGlobal.templateV3 = '<div class="datetimepicker">'+
+							'<div class="datetimepicker-minutes">'+
+								'<table class=" table-condensed">'+
+									DPGlobal.headTemplateV3+
+									DPGlobal.contTemplate+
+									DPGlobal.footTemplate+
+								'</table>'+
+							'</div>'+
+							'<div class="datetimepicker-hours">'+
+								'<table class=" table-condensed">'+
+									DPGlobal.headTemplateV3+
+									DPGlobal.contTemplate+
+									DPGlobal.footTemplate+
+								'</table>'+
+							'</div>'+
+							'<div class="datetimepicker-days">'+
+								'<table class=" table-condensed">'+
+									DPGlobal.headTemplateV3+
+									'<tbody></tbody>'+
+									DPGlobal.footTemplate+
+								'</table>'+
+							'</div>'+
+							'<div class="datetimepicker-months">'+
+								'<table class="table-condensed">'+
+									DPGlobal.headTemplateV3+
+									DPGlobal.contTemplate+
+									DPGlobal.footTemplate+
+								'</table>'+
+							'</div>'+
+							'<div class="datetimepicker-years">'+
+								'<table class="table-condensed">'+
+									DPGlobal.headTemplateV3+
+									DPGlobal.contTemplate+
+									DPGlobal.footTemplate+
+								'</table>'+
+							'</div>'+
+						'</div>';
 	$.fn.datetimepicker.DPGlobal = DPGlobal;
 
 
