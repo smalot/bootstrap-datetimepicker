@@ -278,6 +278,19 @@ Date or String. Default: new Date()
 
 You can initialize the viewer with a date. By default it's now, so you can specify yesterday or today at midnight ...
 
+### onRender
+
+This event is fired when a day is rendered inside the datepicker. Should return a string. Return 'disabled' to disable the day from being selected.
+
+```javascript
+$('#date-end')
+    .datetimepicker({
+        onRender: function(date) {
+            return ev.date.valueOf() < date-start-display.valueOf() ? ' disabled' : '';
+        }
+    });
+```
+
 ## Markup
 
 Format as component.
