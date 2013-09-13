@@ -58,7 +58,7 @@
 				this.initialDate = options.initialDate || new Date();
 
 		this._attachEvents();
-		
+
 			this.formatViewType = "datetime";
 			if ('formatViewType' in options) {
 					this.formatViewType = options.formatViewType;
@@ -248,7 +248,7 @@
 				el.on(ev);
 			}
 		},
-		
+
 		_detachEvents: function(){
 			for (var i=0, el, ev; i<this._events.length; i++){
 				el = this._events[i][0];
@@ -291,7 +291,7 @@
 			if (
 				this.forceParse &&
 				(
-					this.isInput && this.element.val()  || 
+					this.isInput && this.element.val()  ||
 					this.hasInput && this.element.find('input').val()
 				)
 			)
@@ -508,7 +508,7 @@
 						this.picker.find('.datetimepicker-hours thead th:eq(1)')
 								.text(dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
 						this.picker.find('.datetimepicker-minutes thead th:eq(1)')
-								.text(dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);		        
+								.text(dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
 				}
 				this.picker.find('tfoot th.today')
 						.text(dates[this.language].today)
@@ -666,7 +666,7 @@
 				hour = d.getUTCHours();
 			switch (this.viewMode) {
 				case 0:
-					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear() 
+					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
 													 && month <= this.startDate.getUTCMonth()
 													 && day <= this.startDate.getUTCDate()
 													 && hour <= this.startDate.getUTCHours()) {
@@ -674,7 +674,7 @@
 					} else {
 						this.picker.find('.prev').css({visibility: 'visible'});
 					}
-					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear() 
+					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
 													&& month >= this.endDate.getUTCMonth()
 													&& day >= this.endDate.getUTCDate()
 													&& hour >= this.endDate.getUTCHours()) {
@@ -684,14 +684,14 @@
 					}
 					break;
 				case 1:
-					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear() 
+					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
 													 && month <= this.startDate.getUTCMonth()
 													 && day <= this.startDate.getUTCDate()) {
 						this.picker.find('.prev').css({visibility: 'hidden'});
 					} else {
 						this.picker.find('.prev').css({visibility: 'visible'});
 					}
-					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear() 
+					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
 													&& month >= this.endDate.getUTCMonth()
 													&& day >= this.endDate.getUTCDate()) {
 						this.picker.find('.next').css({visibility: 'hidden'});
@@ -700,13 +700,13 @@
 					}
 					break;
 				case 2:
-					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear() 
+					if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
 													 && month <= this.startDate.getUTCMonth()) {
 						this.picker.find('.prev').css({visibility: 'hidden'});
 					} else {
 						this.picker.find('.prev').css({visibility: 'visible'});
 					}
-					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear() 
+					if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
 													&& month >= this.endDate.getUTCMonth()) {
 						this.picker.find('.next').css({visibility: 'hidden'});
 					} else {
@@ -1188,7 +1188,7 @@
 			this.picker.find('>div').hide().filter('.datetimepicker-'+DPGlobal.modes[this.viewMode].clsName).css('display', 'block');
 			this.updateNavArrows();
 		},
-		
+
 		reset: function(e) {
 			this._setDate(null, 'date');
 		}
@@ -1430,7 +1430,13 @@
 					// second
 					s: date.getUTCSeconds()
 				};
-								val.H  = (val.h%12==0? 12 : val.h%12);
+
+        if (dates[language].meridiem.length==2) {
+          val.H  = (val.h%12==0? 12 : val.h%12);
+        }
+        else {
+          val.H  = val.h;
+        }
 								val.HH = (val.H < 10 ? '0' : '') + val.H;
 								val.P  = val.p.toUpperCase();
 				val.hh = (val.h < 10 ? '0' : '') + val.h;
