@@ -1,13 +1,13 @@
 module('Component', {
     setup: function(){
-        this.component = $('<div class="input-append date" id="datetimepicker">'+
+        this.component = $('<div class="input-group date" id="datetimepicker">'+
                                 '<input size="16" type="text" value="12-02-2012" readonly>'+
-                                '<span class="add-on"><i class="icon-th"></i></span>'+
+                                '<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>'+
                             '</div>')
                         .appendTo('#qunit-fixture')
                         .datetimepicker({format: "dd-mm-yyyy", viewSelect: 2});
         this.input = this.component.find('input');
-        this.addon = this.component.find('.add-on');
+        this.addon = this.component.find('.input-group-addon');
         this.dp = this.component.data('datetimepicker')
         this.picker = this.dp.picker;
     },
