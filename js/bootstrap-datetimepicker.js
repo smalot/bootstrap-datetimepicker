@@ -93,7 +93,7 @@
 				this.formatViewType = this.element.data('formatViewType');
 		}
 
-		this.minView = 0;
+		this.minView = this.isToggle ? 2 : 0;
 		if ('minView' in options) {
 			this.minView = options.minView;
 		} else if ('minView' in this.element.data()) {
@@ -477,7 +477,7 @@
 
 			if (this.pickerPosition == 'top-left' || this.pickerPosition == 'top-right') {
 			  this.picker.css("top", "auto");
-			  this.picker.css("bottom", $(document).height() - offset.top);
+			  this.picker.css("bottom", $(window).height() - offset.top);
 			} else {
 				this.picker.css("top", offset.top + this.height);
 			}
@@ -1060,16 +1060,16 @@
 									month += 1;
 								}
 							}
-														this.viewDate.setUTCFullYear(year);
-														this.viewDate.setUTCMonth(month);
-														this.viewDate.setUTCDate(day);
-														this.element.trigger({
-																type: 'changeDay',
-																date: this.viewDate
-														});
-														if (this.viewSelect >= 2) {
-									this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
-														}
+							this.viewDate.setUTCFullYear(year);
+							this.viewDate.setUTCMonth(month);
+							this.viewDate.setUTCDate(day);
+							this.element.trigger({
+									type: 'changeDay',
+									date: this.viewDate
+							});
+							if (this.isToggle || this.viewSelect >= 2) {
+								this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
+							}
 						}
 						var oldViewMode = this.viewMode;
 						this.showMode(-1);
@@ -1290,28 +1290,28 @@
 				case 39: // right
 					if (!this.keyboardNavigation) break;
 					dir = e.keyCode == 37 ? -1 : 1;
-										viewMode = this.viewMode;
-										if (e.ctrlKey) {
-												viewMode += 2;
-										} else if (e.shiftKey) {
-												viewMode += 1;
-										}
-										if (viewMode == 4) {
+					viewMode = this.viewMode;
+					if (e.ctrlKey) {
+							viewMode += 2;
+					} else if (e.shiftKey) {
+							viewMode += 1;
+					}
+					if (viewMode == 4) {
 						newDate = this.moveYear(this.date, dir);
 						newViewDate = this.moveYear(this.viewDate, dir);
-										} else if (viewMode == 3) {
+					} else if (viewMode == 3) {
 						newDate = this.moveMonth(this.date, dir);
 						newViewDate = this.moveMonth(this.viewDate, dir);
-										} else if (viewMode == 2) {
+					} else if (viewMode == 2) {
 						newDate = this.moveDate(this.date, dir);
 						newViewDate = this.moveDate(this.viewDate, dir);
-										} else if (viewMode == 1) {
+					} else if (viewMode == 1) {
 						newDate = this.moveHour(this.date, dir);
 						newViewDate = this.moveHour(this.viewDate, dir);
-										} else if (viewMode == 0) {
+					} else if (viewMode == 0) {
 						newDate = this.moveMinute(this.date, dir);
 						newViewDate = this.moveMinute(this.viewDate, dir);
-										}
+					}
 					if (this.dateWithinRange(newDate)){
 						this.date = newDate;
 						this.viewDate = newViewDate;
@@ -1325,33 +1325,33 @@
 				case 40: // down
 					if (!this.keyboardNavigation) break;
 					dir = e.keyCode == 38 ? -1 : 1;
-										viewMode = this.viewMode;
-										if (e.ctrlKey) {
-												viewMode += 2;
-										} else if (e.shiftKey) {
-												viewMode += 1;
-										}
-										if (viewMode == 4) {
+					viewMode = this.viewMode;
+					if (e.ctrlKey) {
+							viewMode += 2;
+					} else if (e.shiftKey) {
+							viewMode += 1;
+					}
+					if (viewMode == 4) {
 						newDate = this.moveYear(this.date, dir);
 						newViewDate = this.moveYear(this.viewDate, dir);
-										} else if (viewMode == 3) {
+					} else if (viewMode == 3) {
 						newDate = this.moveMonth(this.date, dir);
 						newViewDate = this.moveMonth(this.viewDate, dir);
-										} else if (viewMode == 2) {
+					} else if (viewMode == 2) {
 						newDate = this.moveDate(this.date, dir * 7);
 						newViewDate = this.moveDate(this.viewDate, dir * 7);
-										} else if (viewMode == 1) {
-												if (this.showMeridian) {
-														newDate = this.moveHour(this.date, dir * 6);
-														newViewDate = this.moveHour(this.viewDate, dir * 6);
-												} else {
-														newDate = this.moveHour(this.date, dir * 4);
-														newViewDate = this.moveHour(this.viewDate, dir * 4);
-												}
-										} else if (viewMode == 0) {
+					} else if (viewMode == 1) {
+						if (this.showMeridian) {
+							newDate = this.moveHour(this.date, dir * 6);
+							newViewDate = this.moveHour(this.viewDate, dir * 6);
+						} else {
+							newDate = this.moveHour(this.date, dir * 4);
+							newViewDate = this.moveHour(this.viewDate, dir * 4);
+						}
+					} else if (viewMode == 0) {
 						newDate = this.moveMinute(this.date, dir * 4);
 						newViewDate = this.moveMinute(this.viewDate, dir * 4);
-										}
+					}
 					if (this.dateWithinRange(newDate)){
 						this.date = newDate;
 						this.viewDate = newViewDate;
@@ -1362,19 +1362,19 @@
 					}
 					break;
 				case 13: // enter
-										if (this.viewMode != 0) {
-												var oldViewMode = this.viewMode;
-												this.showMode(-1);
-												this.fill();
-												if (oldViewMode == this.viewMode && this.autoclose) {
-														this.hide();
-												}
-										} else {
-												this.fill();
-												if (this.autoclose) {
+					if (this.viewMode != 0) {
+							var oldViewMode = this.viewMode;
+							this.showMode(-1);
+							this.fill();
+							if (oldViewMode == this.viewMode && this.autoclose) {
 									this.hide();
-												}
-										}
+							}
+					} else {
+							this.fill();
+							if (this.autoclose) {
+									this.hide();
+							}
+					}
 					e.preventDefault();
 					break;
 				case 9: // tab
@@ -1399,7 +1399,7 @@
 		},
 
 		showMode: function(dir) {
-			if (!this.isToggle && dir) {
+			if (dir) {
 				var newViewMode = Math.max(0, Math.min(DPGlobal.modes.length - 1, this.viewMode + dir));
 				if (newViewMode >= this.minView && newViewMode <= this.maxView) {
 					this.element.trigger({
