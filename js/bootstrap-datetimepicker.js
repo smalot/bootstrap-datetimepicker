@@ -34,6 +34,15 @@
 
 	var Datetimepicker = function(element, options) {
 		var that = this;
+		
+    	this.iconLeft = options.iconLeft || 'icon-arrow-left';
+    	this.iconRight = options.iconRight || 'icon-arrow-right';
+
+    	DPGlobal.template = DPGlobal.template.replace(/{iconLeft}/g, this.iconLeft);
+    	DPGlobal.template = DPGlobal.template.replace(/{iconRight}/g, this.iconRight);
+    	
+    	this.triggerSelector = options.triggerSelector || '.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar';
+    	this.resetSelector = options.resetSelector || '.add-on .icon-remove';    	
 
 		this.element = $(element);
 		this.language = options.language || this.element.data('date-language') || "en";
@@ -44,8 +53,8 @@
 		this.isInline = false;
 		this.isVisible = false;
 		this.isInput = this.element.is('input');
-		this.component = this.element.is('.date') ? this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar').parent() : false;
-		this.componentReset = this.element.is('.date') ? this.element.find('.add-on .icon-remove').parent() : false;
+		this.component = this.element.is('.date') ? this.element.find(this.triggerSelector).parent() : false;
+		this.componentReset = this.element.is('.date') ? this.element.find(this.resetSelector).parent() : false;
 		this.hasInput = this.component && this.element.find('input').length;
 		if (this.component && this.component.length === 0) {
 			this.component = false;
@@ -154,7 +163,7 @@
 		if (this.isRTL){
 			this.picker.addClass('datetimepicker-rtl');
 			this.picker.find('.prev i, .next i')
-						.toggleClass('icon-arrow-left icon-arrow-right');
+						.toggleClass(this.iconLeft + ' ' + this.iconRight);
 		}
 		$(document).on('mousedown', function (e) {
 			// Clicked outside the datetimepicker, hide it
@@ -1517,12 +1526,12 @@
 			return viewMode;
 		},
 		headTemplate: '<thead>'+
-							'<tr>'+
-								'<th class="prev"><i class="icon-arrow-left"/></th>'+
-								'<th colspan="5" class="switch"></th>'+
-								'<th class="next"><i class="icon-arrow-right"/></th>'+
-							'</tr>'+
-						'</thead>',
+						'<tr>'+
+							'<th class="prev"><i class="{iconLeft}"/></th>'+
+							'<th colspan="5" class="switch"></th>'+
+							'<th class="next"><i class="{iconRight}"/></th>'+
+						'</tr>'+
+			      	  '</thead>',
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
 		footTemplate: '<tfoot><tr><th colspan="7" class="today"></th></tr></tfoot>'
 	};
