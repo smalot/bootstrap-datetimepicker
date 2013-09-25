@@ -40,8 +40,9 @@
     	this.iconPrev = options.iconPrev || this.element.data('icon-prev') || 'icon-arrow-left';
     	this.iconNext = options.iconNext || this.element.data('icon-next') || 'icon-arrow-right';
 
-    	DPGlobal.template = DPGlobal.template.replace(/{iconPrev}/g, this.iconPrev);
-    	DPGlobal.template = DPGlobal.template.replace(/{iconNext}/g, this.iconNext);
+    	this.template = DPGlobal.template;
+    	this.template = this.template.replace(/{iconPrev}/g, this.iconPrev);
+    	this.template = this.template.replace(/{iconNext}/g, this.iconNext);
     	
     	this.triggerSelector = options.triggerSelector || this.element.data('trigger-selector') || '.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar';
     	this.resetSelector = options.resetSelector || this.element.data('reset-selector') || '.add-on .icon-remove';    	
@@ -138,7 +139,7 @@
 			this.forceParse = this.element.data('date-force-parse');
 		}
 
-		this.picker = $(DPGlobal.template)
+		this.picker = $(this.template)
 							.appendTo(this.isInline ? this.element : 'body')
 							.on({
 								click: $.proxy(this.click, this),
