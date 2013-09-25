@@ -35,16 +35,17 @@
 	var Datetimepicker = function(element, options) {
 		var that = this;
 		
-    	this.iconLeft = options.iconLeft || 'icon-arrow-left';
-    	this.iconRight = options.iconRight || 'icon-arrow-right';
-
-    	DPGlobal.template = DPGlobal.template.replace(/{iconLeft}/g, this.iconLeft);
-    	DPGlobal.template = DPGlobal.template.replace(/{iconRight}/g, this.iconRight);
-    	
-    	this.triggerSelector = options.triggerSelector || '.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar';
-    	this.resetSelector = options.resetSelector || '.add-on .icon-remove';    	
-
 		this.element = $(element);
+
+    	this.iconPrev = options.iconPrev || this.element.data('icon-prev') || 'icon-arrow-left';
+    	this.iconNext = options.iconNext || this.element.data('icon-next') || 'icon-arrow-right';
+
+    	DPGlobal.template = DPGlobal.template.replace(/{iconPrev}/g, this.iconPrev);
+    	DPGlobal.template = DPGlobal.template.replace(/{iconNext}/g, this.iconNext);
+    	
+    	this.triggerSelector = options.triggerSelector || this.element.data('trigger-selector') || '.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar';
+    	this.resetSelector = options.resetSelector || this.element.data('reset-selector') || '.add-on .icon-remove';    	
+
 		this.language = options.language || this.element.data('date-language') || "en";
 		this.language = this.language in dates ? this.language : "en";
 		this.isRTL = dates[this.language].rtl || false;
@@ -163,7 +164,7 @@
 		if (this.isRTL){
 			this.picker.addClass('datetimepicker-rtl');
 			this.picker.find('.prev i, .next i')
-						.toggleClass(this.iconLeft + ' ' + this.iconRight);
+						.toggleClass(this.iconPrev + ' ' + this.iconNext);
 		}
 		$(document).on('mousedown', function (e) {
 			// Clicked outside the datetimepicker, hide it
@@ -1527,9 +1528,9 @@
 		},
 		headTemplate: '<thead>'+
 						'<tr>'+
-							'<th class="prev"><i class="{iconLeft}"/></th>'+
+							'<th class="prev"><i class="{iconPrev}"/></th>'+
 							'<th colspan="5" class="switch"></th>'+
-							'<th class="next"><i class="{iconRight}"/></th>'+
+							'<th class="next"><i class="{iconNext}"/></th>'+
 						'</tr>'+
 			      	  '</thead>',
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
