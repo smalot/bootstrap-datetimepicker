@@ -34,8 +34,19 @@
 
 	var Datetimepicker = function(element, options) {
 		var that = this;
-
+		
 		this.element = $(element);
+
+    	this.iconPrev = options.iconPrev || this.element.data('icon-prev') || 'icon-arrow-left';
+    	this.iconNext = options.iconNext || this.element.data('icon-next') || 'icon-arrow-right';
+
+    	this.template = DPGlobal.template;
+    	this.template = this.template.replace(/{iconPrev}/g, this.iconPrev);
+    	this.template = this.template.replace(/{iconNext}/g, this.iconNext);
+    	
+    	this.triggerSelector = options.triggerSelector || this.element.data('trigger-selector') || '.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar';
+    	this.resetSelector = options.resetSelector || this.element.data('reset-selector') || '.add-on .icon-remove';    	
+
 		this.language = options.language || this.element.data('date-language') || "en";
 		this.language = this.language in dates ? this.language : "en";
 		this.isRTL = dates[this.language].rtl || false;
@@ -44,8 +55,8 @@
 		this.isInline = false;
 		this.isVisible = false;
 		this.isInput = this.element.is('input');
-		this.component = this.element.is('.date') ? this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar').parent() : false;
-		this.componentReset = this.element.is('.date') ? this.element.find('.add-on .icon-remove').parent() : false;
+		this.component = this.element.is('.date') ? this.element.find(this.triggerSelector).parent() : false;
+		this.componentReset = this.element.is('.date') ? this.element.find(this.resetSelector).parent() : false;
 		this.hasInput = this.component && this.element.find('input').length;
 		if (this.component && this.component.length === 0) {
 			this.component = false;
@@ -128,7 +139,7 @@
 			this.forceParse = this.element.data('date-force-parse');
 		}
 
-		this.picker = $(DPGlobal.template)
+		this.picker = $(this.template)
 							.appendTo(this.isInline ? this.element : 'body')
 							.on({
 								click: $.proxy(this.click, this),
@@ -154,7 +165,7 @@
 		if (this.isRTL){
 			this.picker.addClass('datetimepicker-rtl');
 			this.picker.find('.prev i, .next i')
-						.toggleClass('icon-arrow-left icon-arrow-right');
+						.toggleClass(this.iconPrev + ' ' + this.iconNext);
 		}
 		$(document).on('mousedown', function (e) {
 			// Clicked outside the datetimepicker, hide it
@@ -1517,12 +1528,12 @@
 			return viewMode;
 		},
 		headTemplate: '<thead>'+
-							'<tr>'+
-								'<th class="prev"><i class="icon-arrow-left"/></th>'+
-								'<th colspan="5" class="switch"></th>'+
-								'<th class="next"><i class="icon-arrow-right"/></th>'+
-							'</tr>'+
-						'</thead>',
+						'<tr>'+
+							'<th class="prev"><i class="{iconPrev}"/></th>'+
+							'<th colspan="5" class="switch"></th>'+
+							'<th class="next"><i class="{iconNext}"/></th>'+
+						'</tr>'+
+			      	  '</thead>',
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
 		footTemplate: '<tfoot><tr><th colspan="7" class="today"></th></tr></tfoot>'
 	};
