@@ -95,6 +95,22 @@ As component:
 $('#datetimepicker').datetimepicker();
 ```
 
+As component (for Twitter Bootstrap 3):
+
+```html
+<div class="input-group date col-lg-3" id="datetimepicker" 
+    data-date="12-02-2012 12:10" data-date-format="dd-mm-yyyy hh:ii"
+    data-icon-prev="glyphicon glyphicon-chevron-left" data-icon-next="glyphicon glyphicon-chevron-right"
+    data-trigger-selector=".glyphicon-calendar" 
+    >
+    <input type="text" size="16" class="form-control" value="12-02-2012 12:10" readonly>
+    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+</div>
+```
+```javascript
+$('#datetimepicker').datetimepicker();
+```
+
 As inline datetimepicker:
 
 ```html
@@ -282,6 +298,35 @@ You can initialize the viewer with a date. By default it's now, so you can speci
 
 This event is fired when a day is rendered inside the datepicker. Should return a string. Return 'disabled' to disable the day from being selected.
 
+### iconPrev
+
+String. Default: 'icon-arrow-left'
+
+The icon-font class for the Prev button
+(Markup counterpart: data-icon-prev)
+
+### iconNext
+
+String. Default: 'icon-arrow-right'
+
+The icon-font class for the Next button
+(Markup counterpart: data-icon-next)
+
+### triggerSelector
+
+String. Default: '.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar'
+
+Use it to specify a different jquery selector for the html element triggering the calendar.
+(Markup counterpart: data-trigger-selector)
+
+### resetSelector
+
+String. Default: '.add-on .icon-remove'
+
+Use it to specify a different jquery selector for the html element clearing the date input field.
+(Markup counterpart: data-reset-selector)
+
+
 ```javascript
 $('#date-end')
     .datetimepicker({
@@ -309,6 +354,40 @@ Format as component with reset button to clear the input field.
     <input class="span2" size="16" type="text" value="12-02-2012">
     <span class="add-on"><i class="icon-remove"></i></span>
     <span class="add-on"><i class="icon-th"></i></span>
+</div>
+```
+
+Format as component using Twitter Bootrap 3 and custom icons/selectors.
+
+```html
+<div class="input-group date col-lg-3" id="datetimepicker" 
+    data-date="12-02-2012 12:20" data-date-format="dd-mm-yyyy"
+    data-trigger-selector=".action-show-calendar"
+    data-icon-prev="glyphicon glyphicon-chevron-left" data-icon-next="glyphicon glyphicon-chevron-right"
+    >
+    <input type="text" size="16" class="form-control" value="12-02-2012 12:20">
+    <span class="input-group-addon">
+        <i class="glyphicon glyphicon-time action-show-calendar"></i>
+    </span>
+</div>
+```
+
+Format as component with reset button (segmented buttons example) using Twitter Bootrap 3, custom icons and selectors.
+
+```html
+<div class="input-group date col-lg-3" id="datetimepicker" 
+    data-date="12-02-2012 21:10" data-date-format="dd-mm-yyyy hh:ii"
+    data-trigger-selector=".action-show-calendar" data-reset-selector=".action-reset-date"
+    >
+    <input type="text" size="16" class="form-control" value="12-02-2012 21:10">
+    <div class="input-group-btn">
+        <span class="btn btn-default">
+            <i class="glyphicon glyphicon-remove action-reset-date"></i>
+        </span>
+        <span class="btn btn-default">
+            <i class="glyphicon glyphicon-calendar action-show-calendar"></i>
+        </span>
+    </div>
 </div>
 ```
 
