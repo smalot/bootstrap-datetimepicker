@@ -826,7 +826,11 @@
 							case 'today':
 								var date = new Date();
 								date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), 0);
-
+								
+                                                                // Respect startDate and endDate.
+                                                                if (date < this.startDate) date = this.startDate;
+							        else if (date > this.endDate) date = this.endDate;
+							        
 								this.viewMode = this.startViewMode;
 								this.showMode(0);
 								this._setDate(date);
