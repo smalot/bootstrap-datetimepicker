@@ -291,6 +291,30 @@ $('#date-end')
     });
 ```
 
+### minMinutes
+
+Number. Default: 0
+
+The minimum value of the displayed minutes.
+
+### maxMinutes
+
+Number. Default: 59
+
+The maximum value of the displayed minutes.
+
+### minHours
+
+Number. Default: 0
+
+The minimum value of the displayed hours.
+
+### maxHours
+
+Number. Default: 23
+
+The maximum value of the displayed hours.
+
 ## Markup
 
 Format as component.

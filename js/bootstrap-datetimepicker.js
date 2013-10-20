@@ -68,6 +68,11 @@
 		this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
 		this.initialDate = options.initialDate || new Date();
 
+		this.minMinutes = options.minMinutes || this.element.data('min-minutes') || 0
+		this.maxMinutes = options.maxMinutes || this.element.data('max-minutes') || 59
+		this.minHours = options.minHours || this.element.data('min-hours') || 0
+		this.maxHours = options.maxHours || this.element.data('max-hours') || 23
+
 		this._attachEvents();
 
 		this.formatViewType = "datetime";
@@ -582,7 +587,7 @@
 
 			html = [];
 			var txt = '', meridian = '', meridianOld = '';
-			for (var i = 0; i < 24; i++) {
+			for (var i = this.minHours; i <= this.maxHours; i++) {
 				var actual = UTCDate(year, month, dayMonth, i);
 				clsName = '';
 				// We want the previous hour for the startDate
@@ -614,7 +619,7 @@
 
 			html = [];
 			txt = '', meridian = '', meridianOld = '';
-			for (var i = 0; i < 60; i += this.minuteStep) {
+			for (var i = this.minMinutes; i <= this.maxMinutes; i += this.minuteStep) {
 				var actual = UTCDate(year, month, dayMonth, hours, i, 0);
 				clsName = '';
 				if (actual.valueOf() < this.startDate || actual.valueOf() > this.endDate) {
