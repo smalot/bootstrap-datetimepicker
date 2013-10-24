@@ -237,3 +237,11 @@ test('Invalid formats are force-parsed into a valid date on tab', patch_date(fun
 
     equal(this.input.val(), '56-September-30');
 }));
+
+test('Untrimmed datetime value', patch_date(function(Date){
+  this.input
+      .val('2012-03-05 ')
+      .datetimepicker({format: 'yyyy-mm-dd hh:ii'})
+      .datetimepicker('setValue');
+  equal(this.input.val(), '2012-03-05 00:00');
+}));
