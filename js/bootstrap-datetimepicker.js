@@ -194,7 +194,7 @@
 
 		this.todayBtn = (options.todayBtn || this.element.data('date-today-btn') || false);
 		this.todayHighlight = (options.todayHighlight || this.element.data('date-today-highlight') || false);
-		this.allowClear = (options.allowClear || this.element.data('date-allow-clear') || true);
+		this.allowClear = (options.allowClear || this.element.data('date-allow-clear') || false);
 
 		this.weekStart = ((options.weekStart || this.element.data('date-weekstart') || dates[this.language].weekStart || 0) % 7);
 		this.weekEnd = ((this.weekStart + 6) % 7);
