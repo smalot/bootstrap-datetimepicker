@@ -396,12 +396,12 @@
 }
 
 .datetimepicker thead tr:first-child th,
-.datetimepicker tfoot tr:first-child th {
+.datetimepicker tfoot tr th {
 	cursor: pointer;
 }
 
 .datetimepicker thead tr:first-child th:hover,
-.datetimepicker tfoot tr:first-child th:hover {
+.datetimepicker tfoot tr th:hover {
 	background: #eeeeee;
 }
 

@@ -194,6 +194,7 @@
 
 		this.todayBtn = (options.todayBtn || this.element.data('date-today-btn') || false);
 		this.todayHighlight = (options.todayHighlight || this.element.data('date-today-highlight') || false);
+		this.allowClear = (options.allowClear || this.element.data('date-allow-clear') || true);
 
 		this.weekStart = ((options.weekStart || this.element.data('date-weekstart') || dates[this.language].weekStart || 0) % 7);
 		this.weekEnd = ((this.weekStart + 6) % 7);
@@ -538,6 +539,9 @@
 			this.picker.find('tfoot th.today')
 				.text(dates[this.language].today)
 				.toggle(this.todayBtn !== false);
+			this.picker.find('tfoot th.clear')
+				.text(dates[this.language].clear || dates['en'].clear)
+				.toggle(this.allowClear !== false);
 			this.updateNavArrows();
 			this.fillMonths();
 			/*var prevMonth = UTCDate(year, month, 0,0,0,0,0);
@@ -824,6 +828,12 @@
 										break;
 								}
 								this.fill();
+								break;
+							case 'clear':
+								this.reset();
+								if (this.autoclose) {
+									this.hide();
+								}
 								break;
 							case 'today':
 								var date = new Date();
@@ -1253,7 +1263,8 @@
 			monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
 			meridiem:    ["am", "pm"],
 			suffix:      ["st", "nd", "rd", "th"],
-			today:       "Today"
+			today:       "Today",
+			clear:       "Clear"
 		}
 	};
 
@@ -1591,7 +1602,10 @@
 							  '</tr>' +
 			'</thead>',
 		contTemplate:     '<tbody><tr><td colspan="7"></td></tr></tbody>',
-		footTemplate:     '<tfoot><tr><th colspan="7" class="today"></th></tr></tfoot>'
+		footTemplate:     '<tfoot>' +
+							  '<tr><th colspan="7" class="today"></th></tr>' +
+							  '<tr><th colspan="7" class="clear"></th></tr>' +
+			'</tfoot>'
 	};
 	DPGlobal.template = '<div class="datetimepicker">' +
 		'<div class="datetimepicker-minutes">' +
