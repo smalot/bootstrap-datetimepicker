@@ -942,8 +942,7 @@
 								}
 							}
 							this.viewDate.setUTCFullYear(year);
-							this.viewDate.setUTCMonth(month);
-							this.viewDate.setUTCDate(day);
+							this.viewDate.setUTCMonth(month, day);
 							this.element.trigger({
 								type: 'changeDay',
 								date: this.viewDate
