@@ -22,7 +22,7 @@
 
 /*
  * Improvement by CuGBabyBeaR @ 2013-09-12
- * 
+ *
  * Make it work in bootstrap v3
  */
 
@@ -524,11 +524,19 @@
 				var hourConverted = hours % 12 ? hours % 12 : 12;
 				var hoursDisplay = (hourConverted < 10 ? '0' : '') + hourConverted;
 				var minutesDisplay = (minutes < 10 ? '0' : '') + minutes;
-				var meridianDisplay = dates[this.language].meridiem[hours < 12 ? 0 : 1];
-				this.picker.find('.datetimepicker-hours thead th:eq(1)')
-					.text(hoursDisplay + ':' + minutesDisplay + ' ' + meridianDisplay.toUpperCase());
-				this.picker.find('.datetimepicker-minutes thead th:eq(1)')
-					.text(hoursDisplay + ':' + minutesDisplay + ' ' + meridianDisplay.toUpperCase());
+
+				if (this.showMeridian) {
+					var meridianDisplay = dates[this.language].meridiem[hours < 12 ? 0 : 1];
+					this.picker.find('.datetimepicker-hours thead th:eq(1)')
+						.text(hoursDisplay + ':' + minutesDisplay + ' ' + meridianDisplay.toUpperCase());
+					this.picker.find('.datetimepicker-minutes thead th:eq(1)')
+						.text(hoursDisplay + ':' + minutesDisplay + ' ' + meridianDisplay.toUpperCase());
+				} else {
+					this.picker.find('.datetimepicker-hours thead th:eq(1)')
+						.text(hours + ':' + minutesDisplay);
+					this.picker.find('.datetimepicker-minutes thead th:eq(1)')
+						.text(hours + ':' + minutesDisplay);
+				}
 			} else {
 				this.picker.find('.datetimepicker-hours thead th:eq(1)')
 					.text(dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
