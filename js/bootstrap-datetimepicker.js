@@ -200,9 +200,11 @@
 		this.startDate = -Infinity;
 		this.endDate = Infinity;
 		this.daysOfWeekDisabled = [];
+		this.daysEnabled = [];
 		this.setStartDate(options.startDate || this.element.data('date-startdate'));
 		this.setEndDate(options.endDate || this.element.data('date-enddate'));
 		this.setDaysOfWeekDisabled(options.daysOfWeekDisabled || this.element.data('date-days-of-week-disabled'));
+		this.setDaysEnabled();
 		this.fillDow();
 		this.fillMonths();
 		this.update();
@@ -417,6 +419,22 @@
 			this.updateNavArrows();
 		},
 
+		setDaysEnabled: function (daysEnabled) {
+			var l = this.element.attr('list');
+			this.daysEnabled = daysEnabled || [];
+			if (l !== undefined && $('#' + l).length > 0) {
+				var that = this;
+				this.daysEnabled = $('#' + l).children().map(function () {
+					return DPGlobal.parseDate(this.value, that.format, that.language, that.formatType).valueOf();
+				}).get();
+
+				return this.daysEnabled;
+			}
+
+			this.update();
+			this.updateNavArrows();
+		},
+
 		place: function () {
 			if (this.isInline) return;
 
@@ -572,7 +590,9 @@
 					clsName += ' active';
 				}
 				if ((prevMonth.valueOf() + 86400000) <= this.startDate || prevMonth.valueOf() > this.endDate ||
-					$.inArray(prevMonth.getUTCDay(), this.daysOfWeekDisabled) !== -1) {
+					$.inArray(prevMonth.getUTCDay(), this.daysOfWeekDisabled) !== -1 ||
+					($.inArray(prevMonth.valueOf(), this.daysEnabled) === -1 &&
+					clsName.indexOf('old') === -1 && clsName.indexOf('new') === -1)) {
 					clsName += ' disabled';
 				}
 				html.push('<td class="day' + clsName + '">' + prevMonth.getUTCDate() + '</td>');
