@@ -200,6 +200,7 @@
 		this.startDate = -Infinity;
 		this.endDate = Infinity;
 		this.daysOfWeekDisabled = [];
+		this.inOwnChange = false;
 		this.setStartDate(options.startDate || this.element.data('date-startdate'));
 		this.setEndDate(options.endDate || this.element.data('date-enddate'));
 		this.setDaysOfWeekDisabled(options.daysOfWeekDisabled || this.element.data('date-days-of-week-disabled'));
@@ -224,7 +225,8 @@
 					[this.element, {
 						focus:   $.proxy(this.show, this),
 						keyup:   $.proxy(this.update, this),
-						keydown: $.proxy(this.keydown, this)
+						keydown: $.proxy(this.keydown, this),
+						change:  $.proxy(this.change, this)
 					}]
 				];
 			}
@@ -234,7 +236,8 @@
 					[this.element.find('input'), {
 						focus:   $.proxy(this.show, this),
 						keyup:   $.proxy(this.update, this),
-						keydown: $.proxy(this.keydown, this)
+						keydown: $.proxy(this.keydown, this),
+						change:  $.proxy(this.change, this)
 					}],
 					[this.component, {
 						click: $.proxy(this.show, this)
@@ -976,7 +979,7 @@
 				element = this.element.find('input');
 			}
 			if (element) {
-				element.change();
+				this.triggerChange(element);
 				if (this.autoclose && (!which || which == 'date')) {
 					//this.hide();
 				}
@@ -1182,13 +1185,30 @@
 					element = this.element.find('input');
 				}
 				if (element) {
-					element.change();
+					this.triggerChange(element);
 				}
 				this.element.trigger({
 					type: 'changeDate',
 					date: this.date
 				});
 			}
+		},
+
+		triggerChange: function(element) {
+			this.inOwnChange = true;
+			element.change();
+			this.inOwnChange = false;
+		},
+
+		change: function (e) {
+			if (this.inOwnChange) {
+				return;
+			}
+			var text = $(e.target).val();
+			var previousDate = this.getUTCDate() || this.initialDate;
+			var date = DPGlobal.parseDate(text, this.format, this.language, this.formatType, previousDate);
+			// update subtracts the timezone-offset, so we have to add it here
+		    this.update(new Date(date.getTime() + (date.getTimezoneOffset() * 60000)), false);
 		},
 
 		showMode: function (dir) {
@@ -1325,7 +1345,7 @@
 			}
 			return {separators: separators, parts: parts};
 		},
-		parseDate:        function (date, format, language, type) {
+		parseDate:        function (date, format, language, type, previousDate) {
 			if (date instanceof Date) {
 				var dateUTC = new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
 				dateUTC.setMilliseconds(0);
@@ -1366,7 +1386,6 @@
 				return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), 0);
 			}
 			var parts = date && date.match(this.nonpunctuation) || [],
-				date = new Date(0, 0, 0, 0, 0, 0, 0),
 				parsed = {},
 				setters_order = ['hh', 'h', 'ii', 'i', 'ss', 's', 'yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'D', 'DD', 'd', 'dd', 'H', 'HH', 'p', 'P'],
 				setters_map = {
@@ -1420,9 +1439,9 @@
 			setters_map['M'] = setters_map['MM'] = setters_map['mm'] = setters_map['m'];
 			setters_map['dd'] = setters_map['d'];
 			setters_map['P'] = setters_map['p'];
-			date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
-			if (parts.length == format.parts.length) {
-				for (var i = 0, cnt = format.parts.length; i < cnt; i++) {
+			var date = previousDate === undefined ? UTCDate(0, 0, 0, 0, 0, 0) : previousDate;
+			if (parts.length == format.parts.length || previousDate !== undefined) {
+				for (var i = 0, cnt = parts.length; i < cnt; i++) {
 					val = parseInt(parts[i], 10);
 					part = format.parts[i];
 					if (isNaN(val)) {
