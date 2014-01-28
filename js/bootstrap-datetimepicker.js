@@ -591,7 +591,7 @@
 				}
 				if ((prevMonth.valueOf() + 86400000) <= this.startDate || prevMonth.valueOf() > this.endDate ||
 					$.inArray(prevMonth.getUTCDay(), this.daysOfWeekDisabled) !== -1 ||
-					($.inArray(prevMonth.valueOf(), this.daysEnabled) === -1 &&
+					(this.daysEnabled.length > 0 && $.inArray(prevMonth.valueOf(), this.daysEnabled) === -1 &&
 					clsName.indexOf('old') === -1 && clsName.indexOf('new') === -1)) {
 					clsName += ' disabled';
 				}
