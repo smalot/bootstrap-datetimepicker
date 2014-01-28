@@ -1366,7 +1366,7 @@
 				return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), 0);
 			}
 			var parts = date && date.match(this.nonpunctuation) || [],
-				date = new Date(0, 0, 0, 0, 0, 0, 0),
+				date = new Date(),
 				parsed = {},
 				setters_order = ['hh', 'h', 'ii', 'i', 'ss', 's', 'yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'D', 'DD', 'd', 'dd', 'H', 'HH', 'p', 'P'],
 				setters_map = {
