@@ -28,12 +28,16 @@
 
 !function ($) {
 
+	var getTodayDate = function() {
+		return new Date();
+	}
+
 	function UTCDate() {
 		return new Date(Date.UTC.apply(Date, arguments));
 	}
 
 	function UTCToday() {
-		var today = new Date();
+		var today = getTodayDate();
 		return UTCDate(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), today.getUTCHours(), today.getUTCMinutes(), today.getUTCSeconds(), 0);
 	}
 
@@ -43,6 +47,10 @@
 		var that = this;
 
 		this.element = $(element);
+
+		if (options.customTodayFnc) {
+			getTodayDate = options.customTodayFnc;
+		}
 
 		this.language = options.language || this.element.data('date-language') || "en";
 		this.language = this.language in dates ? this.language : "en";
@@ -273,7 +281,20 @@
 			this._events = [];
 		},
 
+		setDisabled: function(disable) {
+			if (disable) {
+				this.element.addClass('disabled');
+				$('input', this.element).prop('disabled', true);
+			} else {
+				this.element.removeClass('disabled');
+				$('input', this.element).prop('disabled', false);
+			}
+		},
+
 		show: function (e) {
+			if ($(e.target).closest('.input-group').hasClass('disabled')) {
+				return;
+			}
 			this.picker.show();
 			this.height = this.component ? this.component.outerHeight() : this.element.outerHeight();
 			if (this.forceParse) {
@@ -517,7 +538,7 @@
 				endYear = this.endDate !== Infinity ? this.endDate.getUTCFullYear() : Infinity,
 				endMonth = this.endDate !== Infinity ? this.endDate.getUTCMonth() : Infinity,
 				currentDate = (new UTCDate(this.date.getUTCFullYear(), this.date.getUTCMonth(), this.date.getUTCDate())).valueOf(),
-				today = new Date();
+				today = getTodayDate();
 			this.picker.find('.datetimepicker-days thead th:eq(1)')
 				.text(dates[this.language].months[month] + ' ' + year);
 			if (this.formatViewType == "time") {
@@ -826,13 +847,11 @@
 								this.fill();
 								break;
 							case 'today':
-								var date = new Date();
+								var date = getTodayDate();
 								date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), 0);
-
 								// Respect startDate and endDate.
-								if (date < this.startDate) date = this.startDate;
-								else if (date > this.endDate) date = this.endDate;
-
+								if (date < this.startDate) date = new Date(this.startDate);
+								else if (date > this.endDate) date = new Date(this.endDate);
 								this.viewMode = this.startViewMode;
 								this.showMode(0);
 								this._setDate(date);
@@ -1344,7 +1363,7 @@
 				var part_re = /([-+]\d+)([dmwy])/,
 					parts = date.match(/([-+]\d+)([dmwy])/g),
 					part, dir;
-				date = new Date();
+				date = getTodayDate();
 				for (var i = 0; i < parts.length; i++) {
 					part = part_re.exec(parts[i]);
 					dir = parseInt(part[1]);

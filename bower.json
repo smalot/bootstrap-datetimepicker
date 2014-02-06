@@ -1,5 +1,5 @@
 {
-  "name": "smalot-bootstrap-datetimepicker",
-  "version": "2.2.0",
+  "name": "kretikus-bootstrap-datetimepicker",
+  "version": "2.2.2",
   "main": ["js/bootstrap-datetimepicker.min.js", "css/bootstrap-datetimepicker.min.css"]
 }
