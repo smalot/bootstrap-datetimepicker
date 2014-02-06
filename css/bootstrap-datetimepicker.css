@@ -412,3 +412,12 @@
 	width: 14px;
 	height: 14px;
 }
+
+.input-group.date.disabled span {
+        cursor: not-allowed;
+}
+
+.input-group.date.disabled input {
+        cursor: not-allowed;
+        background-color: #eee;
+}

@@ -281,7 +281,20 @@
 			this._events = [];
 		},
 
+		setDisabled: function(disable) {
+			if (disable) {
+				this.element.addClass('disabled');
+				$('input', this.element).prop('disabled', true);
+			} else {
+				this.element.removeClass('disabled');
+				$('input', this.element).prop('disabled', false);
+			}
+		},
+
 		show: function (e) {
+			if ($(e.target).closest('.input-group').hasClass('disabled')) {
+				return;
+			}
 			this.picker.show();
 			this.height = this.component ? this.component.outerHeight() : this.element.outerHeight();
 			if (this.forceParse) {
