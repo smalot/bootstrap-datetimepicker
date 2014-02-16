@@ -43,6 +43,9 @@
 		var that = this;
 
 		this.element = $(element);
+		this.container = options.container || 'body';
+		this.$container = $(this.container);
+		this.offsetMethod = (this.container != 'body') ? 'position' : 'offset';
 
 		this.language = options.language || this.element.data('date-language') || "en";
 		this.language = this.language in dates ? this.language : "en";
@@ -140,7 +143,7 @@
 		}
 
 		this.picker = $((this.bootcssVer == 3) ? DPGlobal.templateV3 : DPGlobal.template)
-			.appendTo(this.isInline ? this.element : 'body')
+			.appendTo(this.isInline ? this.element : this.$container)
 			.on({
 				click:     $.proxy(this.click, this),
 				mousedown: $.proxy(this.mousedown, this)
@@ -431,13 +434,13 @@
 
 			var offset, top, left;
 			if (this.component) {
-				offset = this.component.offset();
+				offset = this.component[this.offsetMethod]();
 				left = offset.left;
 				if (this.pickerPosition == 'bottom-left' || this.pickerPosition == 'top-left') {
 					left += this.component.outerWidth() - this.picker.outerWidth();
 				}
 			} else {
-				offset = this.element.offset();
+				offset = this.element[this.offsetMethod]();
 				left = offset.left;
 			}
 			if (this.pickerPosition == 'top-left' || this.pickerPosition == 'top-right') {
@@ -445,6 +448,13 @@
 			} else {
 				top = offset.top + this.height;
 			}
+
+			if (this.pickerPosition == 'bottom-left' || this.pickerPosition == 'top-left') {
+				var el = this.component ?  this.component : this.element;
+				left += el.outerWidth() - this.picker.outerWidth();
+				console.log(this.picker.outerWidth());
+			}
+
 			this.picker.css({
 				top:    top,
 				left:   left,
