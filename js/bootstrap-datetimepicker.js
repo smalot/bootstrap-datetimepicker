@@ -171,8 +171,6 @@
 				this.picker.find('.prev i, .next i')
 					.toggleClass('icon-arrow-left icon-arrow-right');
 			}
-			;
-
 		}
 		$(document).on('mousedown', function (e) {
 			// Clicked outside the datetimepicker, hide it
@@ -452,7 +450,6 @@
 			if (this.pickerPosition == 'bottom-left' || this.pickerPosition == 'top-left') {
 				var el = this.component ?  this.component : this.element;
 				left += el.outerWidth() - this.picker.outerWidth();
-				console.log(this.picker.outerWidth());
 			}
 
 			this.picker.css({
