@@ -526,9 +526,9 @@
 				var minutesDisplay = (minutes < 10 ? '0' : '') + minutes;
 				var meridianDisplay = dates[this.language].meridiem[hours < 12 ? 0 : 1];
 				this.picker.find('.datetimepicker-hours thead th:eq(1)')
-					.text(hoursDisplay + ':' + minutesDisplay + ' ' + meridianDisplay.toUpperCase());
+					.text(hoursDisplay + ':' + minutesDisplay + ' ' + (meridianDisplay ? meridianDisplay.toUpperCase() : ''));
 				this.picker.find('.datetimepicker-minutes thead th:eq(1)')
-					.text(hoursDisplay + ':' + minutesDisplay + ' ' + meridianDisplay.toUpperCase());
+					.text(hoursDisplay + ':' + minutesDisplay + ' ' + (meridianDisplay ? meridianDisplay.toUpperCase() : ''));
 			} else {
 				this.picker.find('.datetimepicker-hours thead th:eq(1)')
 					.text(dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
