@@ -14,7 +14,7 @@ This project is a fork of [bootstrap-datepicker project](https://github.com/eter
 
 # Home
 
-As 'bootstrap-datetimepicker' is restricted to the date scope (day, month, year), this project aims to support too the time picking (hour, minutes).
+As 'bootstrap-datepicker' is restricted to the date scope (day, month, year), this project aims to support too the time picking (hour, minutes).
 
 
 # Screenshots
