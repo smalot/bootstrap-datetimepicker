@@ -13,7 +13,7 @@
 		today: "Dnes",
 		suffix: [],
 		meridiem: [],
-		weekStart  : 1,
-		format     : "dd.mm.yyyy"
+		weekStart: 1,
+		format: "dd.mm.yyyy"
 	};
 }(jQuery));
