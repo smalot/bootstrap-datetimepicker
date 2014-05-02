@@ -441,7 +441,6 @@
 				left = offset.left;
 			}
 			
-			//set left if the div over the width ^_^
 			if(left+220 > document.body.clientWidth){
             			left = document.body.clientWidth-220;
           		}
