@@ -44,6 +44,10 @@
 
 		this.element = $(element);
 
+		// add container for single page application
+		// when page switch the datetimepicker div will be removed also.
+		this.container = options.container || 'body';
+
 		this.language = options.language || this.element.data('date-language') || "en";
 		this.language = this.language in dates ? this.language : "en";
 		this.isRTL = dates[this.language].rtl || false;
@@ -52,6 +56,7 @@
 		this.isInline = false;
 		this.isVisible = false;
 		this.isInput = this.element.is('input');
+
 
 		this.bootcssVer = this.isInput ? (this.element.is('.form-control') ? 3 : 2) : ( this.bootcssVer = this.element.is('.input-group') ? 3 : 2 );
 
@@ -140,7 +145,7 @@
 		}
 
 		this.picker = $((this.bootcssVer == 3) ? DPGlobal.templateV3 : DPGlobal.template)
-			.appendTo(this.isInline ? this.element : 'body')
+			.appendTo(this.isInline ? this.element : this.container) // 'body')
 			.on({
 				click:     $.proxy(this.click, this),
 				mousedown: $.proxy(this.mousedown, this)
@@ -429,7 +434,13 @@
 			});
 			var zIndex = index_highest + 10;
 
-			var offset, top, left;
+			var offset, top, left, containerOffset;
+			if (this.container instanceof $) {
+				containerOffset = this.container.offset();
+			} else {
+				containerOffset = $(this.container).offset();
+			}
+
 			if (this.component) {
 				offset = this.component.offset();
 				left = offset.left;
@@ -450,6 +461,10 @@
 			} else {
 				top = offset.top + this.height;
 			}
+
+			top = top - containerOffset.top;
+			left = left - containerOffset.left;
+
 			this.picker.css({
 				top:    top,
 				left:   left,
@@ -1600,9 +1615,9 @@
 			'</thead>',
 		headTemplateV3:   '<thead>' +
 							  '<tr>' +
-							  '<th class="prev"><i class="glyphicon glyphicon-arrow-left"></i> </th>' +
+							  '<th class="prev"><i class="icon icon-arrow-left"></i> </th>' +
 							  '<th colspan="5" class="switch"></th>' +
-							  '<th class="next"><i class="glyphicon glyphicon-arrow-right"></i> </th>' +
+							  '<th class="next"><i class="icon icon-arrow-right"></i> </th>' +
 							  '</tr>' +
 			'</thead>',
 		contTemplate:     '<tbody><tr><td colspan="7"></td></tr></tbody>',
