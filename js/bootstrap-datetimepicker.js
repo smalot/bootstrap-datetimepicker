@@ -1419,7 +1419,10 @@
 						v %= 12;
 						d.setUTCMonth(v);
 						while (d.getUTCMonth() != v)
-							d.setUTCDate(d.getUTCDate() - 1);
+							if (isNaN(d.getUTCMonth()))
+								return d;
+							else
+								d.setUTCDate(d.getUTCDate() - 1);
 						return d;
 					},
 					d:    function (d, v) {
