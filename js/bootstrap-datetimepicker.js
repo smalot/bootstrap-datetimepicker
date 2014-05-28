@@ -1455,7 +1455,7 @@
 								filtered = $(dates[language].monthsShort).filter(function () {
 									var m = this.slice(0, parts[i].length),
 										p = parts[i].slice(0, m.length);
-									return m == p;
+									return m.toLowerCase() == p.toLowerCase();
 								});
 								val = $.inArray(filtered[0], dates[language].monthsShort) + 1;
 								break;
