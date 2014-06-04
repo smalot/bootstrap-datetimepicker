@@ -555,7 +555,3 @@ If your browser (or those of your users) is displaying characters wrong, chances
 ```html
 <script type="text/javascript" src="bootstrap-datetimepicker.de.js" charset="UTF-8"></script>
 ```
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/smalot/bootstrap-datetimepicker/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
