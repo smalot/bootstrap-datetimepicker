@@ -460,6 +460,10 @@ Fired when the *view* month is changed from year view.
 
 Fired when you pick a date before the *startDate* or after the *endDate* or when you specify a date via the method *setDate* or *setUTCDate*..
 
+### next:* and prev:*
+
+Fired when you click the next or previous arrows. Supports all the differnt view modes ('year', 'month', 'day', 'hour'). For example allows you to bind a callback to 'next:month' or 'prev:month' action.
+
 ## Keyboard support
 
 The datetimepicker includes some keyboard navigation:
