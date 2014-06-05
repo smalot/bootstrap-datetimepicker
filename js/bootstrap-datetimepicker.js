@@ -60,8 +60,8 @@
 
 		this.bootcssVer = this.isInput ? (this.element.is('.form-control') ? 3 : 2) : ( this.bootcssVer = this.element.is('.input-group') ? 3 : 2 );
 
-		this.component = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-th, .input-group-addon .glyphicon-time, .input-group-addon .glyphicon-calendar').parent() : this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar').parent()) : false;
-		this.componentReset = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-remove').parent() : this.element.find('.add-on .icon-remove').parent()) : false;
+		this.component = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-th, .input-group-addon .glyphicon-time, .input-group-addon .glyphicon-calendar, .input-group-addon .fa-th, .input-group-addon .fa-clock-o, .input-group-addon .fa-calendar').parent() : this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar, .add-on .fa-th, .add-on .fa-clock-o, .add-on .fa-calendar').parent()) : false;
+		this.componentReset = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-remove, .input-group-addon .fa-times').parent() : this.element.find('.add-on .icon-remove, .add-on .fa-times').parent()) : false;
 		this.hasInput = this.component && this.element.find('input').length;
 		if (this.component && this.component.length === 0) {
 			this.component = false;
@@ -168,10 +168,10 @@
 			this.picker.addClass('datetimepicker-rtl');
 			if (this.bootcssVer == 3) {
 				this.picker.find('.prev span, .next span')
-					.toggleClass('glyphicon-arrow-left glyphicon-arrow-right');
+					.toggleClass('glyphicon-arrow-left glyphicon-arrow-right fa-arrow-left fa-arrow-right');
 			} else {
 				this.picker.find('.prev i, .next i')
-					.toggleClass('icon-arrow-left icon-arrow-right');
+					.toggleClass('icon-arrow-left icon-arrow-right fa-arrow-left fa-arrow-right');
 			}
 			;
 
@@ -1632,16 +1632,16 @@
 		},
 		headTemplate:     '<thead>' +
 							  '<tr>' +
-							  '<th class="prev"><i class="icon-arrow-left"/></th>' +
+							  '<th class="prev"><i class="icon-arrow-left fa fa-arrow-left"/></th>' +
 							  '<th colspan="5" class="switch"></th>' +
-							  '<th class="next"><i class="icon-arrow-right"/></th>' +
+							  '<th class="next"><i class="icon-arrow-right fa fa-arrow-right"/></th>' +
 							  '</tr>' +
 			'</thead>',
 		headTemplateV3:   '<thead>' +
 							  '<tr>' +
-							  '<th class="prev"><span class="glyphicon glyphicon-arrow-left"></span> </th>' +
+							  '<th class="prev"><span class="glyphicon glyphicon-arrow-left fa fa-arrow-left"></span> </th>' +
 							  '<th colspan="5" class="switch"></th>' +
-							  '<th class="next"><span class="glyphicon glyphicon-arrow-right"></span> </th>' +
+							  '<th class="next"><span class="glyphicon glyphicon-arrow-right fa fa-arrow-right"></span> </th>' +
 							  '</tr>' +
 			'</thead>',
 		contTemplate:     '<tbody><tr><td colspan="7"></td></tr></tbody>',
