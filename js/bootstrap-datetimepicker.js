@@ -57,7 +57,7 @@
 		this.isInline = false;
 		this.isVisible = false;
 		this.isInput = this.element.is('input');
-        this.fontAwesome = options.fontAwesome || this.element.data('font-awesome') || false;
+		this.fontAwesome = options.fontAwesome || this.element.data('font-awesome') || false;
 
 		this.bootcssVer = this.isInput ? (this.element.is('.form-control') ? 3 : 2) : ( this.bootcssVer = this.element.is('.input-group') ? 3 : 2 );
 
@@ -74,11 +74,11 @@
 		this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
 		this.initialDate = options.initialDate || new Date();
 
-        this.icons = {
-            leftArrow: this.bootcssVer === 3 ? (this.fontAwesome ? 'fa-arrow-left' : 'glyphicon-arrow-left') : 'icon-arrow-left',
-            rightArrow: this.bootcssVer === 3 ? (this.fontAwesome ? 'fa-arrow-right' : 'glyphicon-arrow-right') : 'icon-arrow-right'
-        };
-        this.icontype = this.fontAwesome ? 'fa' : 'glyphicon';
+		this.icons = {
+			leftArrow: this.bootcssVer === 3 ? (this.fontAwesome ? 'fa-arrow-left' : 'glyphicon-arrow-left') : 'icon-arrow-left',
+			rightArrow: this.bootcssVer === 3 ? (this.fontAwesome ? 'fa-arrow-right' : 'glyphicon-arrow-right') : 'icon-arrow-right'
+		};
+		this.icontype = this.fontAwesome ? 'fa' : 'glyphicon';
 
 		this._attachEvents();
 
@@ -150,16 +150,16 @@
 		} else if ('dateForceParse' in this.element.data()) {
 			this.forceParse = this.element.data('date-force-parse');
 		}
-        var template = this.bootcssVer === 3 ? DPGlobal.templateV3 : DPGlobal.template;
-        while (template.indexOf('{iconType}') !== -1) {
-            template = template.replace('{iconType}', this.icontype);
-        }
-        while (template.indexOf('{leftArrow}') !== -1) {
-            template = template.replace('{leftArrow}', this.icons.leftArrow);
-        }
-        while (template.indexOf('{rightArrow}') !== -1) {
-            template = template.replace('{rightArrow}', this.icons.rightArrow);
-        }
+		var template = this.bootcssVer === 3 ? DPGlobal.templateV3 : DPGlobal.template;
+		while (template.indexOf('{iconType}') !== -1) {
+			template = template.replace('{iconType}', this.icontype);
+		}
+		while (template.indexOf('{leftArrow}') !== -1) {
+			template = template.replace('{leftArrow}', this.icons.leftArrow);
+		}
+		while (template.indexOf('{rightArrow}') !== -1) {
+			template = template.replace('{rightArrow}', this.icons.rightArrow);
+		}
 		this.picker = $(template)
 			.appendTo(this.isInline ? this.element : this.container) // 'body')
 			.on({
@@ -182,9 +182,8 @@
 		}
 		if (this.isRTL) {
 			this.picker.addClass('datetimepicker-rtl');
-            var selector = this.bootcssVer === 3 ? '.prev span, .next span' : '.prev i, .next i';
-            this.picker.find(selector).toggleClass(this.icons.leftArrow + ' ' + this.icons.rightArrow);
-
+			var selector = this.bootcssVer === 3 ? '.prev span, .next span' : '.prev i, .next i';
+			this.picker.find(selector).toggleClass(this.icons.leftArrow + ' ' + this.icons.rightArrow);
 		}
 		$(document).on('mousedown', function (e) {
 			// Clicked outside the datetimepicker, hide it
@@ -685,7 +684,7 @@
 				.end()
 				.find('span').removeClass('active');
 			if (currentYear == year) {
-                // getUTCMonths() returns 0 based, and we need to select the next one
+				// getUTCMonths() returns 0 based, and we need to select the next one
 				months.eq(this.date.getUTCMonth() + 2).addClass('active');
 			}
 			if (year < startYear || year > endYear) {
