@@ -22,7 +22,7 @@
 
 /*
  * Improvement by CuGBabyBeaR @ 2013-09-12
- * 
+ *
  * Make it work in bootstrap v3
  */
 
@@ -72,6 +72,7 @@
 		this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
 		this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
 		this.initialDate = options.initialDate || new Date();
+		this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
 
 		this._attachEvents();
 
@@ -425,14 +426,16 @@
 		place: function () {
 			if (this.isInline) return;
 
-			var index_highest = 0;
-			$('div').each(function () {
-				var index_current = parseInt($(this).css("zIndex"), 10);
-				if (index_current > index_highest) {
-					index_highest = index_current;
-				}
-			});
-			var zIndex = index_highest + 10;
+			if (!this.zIndex) {
+				var index_highest = 0;
+				$('div').each(function () {
+					var index_current = parseInt($(this).css("zIndex"), 10);
+					if (index_current > index_highest) {
+						index_highest = index_current;
+					}
+				});
+				this.zIndex = index_highest + 10;
+			}
 
 			var offset, top, left, containerOffset;
 			if (this.container instanceof $) {
@@ -451,11 +454,11 @@
 				offset = this.element.offset();
 				left = offset.left;
 			}
-			
+
 			if(left+220 > document.body.clientWidth){
             			left = document.body.clientWidth-220;
           		}
-			
+
 			if (this.pickerPosition == 'top-left' || this.pickerPosition == 'top-right') {
 				top = offset.top - this.picker.outerHeight();
 			} else {
@@ -468,7 +471,7 @@
 			this.picker.css({
 				top:    top,
 				left:   left,
-				zIndex: zIndex
+				zIndex: this.zIndex
 			});
 		},
 
