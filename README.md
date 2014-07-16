@@ -291,6 +291,12 @@ $('#date-end')
     });
 ```
 
+### fontAwesome
+
+Boolean. Default: false
+
+If true, [Font Awesome](http://fontawesome.io/) will be used.
+
 ## Markup
 
 Format as component.
@@ -349,7 +355,7 @@ $('#datetimepicker').datetimepicker('hide');
 
 ### update
 
-Arguments: 
+Arguments:
 
 * currentDate (Date).
 
@@ -490,11 +496,11 @@ When the picker is visible, enter will simply hide it.  When the picker is not v
 
 ## Mouse Wheel View Navigation
 
-In order to make this plugin easier to set different part of date time, mouse wheel has been used to navigate through different views. Scroll up your mouse wheel to navigate to the decade year view. Scroll down will lead to the minute view. 
+In order to make this plugin easier to set different part of date time, mouse wheel has been used to navigate through different views. Scroll up your mouse wheel to navigate to the decade year view. Scroll down will lead to the minute view.
 
 ### Dependency
 
-To enalbe this feature. [jQuery Mouse Wheel Plugin](https://github.com/brandonaaron/jquery-mousewheel) must be included before using this feature. 
+To enalbe this feature. [jQuery Mouse Wheel Plugin](https://github.com/brandonaaron/jquery-mousewheel) must be included before using this feature.
 
 ### Options
 
@@ -522,7 +528,7 @@ The recommended value for viewSelect option is 4 when this feature is enable. Th
 
 ### Feature Demo
 
-A simple [Demo](http://lyonlai.github.io/bootstrap-datetimepicker/demo.html) page is given to show it's simple idea. 
+A simple [Demo](http://lyonlai.github.io/bootstrap-datetimepicker/demo.html) page is given to show it's simple idea.
 
 ## I18N
 
