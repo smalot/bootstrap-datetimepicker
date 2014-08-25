@@ -428,6 +428,44 @@ $('#datetimepicker').datetimepicker('setDaysOfWeekDisabled');
 $('#datetimepicker').datetimepicker('setDaysOfWeekDisabled', null);
 ```
 
+### setMinutesDisabled
+
+Arguments:
+
+* minutesDisabled (String|Array)
+
+Sets the minutes that should be disabled.
+
+```javascript
+$('#datetimepicker').datetimepicker('setMinutesDisabled', [25,59]);
+```
+
+Omit minutesDisabled (or provide an otherwise falsey value) to unset the disabled minutes.
+
+```javascript
+$('#datetimepicker').datetimepicker('setMinutesDisabled');
+$('#datetimepicker').datetimepicker('setMinutesDisabled', null);
+```
+
+### setHoursDisabled
+
+Arguments:
+
+* hoursDisabled (String|Array)
+
+Sets the hours that should be disabled.
+
+```javascript
+$('#datetimepicker').datetimepicker('setHoursDisabled', [12,19]);
+```
+
+Omit hoursDisabled (or provide an otherwise falsey value) to unset the disabled hours.
+
+```javascript
+$('#datetimepicker').datetimepicker('setHoursDisabled');
+$('#datetimepicker').datetimepicker('setHoursDisabled', null);
+```
+
 ## Events
 
 Datetimepicker class exposes a few events for manipulating the dates.
