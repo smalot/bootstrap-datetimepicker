@@ -1414,7 +1414,7 @@
 		},
 		parseDate:        function (date, format, language, type) {
 			if (date instanceof Date) {
-				var dateUTC = new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
+				var dateUTC = new Date(date.valueOf() + date.getTimezoneOffset() * 60000);
 				dateUTC.setMilliseconds(0);
 				return dateUTC;
 			}
