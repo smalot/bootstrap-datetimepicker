@@ -471,7 +471,7 @@
 
 			var offset, top, left, containerOffset;
 			if (this.container instanceof $) {
-				containerOffset = this.container.offset();t
+				containerOffset = this.container.offset();
 			} else {
 				containerOffset = $(this.container).offset();
 			}
