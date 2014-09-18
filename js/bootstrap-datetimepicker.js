@@ -1426,6 +1426,9 @@
 				dateUTC.setMilliseconds(0);
 				return dateUTC;
 			}
+			if (isNaN(new Date(date).getTime())) {
+				return new Date();
+			}
 			if (/^\d{4}\-\d{1,2}\-\d{1,2}$/.test(date)) {
 				format = this.parseFormat('yyyy-mm-dd', type);
 			}
