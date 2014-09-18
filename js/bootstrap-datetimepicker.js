@@ -1018,7 +1018,9 @@
 								type: 'changeDay',
 								date: this.viewDate
 							});
-							if (this.viewSelect >= 2) {
+							if (this.viewSelect == 0) {
+								this._setDate(UTCDate(year, month, day, 0, 0, 0, 0));
+							} else if (this.viewSelect >= 2) {
 								this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
 							}
 						}
