@@ -206,6 +206,13 @@
 			this.keyboardNavigation = this.element.data('date-keyboard-navigation');
 		}
 
+		this.returnEnabled = true;
+		if ('returnEnabled' in options) {
+			this.returnEnabled = options.returnEnabled;
+		} else if ('dateReturnEnabled' in this.element.data()) {
+			this.returnEnabled = this.element.data('date-return-enabled');
+		}
+
 		this.todayBtn = (options.todayBtn || this.element.data('date-today-btn') || false);
 		this.todayHighlight = (options.todayHighlight || this.element.data('date-today-highlight') || false);
 
@@ -1011,7 +1018,9 @@
 								type: 'changeDay',
 								date: this.viewDate
 							});
-							if (this.viewSelect >= 2) {
+							if (this.viewSelect == 0) {
+								this._setDate(UTCDate(year, month, day, 0, 0, 0, 0));
+							} else if (this.viewSelect >= 2) {
 								this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
 							}
 						}
@@ -1219,6 +1228,7 @@
 					}
 					break;
 				case 13: // enter
+					if (!this.returnEnabled) break;
 					if (this.viewMode != 0) {
 						var oldViewMode = this.viewMode;
 						this.showMode(-1);
@@ -1417,6 +1427,9 @@
 				var dateUTC = new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
 				dateUTC.setMilliseconds(0);
 				return dateUTC;
+			}
+			if (isNaN(new Date(date).getTime())) {
+				return new Date();
 			}
 			if (/^\d{4}\-\d{1,2}\-\d{1,2}$/.test(date)) {
 				format = this.parseFormat('yyyy-mm-dd', type);
