@@ -497,7 +497,6 @@
 				top = offset.top + this.height;
 			}
 
-			top = top - containerOffset.top;
 			left = left - containerOffset.left;
 
 			this.picker.css({
@@ -707,16 +706,16 @@
 				.find('th:eq(1)')
 				.text(year)
 				.end()
-				.find('span').removeClass('active');
+				.find('span.month').removeClass('active');
 			if (currentYear == year) {
 				// getUTCMonths() returns 0 based, and we need to select the next one
-				months.eq(this.date.getUTCMonth() + 2).addClass('active');
+				months.eq(this.date.getUTCMonth()).addClass('active');
 			}
 			if (year < startYear || year > endYear) {
 				months.addClass('disabled');
 			}
 			if (year == startYear) {
-				months.slice(0, startMonth + 1).addClass('disabled');
+				months.slice(0, startMonth - 1).addClass('disabled');
 			}
 			if (year == endYear) {
 				months.slice(endMonth).addClass('disabled');
