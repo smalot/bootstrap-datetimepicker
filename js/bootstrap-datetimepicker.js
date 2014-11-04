@@ -45,6 +45,18 @@
 
 		this.element = $(element);
 
+		this.inputType = (this.element.data('input-type') || "datetime");
+		if(this.inputType == "date"){
+			var newOpts = {};
+			$.extend(newOpts, $.fn.datetimepicker.defaultsDateOnly, options);
+			options = newOpts;
+		}
+		else if(this.inputType == "time"){
+			var newOpts = {};
+			$.extend(newOpts, $.fn.datetimepicker.defaultsTimeOnly, options);
+			options = newOpts;
+		}
+
 		// add container for single page application
 		// when page switch the datetimepicker div will be removed also.
 		this.container = options.container || 'body';
@@ -166,6 +178,8 @@
 				click:     $.proxy(this.click, this),
 				mousedown: $.proxy(this.mousedown, this)
 			});
+
+		this.picker.addClass("datetimepicker-type-" + this.inputType);
 
 		if (this.wheelViewModeNavigation) {
 			if ($.fn.mousewheel) {
@@ -1329,6 +1343,22 @@
 
 	$.fn.datetimepicker.defaults = {
 	};
+	$.fn.datetimepicker.defaultsDateOnly = {
+		minView: 2,
+        autoclose: true,
+        todayHighlight: true,
+        todayBtn: true,
+        showMeridian: true
+	};
+	$.fn.datetimepicker.defaultsTimeOnly = {
+		minView: 0,
+        maxView: 1,
+        startView: 1,
+        minuteStep: 15,
+        autoclose: true,
+        showMeridian: true
+	};
+
 	$.fn.datetimepicker.Constructor = Datetimepicker;
 	var dates = $.fn.datetimepicker.dates = {
 		en: {
