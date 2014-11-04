@@ -416,3 +416,10 @@
 	width: 14px;
 	height: 14px;
 }
+
+.datetimepicker-type-time > div thead {
+	display: none;
+}
+.datetimepicker-type-time > div tbody td {
+	width: 200px;
+}
