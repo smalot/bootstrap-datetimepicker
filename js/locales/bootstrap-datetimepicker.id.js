@@ -13,7 +13,7 @@
 		today: "Hari ini",
 		suffix: [],
 		meridiem: [],
- 		weekStart: 1,
--		format: "dd/mm/yyyy hh:ii:ss"
+		weekStart: 1,
+		format: "dd/mm/yyyy hh:ii:ss"
 	};
 }(jQuery));
