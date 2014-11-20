@@ -1305,6 +1305,7 @@
 		}
 	};
 
+	var old = $.fn.datetimepicker;
 	$.fn.datetimepicker = function (option) {
 		var args = Array.apply(null, arguments);
 		args.shift();
