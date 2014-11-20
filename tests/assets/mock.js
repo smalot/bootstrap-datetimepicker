@@ -11,7 +11,7 @@ window.patch_date = function patch(f){
             case 4: return new NativeDate(y,m,d,h);
             case 5: return new NativeDate(y,m,d,h,i);
             case 6: return new NativeDate(y,m,d,h,i,s);
-            case 7: return new NativeDate(y,y,m,d,h,i,s,j);
+            case 7: return new NativeDate(y,m,d,h,i,s,j);
         }
     };
     date.UTC = NativeDate.UTC;

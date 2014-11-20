@@ -61,7 +61,7 @@
 
 		this.bootcssVer = options.bootcssVer || (this.isInput ? (this.element.is('.form-control') ? 3 : 2) : ( this.bootcssVer = this.element.is('.input-group') ? 3 : 2 ));
 
-		this.component = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-th, .input-group-addon .glyphicon-time, .input-group-addon .glyphicon-calendar, .input-group-addon .glyphicon-calendar .fa-calendar .fa-clock-o').parent() : this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar .fa-calendar .fa-clock-o').parent()) : false;
+		this.component = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-th, .input-group-addon .glyphicon-time, .input-group-addon .glyphicon-calendar, .input-group-addon .glyphicon-calendar, .input-group-addon .fa-calendar, .input-group-addon .fa-clock-o').parent() : this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar .fa-calendar .fa-clock-o').parent()) : false;
 		this.componentReset = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-remove .fa-times').parent() : this.element.find('.add-on .icon-remove .fa-times').parent()) : false;
 		this.hasInput = this.component && this.element.find('input').length;
 		if (this.component && this.component.length === 0) {
@@ -502,6 +502,8 @@
 
 			top = top - containerOffset.top;
 			left = left - containerOffset.left;
+			
+			top = top + document.body.scrollTop
 
 			this.picker.css({
 				top:    top,
@@ -1306,6 +1308,7 @@
 		}
 	};
 
+	var old = $.fn.datetimepicker;
 	$.fn.datetimepicker = function (option) {
 		var args = Array.apply(null, arguments);
 		args.shift();
@@ -1455,7 +1458,7 @@
 				}
 				return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), 0);
 			}
-			var parts = date && date.match(this.nonpunctuation) || [],
+			var parts = date && date.toString().match(this.nonpunctuation) || [],
 				date = new Date(0, 0, 0, 0, 0, 0, 0),
 				parsed = {},
 				setters_order = ['hh', 'h', 'ii', 'i', 'ss', 's', 'yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'D', 'DD', 'd', 'dd', 'H', 'HH', 'p', 'P'],
