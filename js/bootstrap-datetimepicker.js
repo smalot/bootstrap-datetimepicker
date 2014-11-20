@@ -73,6 +73,7 @@
 		this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
 		this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
 		this.initialDate = options.initialDate || new Date();
+		this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
 
 		this.icons = {
 			leftArrow: this.fontAwesome ? 'fa-arrow-left' : (this.bootcssVer === 3 ? 'glyphicon-arrow-left' : 'icon-arrow-left'),
@@ -460,14 +461,16 @@
 		place: function () {
 			if (this.isInline) return;
 
-			var index_highest = 0;
-			$('div').each(function () {
-				var index_current = parseInt($(this).css("zIndex"), 10);
-				if (index_current > index_highest) {
-					index_highest = index_current;
-				}
-			});
-			var zIndex = index_highest + 10;
+			if (!this.zIndex) {
+				var index_highest = 0;
+				$('div').each(function () {
+					var index_current = parseInt($(this).css("zIndex"), 10);
+					if (index_current > index_highest) {
+						index_highest = index_current;
+					}
+				});
+				this.zIndex = index_highest + 10;
+			}
 
 			var offset, top, left, containerOffset;
 			if (this.container instanceof $) {
@@ -503,7 +506,7 @@
 			this.picker.css({
 				top:    top,
 				left:   left,
-				zIndex: zIndex
+				zIndex: this.zIndex
 			});
 		},
 
