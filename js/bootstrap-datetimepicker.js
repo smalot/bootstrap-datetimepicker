@@ -260,6 +260,19 @@
 				if (this.element.attr("readonly")){
 					this._events[0][1].click = $.proxy(this.show, this);
 				}
+				var inputClear = this.element.siblings(".add-on.input-clear");
+				if(inputClear) {
+					function clearInput(ev) {
+						var $input = this.element;
+						$input.val("");
+						this.update();
+						$input.trigger("change");
+					};
+					this._events.push([
+						inputClear,
+						{click: $.proxy(clearInput, this)}
+					]);
+				}
 			}
 			else if (this.component && this.hasInput) { // component: input + button
 				this._events = [
