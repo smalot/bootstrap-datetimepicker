@@ -257,6 +257,9 @@
 						keydown: $.proxy(this.keydown, this)
 					}]
 				];
+				if (this.element.attr("readonly")){
+					this._events[0][1].click = $.proxy(this.show, this);
+				}
 			}
 			else if (this.component && this.hasInput) { // component: input + button
 				this._events = [
