@@ -1,4 +1,4 @@
-﻿/* =========================================================
+/* =========================================================
  * bootstrap-datetimepicker.js
  * =========================================================
  * Copyright 2012 Stefan Petre
@@ -499,11 +499,21 @@
 			} else {
 				top = offset.top + this.height;
 			}
-
-			top = top - containerOffset.top;
-			left = left - containerOffset.left;
-			
-			top = top + document.body.scrollTop
+			/**
+			 * fix position bug
+			 */
+			var offsetTop=containerOffset.top+document.body.scrollTop;
+			var offsetLeft=containerOffset.left+document.body.scrollLeft;
+			if(document.body.scrollTop>0&&$(window).height<top+offsetTop){
+				top=top+offsetTop;
+			}
+			if(document.body.scrollLeft>0&&$(window).width<top+offsetLeft){
+				left=left+offsetLeft;
+			}
+			/**
+			 * if have scroll ,this is wrong.
+			 */
+			//top = top + document.body.scrollTop
 
 			this.picker.css({
 				top:    top,
