@@ -1403,10 +1403,16 @@
 						return d.setUTCSeconds(v);
 					},
 					yyyy: function (d, v) {
-						return d.setUTCFullYear(v);
+						if ( v >= 0 && v < 100 ) 
+							return d.setUTCFullYear((v > 63 ? 1900 : 2000) + v);
+						else 
+							return d.setUTCFullYear(v);
 					},
 					yy:   function (d, v) {
-						return d.setUTCFullYear(2000 + v);
+						if ( v >= 0 && v < 100 )
+							return d.setUTCFullYear((v > 63 ? 1900 : 2000) + v);
+						else
+							return d.setUTCFullYear(v);
 					},
 					m:    function (d, v) {
 						v -= 1;
