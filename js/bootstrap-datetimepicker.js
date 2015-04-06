@@ -712,10 +712,11 @@
 				.find('th:eq(1)')
 				.text(year)
 				.end()
-				.find('span').removeClass('active');
+				.find('span.month').removeClass('active');//bad selector, returned array contains navigation arrows
 			if (currentYear == year) {
 				// getUTCMonths() returns 0 based, and we need to select the next one
-				months.eq(this.date.getUTCMonth() + 2).addClass('active');
+				//+2 not needed anymore
+				months.eq(this.date.getUTCMonth()).addClass('active');
 			}
 			if (year < startYear || year > endYear) {
 				months.addClass('disabled');
