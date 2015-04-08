@@ -721,10 +721,10 @@
 				months.addClass('disabled');
 			}
 			if (year == startYear) {
-				months.slice(0, startMonth + 1).addClass('disabled');
+				months.slice(0, startMonth).addClass('disabled');
 			}
 			if (year == endYear) {
-				months.slice(endMonth).addClass('disabled');
+				months.slice(endMonth + 1).addClass('disabled');
 			}
 
 			html = '';
