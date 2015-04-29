@@ -284,6 +284,12 @@ Date or String. Default: new Date()
 
 You can initialize the viewer with a date. By default it's now, so you can specify yesterday or today at midnight ...
 
+### zIndex
+
+Number. Default: undefined
+
+zIndex value is being automatically calculated based on the DOM tree, where we seek the highest value. To skip this process you can set the value manually.
+
 ### onRender
 
 This event is fired when a day is rendered inside the datepicker. Should return a string. Return 'disabled' to disable the day from being selected.

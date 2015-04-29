@@ -61,8 +61,8 @@
 
 		this.bootcssVer = options.bootcssVer || (this.isInput ? (this.element.is('.form-control') ? 3 : 2) : ( this.bootcssVer = this.element.is('.input-group') ? 3 : 2 ));
 
-		this.component = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-th, .input-group-addon .glyphicon-time, .input-group-addon .glyphicon-calendar, .input-group-addon .glyphicon-calendar .fa-calendar .fa-clock-o').parent() : this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar .fa-calendar .fa-clock-o').parent()) : false;
-		this.componentReset = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-remove .fa-times').parent() : this.element.find('.add-on .icon-remove .fa-times').parent()) : false;
+		this.component = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-th, .input-group-addon .glyphicon-time, .input-group-addon .glyphicon-calendar, .input-group-addon .glyphicon-calendar, .input-group-addon .fa-calendar, .input-group-addon .fa-clock-o').parent() : this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar .fa-calendar .fa-clock-o').parent()) : false;
+		this.componentReset = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find(".input-group-addon .glyphicon-remove, .input-group-addon .fa-times").parent():this.element.find(".add-on .icon-remove, .add-on .fa-times").parent()) : false;
 		this.hasInput = this.component && this.element.find('input').length;
 		if (this.component && this.component.length === 0) {
 			this.component = false;
@@ -73,6 +73,7 @@
 		this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
 		this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
 		this.initialDate = options.initialDate || new Date();
+		this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
 
 		this.icons = {
 			leftArrow: this.fontAwesome ? 'fa fa-arrow-left' : (this.bootcssVer === 3 ? 'glyphicon-arrow-left' : 'icon-arrow-left'),
@@ -460,14 +461,16 @@
 		place: function () {
 			if (this.isInline) return;
 
-			var index_highest = 0;
-			$('div').each(function () {
-				var index_current = parseInt($(this).css("zIndex"), 10);
-				if (index_current > index_highest) {
-					index_highest = index_current;
-				}
-			});
-			var zIndex = index_highest + 10;
+			if (!this.zIndex) {
+				var index_highest = 0;
+				$('div').each(function () {
+					var index_current = parseInt($(this).css("zIndex"), 10);
+					if (index_current > index_highest) {
+						index_highest = index_current;
+					}
+				});
+				this.zIndex = index_highest + 10;
+			}
 
 			var offset, top, left, containerOffset;
 			if (this.container instanceof $) {
@@ -500,10 +503,12 @@
 			top = top - containerOffset.top;
 			left = left - containerOffset.left;
 
+			if(this.container != 'body') top = top + document.body.scrollTop
+
 			this.picker.css({
 				top:    top,
 				left:   left,
-				zIndex: zIndex
+				zIndex: this.zIndex
 			});
 		},
 
@@ -1303,6 +1308,7 @@
 		}
 	};
 
+	var old = $.fn.datetimepicker;
 	$.fn.datetimepicker = function (option) {
 		var args = Array.apply(null, arguments);
 		args.shift();
@@ -1452,7 +1458,7 @@
 				}
 				return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), 0);
 			}
-			var parts = date && date.match(this.nonpunctuation) || [],
+			var parts = date && date.toString().match(this.nonpunctuation) || [],
 				date = new Date(0, 0, 0, 0, 0, 0, 0),
 				parsed = {},
 				setters_order = ['hh', 'h', 'ii', 'i', 'ss', 's', 'yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'D', 'DD', 'd', 'dd', 'H', 'HH', 'p', 'P'],
