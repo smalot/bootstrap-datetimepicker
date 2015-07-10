@@ -29,6 +29,19 @@
 
 !function ($) {
 
+    function elementOrParentIsFixed(element) {
+        var $element = $(element);
+        var $checkElements = $element.add($element.parents());
+        var isFixed = false;
+        $checkElements.each(function(){
+            if ($(this).css("position") === "fixed") {
+                isFixed = true;
+                return false;
+            }
+        });
+        return isFixed;
+    }
+
 	function UTCDate() {
 		return new Date(Date.UTC.apply(Date, arguments));
 	}
@@ -503,7 +516,9 @@
 			top = top - containerOffset.top;
 			left = left - containerOffset.left;
 
-			if(this.container != 'body') top = top + document.body.scrollTop
+            if( !elementOrParentIsFixed(this.element) ){
+			    top = top + document.body.scrollTop;
+            }
 
 			this.picker.css({
 				top:    top,
