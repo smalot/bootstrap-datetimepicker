@@ -8,7 +8,7 @@ module('Component', {
                         .datetimepicker({format: "dd-mm-yyyy", viewSelect: 2});
         this.input = this.component.find('input');
         this.addon = this.component.find('.input-group-addon');
-        this.dp = this.component.data('datetimepicker')
+        this.dp = this.component.data('datetimepicker');
         this.picker = this.dp.picker;
     },
     teardown: function(){
@@ -154,4 +154,26 @@ test('Selecting date resets viewDate and date', function(){
     // Re-rendered on click
     target = this.picker.find('.datetimepicker-days tbody td:first');
     equal(target.text(), '29'); // Should be Jan 29
+});
+
+test('Highlight in month', function() {
+    // custom setup for specifically bootstrap 2
+    var component = $('<div class="input-group date" id="datetimepicker">' +
+                             '<input size="16" type="text" value="12-02-2012" readonly>' +
+                             '<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>' +
+                             '</div>')
+        .appendTo('#qunit-fixture')
+        .datetimepicker({format: "dd-mm-yyyy", bootcssVer: 2}),
+        addon = component.find('.input-group-addon'),
+        picker = component.data('datetimepicker').picker;
+    addon.click();
+
+    equal(picker.find('.datetimepicker-months .month.active').text(), 'Feb');
+
+    picker.remove();
+
+    // test bootstrap 3 as well
+    this.addon.click();
+    equal(this.picker.find('.datetimepicker-months .month.active').text(), 'Feb');
+
 });

@@ -715,7 +715,9 @@
 				.find('span').removeClass('active');
 			if (currentYear == year) {
 				// getUTCMonths() returns 0 based, and we need to select the next one
-				months.eq(this.date.getUTCMonth() + 2).addClass('active');
+                // To cater bootstrap 2 we don't need to select the next one
+                var offset = months.length - 12;
+				months.eq(this.date.getUTCMonth() + offset).addClass('active');
 			}
 			if (year < startYear || year > endYear) {
 				months.addClass('disabled');
