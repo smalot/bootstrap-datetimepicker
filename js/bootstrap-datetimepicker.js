@@ -28,7 +28,13 @@
  */
 
 !function ($) {
-
+  $.event.special.destroyed = {
+    remove: function(o) {
+      if (o.handler) {
+        o.handler()
+      }
+    }
+  }
     function elementOrParentIsFixed(element) {
         var $element = $(element);
         var $checkElements = $element.add($element.parents());
@@ -205,7 +211,9 @@
 				that.hide();
 			}
 		});
-
+		this.element.on("destroyed",function(){
+		      that.picker.remove();
+		})
 		this.autoclose = false;
 		if ('autoclose' in options) {
 			this.autoclose = options.autoclose;
