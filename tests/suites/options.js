@@ -374,3 +374,23 @@ test('endDate: Custom value', function(){
     ok(picker.find('.datetimepicker-minutes tbody span:nth(7)').hasClass('disabled'), 'The next minute is disabled');
     ok(!picker.find('.datetimepicker-minutes tbody span:nth(6)').hasClass('disabled'), 'The last minute is enabled');
 });
+
+test('zIndex: set in options', function(){
+    var zIndex = 77;
+
+    var input = $('<input />')
+                .appendTo('#qunit-fixture')
+                .val('2013-01-25')
+                .datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    startView: 2,
+                    endDate: "2013-01-24 15:30",
+                    viewSelect: 2,
+                    zIndex: zIndex
+                }),
+        dp = input.data('datetimepicker'),
+        picker = dp.picker;
+
+    ok(parseInt(picker.css('z-index'), 10) == zIndex, 'has a value defined in the options');
+
+});

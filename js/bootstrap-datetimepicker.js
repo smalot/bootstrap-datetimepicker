@@ -5,6 +5,7 @@
  * Improvements by Andrew Rowls
  * Improvements by Sébastien Malot
  * Improvements by Yun Lai
+ * Improvements by Kenneth Henderick
  * Project URL : http://www.malot.fr/bootstrap-datetimepicker
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,11 +23,24 @@
 
 /*
  * Improvement by CuGBabyBeaR @ 2013-09-12
- * 
+ *
  * Make it work in bootstrap v3
  */
 
 !function ($) {
+
+    function elementOrParentIsFixed(element) {
+        var $element = $(element);
+        var $checkElements = $element.add($element.parents());
+        var isFixed = false;
+        $checkElements.each(function(){
+            if ($(this).css("position") === "fixed") {
+                isFixed = true;
+                return false;
+            }
+        });
+        return isFixed;
+    }
 
 	function UTCDate() {
 		return new Date(Date.UTC.apply(Date, arguments));
@@ -56,9 +70,10 @@
 		this.isInline = false;
 		this.isVisible = false;
 		this.isInput = this.element.is('input');
+		this.fontAwesome = options.fontAwesome || this.element.data('font-awesome') || false;
 
+		this.bootcssVer = options.bootcssVer || (this.isInput ? (this.element.is('.form-control') ? 3 : 2) : ( this.bootcssVer = this.element.is('.input-group') ? 3 : 2 ));
 
-		this.bootcssVer = this.isInput ? (this.element.is('.form-control') ? 3 : 2) : ( this.bootcssVer = this.element.is('.input-group') ? 3 : 2 );
 
 		this.component = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-th, .input-group-addon .glyphicon-time, .input-group-addon .glyphicon-calendar, .input-group-addon .fa-th, .input-group-addon .fa-clock-o, .input-group-addon .fa-calendar').parent() : this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar, .add-on .fa-th, .add-on .fa-clock-o, .add-on .fa-calendar').parent()) : false;
 		this.componentReset = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-remove, .input-group-addon .fa-times').parent() : this.element.find('.add-on .icon-remove, .add-on .fa-times').parent()) : false;
@@ -72,6 +87,13 @@
 		this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
 		this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
 		this.initialDate = options.initialDate || new Date();
+		this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
+
+		this.icons = {
+			leftArrow: this.fontAwesome ? 'fa-arrow-left' : (this.bootcssVer === 3 ? 'glyphicon-arrow-left' : 'icon-arrow-left'),
+			rightArrow: this.fontAwesome ? 'fa-arrow-right' : (this.bootcssVer === 3 ? 'glyphicon-arrow-right' : 'icon-arrow-right')
+		};
+		this.icontype = this.fontAwesome ? 'fa' : 'glyphicon';
 
 		this._attachEvents();
 
@@ -143,8 +165,17 @@
 		} else if ('dateForceParse' in this.element.data()) {
 			this.forceParse = this.element.data('date-force-parse');
 		}
-
-		this.picker = $((this.bootcssVer == 3) ? DPGlobal.templateV3 : DPGlobal.template)
+		var template = this.bootcssVer === 3 ? DPGlobal.templateV3 : DPGlobal.template;
+		while (template.indexOf('{iconType}') !== -1) {
+			template = template.replace('{iconType}', this.icontype);
+		}
+		while (template.indexOf('{leftArrow}') !== -1) {
+			template = template.replace('{leftArrow}', this.icons.leftArrow);
+		}
+		while (template.indexOf('{rightArrow}') !== -1) {
+			template = template.replace('{rightArrow}', this.icons.rightArrow);
+		}
+		this.picker = $(template)
 			.appendTo(this.isInline ? this.element : this.container) // 'body')
 			.on({
 				click:     $.proxy(this.click, this),
@@ -166,15 +197,8 @@
 		}
 		if (this.isRTL) {
 			this.picker.addClass('datetimepicker-rtl');
-			if (this.bootcssVer == 3) {
-				this.picker.find('.prev span, .next span')
-					.toggleClass('glyphicon-arrow-left glyphicon-arrow-right fa-arrow-left fa-arrow-right');
-			} else {
-				this.picker.find('.prev i, .next i')
-					.toggleClass('icon-arrow-left icon-arrow-right fa-arrow-left fa-arrow-right');
-			}
-			;
-
+			var selector = this.bootcssVer === 3 ? '.prev span, .next span' : '.prev i, .next i';
+			this.picker.find(selector).toggleClass(this.icons.leftArrow + ' ' + this.icons.rightArrow);
 		}
 		$(document).on('mousedown', function (e) {
 			// Clicked outside the datetimepicker, hide it
@@ -208,6 +232,8 @@
 		this.setStartDate(options.startDate || this.element.data('date-startdate'));
 		this.setEndDate(options.endDate || this.element.data('date-enddate'));
 		this.setDaysOfWeekDisabled(options.daysOfWeekDisabled || this.element.data('date-days-of-week-disabled'));
+		this.setMinutesDisabled(options.minutesDisabled || this.element.data('date-minute-disabled'));
+		this.setHoursDisabled(options.hoursDisabled || this.element.data('date-hour-disabled'));
 		this.fillDow();
 		this.fillMonths();
 		this.update();
@@ -422,17 +448,43 @@
 			this.updateNavArrows();
 		},
 
+		setMinutesDisabled: function (minutesDisabled) {
+			this.minutesDisabled = minutesDisabled || [];
+			if (!$.isArray(this.minutesDisabled)) {
+				this.minutesDisabled = this.minutesDisabled.split(/,\s*/);
+			}
+			this.minutesDisabled = $.map(this.minutesDisabled, function (d) {
+				return parseInt(d, 10);
+			});
+			this.update();
+			this.updateNavArrows();
+		},
+
+		setHoursDisabled: function (hoursDisabled) {
+			this.hoursDisabled = hoursDisabled || [];
+			if (!$.isArray(this.hoursDisabled)) {
+				this.hoursDisabled = this.hoursDisabled.split(/,\s*/);
+			}
+			this.hoursDisabled = $.map(this.hoursDisabled, function (d) {
+				return parseInt(d, 10);
+			});
+			this.update();
+			this.updateNavArrows();
+		},
+
 		place: function () {
 			if (this.isInline) return;
 
-			var index_highest = 0;
-			$('div').each(function () {
-				var index_current = parseInt($(this).css("zIndex"), 10);
-				if (index_current > index_highest) {
-					index_highest = index_current;
-				}
-			});
-			var zIndex = index_highest + 10;
+			if (!this.zIndex) {
+				var index_highest = 0;
+				$('div').each(function () {
+					var index_current = parseInt($(this).css("zIndex"), 10);
+					if (index_current > index_highest) {
+						index_highest = index_current;
+					}
+				});
+				this.zIndex = index_highest + 10;
+			}
 
 			var offset, top, left, containerOffset;
 			if (this.container instanceof $) {
@@ -451,11 +503,11 @@
 				offset = this.element.offset();
 				left = offset.left;
 			}
-			
+
 			if(left+220 > document.body.clientWidth){
             			left = document.body.clientWidth-220;
           		}
-			
+
 			if (this.pickerPosition == 'top-left' || this.pickerPosition == 'top-right') {
 				top = offset.top - this.picker.outerHeight();
 			} else {
@@ -465,10 +517,14 @@
 			top = top - containerOffset.top;
 			left = left - containerOffset.left;
 
+            if( !elementOrParentIsFixed(this.element) ){
+			    top = top + document.body.scrollTop;
+            }
+
 			this.picker.css({
 				top:    top,
 				left:   left,
-				zIndex: zIndex
+				zIndex: this.zIndex
 			});
 		},
 
@@ -533,22 +589,17 @@
 				hours = d.getUTCHours(),
 				minutes = d.getUTCMinutes(),
 				startYear = this.startDate !== -Infinity ? this.startDate.getUTCFullYear() : -Infinity,
-				startMonth = this.startDate !== -Infinity ? this.startDate.getUTCMonth() : -Infinity,
+				startMonth = this.startDate !== -Infinity ? this.startDate.getUTCMonth() + 1 : -Infinity,
 				endYear = this.endDate !== Infinity ? this.endDate.getUTCFullYear() : Infinity,
-				endMonth = this.endDate !== Infinity ? this.endDate.getUTCMonth() : Infinity,
+				endMonth = this.endDate !== Infinity ? this.endDate.getUTCMonth() + 1 : Infinity,
 				currentDate = (new UTCDate(this.date.getUTCFullYear(), this.date.getUTCMonth(), this.date.getUTCDate())).valueOf(),
 				today = new Date();
 			this.picker.find('.datetimepicker-days thead th:eq(1)')
 				.text(dates[this.language].months[month] + ' ' + year);
 			if (this.formatViewType == "time") {
-				var hourConverted = hours % 12 ? hours % 12 : 12;
-				var hoursDisplay = (hourConverted < 10 ? '0' : '') + hourConverted;
-				var minutesDisplay = (minutes < 10 ? '0' : '') + minutes;
-				var meridianDisplay = dates[this.language].meridiem[hours < 12 ? 0 : 1];
-				this.picker.find('.datetimepicker-hours thead th:eq(1)')
-					.text(hoursDisplay + ':' + minutesDisplay + ' ' + (meridianDisplay ? meridianDisplay.toUpperCase() : ''));
-				this.picker.find('.datetimepicker-minutes thead th:eq(1)')
-					.text(hoursDisplay + ':' + minutesDisplay + ' ' + (meridianDisplay ? meridianDisplay.toUpperCase() : ''));
+				var formatted = this.getFormattedDate();
+				this.picker.find('.datetimepicker-hours thead th:eq(1)').text(formatted);
+				this.picker.find('.datetimepicker-minutes thead th:eq(1)').text(formatted);
 			} else {
 				this.picker.find('.datetimepicker-hours thead th:eq(1)')
 					.text(dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
@@ -605,7 +656,9 @@
 
 			html = [];
 			var txt = '', meridian = '', meridianOld = '';
+			var hoursDisabled = this.hoursDisabled || [];
 			for (var i = 0; i < 24; i++) {
+				if (hoursDisabled.indexOf(i) !== -1) continue;
 				var actual = UTCDate(year, month, dayMonth, i);
 				clsName = '';
 				// We want the previous hour for the startDate
@@ -637,7 +690,9 @@
 
 			html = [];
 			txt = '', meridian = '', meridianOld = '';
+			var minutesDisabled = this.minutesDisabled || [];
 			for (var i = 0; i < 60; i += this.minuteStep) {
+				if (minutesDisabled.indexOf(i) !== -1) continue;
 				var actual = UTCDate(year, month, dayMonth, hours, i, 0);
 				clsName = '';
 				if (actual.valueOf() < this.startDate || actual.valueOf() > this.endDate) {
@@ -675,16 +730,19 @@
 				.end()
 				.find('span').removeClass('active');
 			if (currentYear == year) {
-				months.eq(this.date.getUTCMonth()).addClass('active');
+				// getUTCMonths() returns 0 based, and we need to select the next one
+                // To cater bootstrap 2 we don't need to select the next one
+                var offset = months.length - 12;
+				months.eq(this.date.getUTCMonth() + offset).addClass('active');
 			}
 			if (year < startYear || year > endYear) {
 				months.addClass('disabled');
 			}
 			if (year == startYear) {
-				months.slice(0, startMonth).addClass('disabled');
+				months.slice(0, startMonth + 1).addClass('disabled');
 			}
 			if (year == endYear) {
-				months.slice(endMonth + 1).addClass('disabled');
+				months.slice(endMonth).addClass('disabled');
 			}
 
 			html = '';
@@ -809,7 +867,7 @@
 			e.stopPropagation();
 			e.preventDefault();
 			var target = $(e.target).closest('span, td, th, legend');
-			if (target.is('.glyphicon')) {
+			if (target.is('.' + this.icontype)) {
 				target = $(target).parent().closest('span, td, th, legend');
 			}
 			if (target.length == 1) {
@@ -1014,6 +1072,8 @@
 				type: 'changeDate',
 				date: this.date
 			});
+			if(date == null)
+				this.date = this.viewDate;
 		},
 
 		moveMinute: function (date, dir) {
@@ -1268,6 +1328,7 @@
 		}
 	};
 
+	var old = $.fn.datetimepicker;
 	$.fn.datetimepicker = function (option) {
 		var args = Array.apply(null, arguments);
 		args.shift();
@@ -1417,7 +1478,7 @@
 				}
 				return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), 0);
 			}
-			var parts = date && date.match(this.nonpunctuation) || [],
+			var parts = date && date.toString().match(this.nonpunctuation) || [],
 				date = new Date(0, 0, 0, 0, 0, 0, 0),
 				parsed = {},
 				setters_order = ['hh', 'h', 'ii', 'i', 'ss', 's', 'yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'D', 'DD', 'd', 'dd', 'H', 'HH', 'p', 'P'],
@@ -1632,16 +1693,16 @@
 		},
 		headTemplate:     '<thead>' +
 							  '<tr>' +
-							  '<th class="prev"><i class="icon-arrow-left fa fa-arrow-left"/></th>' +
+							  '<th class="prev"><i class="{iconType} {leftArrow}"/></th>' +
 							  '<th colspan="5" class="switch"></th>' +
-							  '<th class="next"><i class="icon-arrow-right fa fa-arrow-right"/></th>' +
+							  '<th class="next"><i class="{iconType} {rightArrow}"/></th>' +
 							  '</tr>' +
 			'</thead>',
 		headTemplateV3:   '<thead>' +
 							  '<tr>' +
-							  '<th class="prev"><span class="glyphicon glyphicon-arrow-left fa fa-arrow-left"></span> </th>' +
+							  '<th class="prev"><span class="{iconType} {leftArrow}"></span> </th>' +
 							  '<th colspan="5" class="switch"></th>' +
-							  '<th class="next"><span class="glyphicon glyphicon-arrow-right fa fa-arrow-right"></span> </th>' +
+							  '<th class="next"><span class="{iconType} {rightArrow}"></span> </th>' +
 							  '</tr>' +
 			'</thead>',
 		contTemplate:     '<tbody><tr><td colspan="7"></td></tr></tbody>',

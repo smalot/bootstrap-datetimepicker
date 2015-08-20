@@ -242,6 +242,12 @@ Boolean.  Default: true
 
 Whether or not to force parsing of the input value when the picker is closed.  That is, when an invalid date is left in the input field by the user, the picker will forcibly parse that value, and set the input's value to the new, valid date, conforming to the given `format`.
 
+### bootcssVer
+
+Number.
+
+You can override the auto-detect functionality of the different bootstrap versions (e.g., 2 or 3) by using this option.
+
 ### minuteStep
 
 Number.  Default: 5
@@ -278,6 +284,12 @@ Date or String. Default: new Date()
 
 You can initialize the viewer with a date. By default it's now, so you can specify yesterday or today at midnight ...
 
+### zIndex
+
+Number. Default: undefined
+
+zIndex value is being automatically calculated based on the DOM tree, where we seek the highest value. To skip this process you can set the value manually.
+
 ### onRender
 
 This event is fired when a day is rendered inside the datepicker. Should return a string. Return 'disabled' to disable the day from being selected.
@@ -290,6 +302,12 @@ $('#date-end')
         }
     });
 ```
+
+### fontAwesome
+
+Boolean. Default: false
+
+If true, [Font Awesome](http://fontawesome.io/) will be used.
 
 ## Markup
 
@@ -360,7 +378,7 @@ $('#datetimepicker').datetimepicker('hide');
 
 ### update
 
-Arguments: 
+Arguments:
 
 * currentDate (Date).
 
@@ -433,6 +451,44 @@ $('#datetimepicker').datetimepicker('setDaysOfWeekDisabled');
 $('#datetimepicker').datetimepicker('setDaysOfWeekDisabled', null);
 ```
 
+### setMinutesDisabled
+
+Arguments:
+
+* minutesDisabled (String|Array)
+
+Sets the minutes that should be disabled.
+
+```javascript
+$('#datetimepicker').datetimepicker('setMinutesDisabled', [25,59]);
+```
+
+Omit minutesDisabled (or provide an otherwise falsey value) to unset the disabled minutes.
+
+```javascript
+$('#datetimepicker').datetimepicker('setMinutesDisabled');
+$('#datetimepicker').datetimepicker('setMinutesDisabled', null);
+```
+
+### setHoursDisabled
+
+Arguments:
+
+* hoursDisabled (String|Array)
+
+Sets the hours that should be disabled.
+
+```javascript
+$('#datetimepicker').datetimepicker('setHoursDisabled', [12,19]);
+```
+
+Omit hoursDisabled (or provide an otherwise falsey value) to unset the disabled hours.
+
+```javascript
+$('#datetimepicker').datetimepicker('setHoursDisabled');
+$('#datetimepicker').datetimepicker('setHoursDisabled', null);
+```
+
 ## Events
 
 Datetimepicker class exposes a few events for manipulating the dates.
@@ -501,11 +557,11 @@ When the picker is visible, enter will simply hide it.  When the picker is not v
 
 ## Mouse Wheel View Navigation
 
-In order to make this plugin easier to set different part of date time, mouse wheel has been used to navigate through different views. Scroll up your mouse wheel to navigate to the decade year view. Scroll down will lead to the minute view. 
+In order to make this plugin easier to set different part of date time, mouse wheel has been used to navigate through different views. Scroll up your mouse wheel to navigate to the decade year view. Scroll down will lead to the minute view.
 
 ### Dependency
 
-To enalbe this feature. [jQuery Mouse Wheel Plugin](https://github.com/brandonaaron/jquery-mousewheel) must be included before using this feature. 
+To enalbe this feature. [jQuery Mouse Wheel Plugin](https://github.com/brandonaaron/jquery-mousewheel) must be included before using this feature.
 
 ### Options
 
@@ -533,7 +589,7 @@ The recommended value for viewSelect option is 4 when this feature is enable. Th
 
 ### Feature Demo
 
-A simple [Demo](http://lyonlai.github.io/bootstrap-datetimepicker/demo.html) page is given to show it's simple idea. 
+A simple [Demo](http://lyonlai.github.io/bootstrap-datetimepicker/demo.html) page is given to show it's simple idea.
 
 ## I18N
 
