@@ -330,6 +330,17 @@ Format as component with reset button to clear the input field.
 </div>
 ```
 
+Format as component using Font Awesome v4
+
+```html
+<div class="input-append date" id="datetimepicker" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+    <input class="span2" size="16" type="text" value="12-02-2012">
+    <span class="add-on"><i class="fa fa-times"></i></span>
+    <span class="add-on"><i class="fa fa-th"></i></span>
+</div>
+```
+
+
 ## Methods
 
 ### .datetimepicker(options)
