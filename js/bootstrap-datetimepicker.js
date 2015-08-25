@@ -34,7 +34,7 @@
         var $checkElements = $element.add($element.parents());
         var isFixed = false;
         $checkElements.each(function(){
-            if ($(this).css("position") === "fixed") {
+            if ($(this).css('position') === 'fixed') {
                 isFixed = true;
                 return false;
             }
@@ -62,8 +62,8 @@
 		// when page switch the datetimepicker div will be removed also.
 		this.container = options.container || 'body';
 
-		this.language = options.language || this.element.data('date-language') || "en";
-		this.language = this.language in dates ? this.language : "en";
+		this.language = options.language || this.element.data('date-language') || 'en';
+		this.language = this.language in dates ? this.language : 'en';
 		this.isRTL = dates[this.language].rtl || false;
 		this.formatType = options.formatType || this.element.data('format-type') || 'standard';
 		this.format = DPGlobal.parseFormat(options.format || this.element.data('date-format') || dates[this.language].format || DPGlobal.getDefaultFormat(this.formatType, 'input'), this.formatType);
@@ -75,7 +75,7 @@
 		this.bootcssVer = options.bootcssVer || (this.isInput ? (this.element.is('.form-control') ? 3 : 2) : ( this.bootcssVer = this.element.is('.input-group') ? 3 : 2 ));
 
 		this.component = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-th, .input-group-addon .glyphicon-time, .input-group-addon .glyphicon-calendar, .input-group-addon .glyphicon-calendar, .input-group-addon .fa-calendar, .input-group-addon .fa-clock-o').parent() : this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar .fa-calendar .fa-clock-o').parent()) : false;
-		this.componentReset = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find(".input-group-addon .glyphicon-remove, .input-group-addon .fa-times").parent():this.element.find(".add-on .icon-remove, .add-on .fa-times").parent()) : false;
+		this.componentReset = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-remove, .input-group-addon .fa-times').parent():this.element.find('.add-on .icon-remove, .add-on .fa-times').parent()) : false;
 		this.hasInput = this.component && this.element.find('input').length;
 		if (this.component && this.component.length === 0) {
 			this.component = false;
@@ -96,7 +96,7 @@
 
 		this._attachEvents();
 
-		this.formatViewType = "datetime";
+		this.formatViewType = 'datetime';
 		if ('formatViewType' in options) {
 			this.formatViewType = options.formatViewType;
 		} else if ('formatViewType' in this.element.data()) {
@@ -185,7 +185,7 @@
 			if ($.fn.mousewheel) {
 				this.picker.on({mousewheel: $.proxy(this.mousewheel, this)});
 			} else {
-				console.log("Mouse Wheel event is not supported. Please include the jQuery Mouse Wheel plugin before enabling this option");
+				console.log('Mouse Wheel event is not supported. Please include the jQuery Mouse Wheel plugin before enabling this option');
 			}
 		}
 
@@ -477,7 +477,7 @@
 			if (!this.zIndex) {
 				var index_highest = 0;
 				$('div').each(function () {
-					var index_current = parseInt($(this).css("zIndex"), 10);
+					var index_current = parseInt($(this).css('zIndex'), 10);
 					if (index_current > index_highest) {
 						index_highest = index_current;
 					}
@@ -595,7 +595,7 @@
 				today = new Date();
 			this.picker.find('.datetimepicker-days thead th:eq(1)')
 				.text(dates[this.language].months[month] + ' ' + year);
-			if (this.formatViewType == "time") {
+			if (this.formatViewType == 'time') {
 				var formatted = this.getFormattedDate();
 				this.picker.find('.datetimepicker-hours thead th:eq(1)').text(formatted);
 				this.picker.find('.datetimepicker-minutes thead th:eq(1)').text(formatted);
@@ -1357,14 +1357,14 @@
 	$.fn.datetimepicker.Constructor = Datetimepicker;
 	var dates = $.fn.datetimepicker.dates = {
 		en: {
-			days:        ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-			daysShort:   ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-			daysMin:     ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
-			months:      ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-			monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-			meridiem:    ["am", "pm"],
-			suffix:      ["st", "nd", "rd", "th"],
-			today:       "Today"
+			days:        ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+			daysShort:   ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+			daysMin:     ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+			months:      ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+			monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+			meridiem:    ['am', 'pm'],
+			suffix:      ['st', 'nd', 'rd', 'th'],
+			today:       'Today'
 		}
 	};
 
@@ -1403,37 +1403,37 @@
 			return [31, (DPGlobal.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
 		},
 		getDefaultFormat: function (type, field) {
-			if (type == "standard") {
+			if (type == 'standard') {
 				if (field == 'input')
 					return 'yyyy-mm-dd hh:ii';
 				else
 					return 'yyyy-mm-dd hh:ii:ss';
-			} else if (type == "php") {
+			} else if (type == 'php') {
 				if (field == 'input')
 					return 'Y-m-d H:i';
 				else
 					return 'Y-m-d H:i:s';
 			} else {
-				throw new Error("Invalid format type.");
+				throw new Error('Invalid format type.');
 			}
 		},
-		validParts:       function (type) {
-			if (type == "standard") {
+		validParts: function (type) {
+			if (type == 'standard') {
 				return /hh?|HH?|p|P|ii?|ss?|dd?|DD?|mm?|MM?|yy(?:yy)?/g;
-			} else if (type == "php") {
+			} else if (type == 'php') {
 				return /[dDjlNwzFmMnStyYaABgGhHis]/g;
 			} else {
-				throw new Error("Invalid format type.");
+				throw new Error('Invalid format type.');
 			}
 		},
-		nonpunctuation:   /[^ -\/:-@\[-`{-~\t\n\rTZ]+/g,
-		parseFormat:      function (format, type) {
+		nonpunctuation: /[^ -\/:-@\[-`{-~\t\n\rTZ]+/g,
+		parseFormat: function (format, type) {
 			// IE treats \0 as a string end in inputs (truncating the value),
 			// so it's a bad format delimiter, anyway
 			var separators = format.replace(this.validParts(type), '\0').split('\0'),
 				parts = format.match(this.validParts(type));
 			if (!separators || !separators.length || !parts || parts.length == 0) {
-				throw new Error("Invalid date format.");
+				throw new Error('Invalid date format.');
 			}
 			return {separators: separators, parts: parts};
 		},
@@ -1649,7 +1649,7 @@
 				val.i = (val.i < 10 ? '0' : '') + val.i;
 				val.s = (val.s < 10 ? '0' : '') + val.s;
 			} else {
-				throw new Error("Invalid format type.");
+				throw new Error('Invalid format type.');
 			}
 			var date = [],
 				seps = $.extend([], format.separators);
@@ -1690,22 +1690,22 @@
 
 			return viewMode;
 		},
-		headTemplate:     '<thead>' +
+		headTemplate: '<thead>' +
 							  '<tr>' +
 							  '<th class="prev"><i class="{iconType} {leftArrow}"/></th>' +
 							  '<th colspan="5" class="switch"></th>' +
 							  '<th class="next"><i class="{iconType} {rightArrow}"/></th>' +
 							  '</tr>' +
 			'</thead>',
-		headTemplateV3:   '<thead>' +
+		headTemplateV3: '<thead>' +
 							  '<tr>' +
 							  '<th class="prev"><span class="{iconType} {leftArrow}"></span> </th>' +
 							  '<th colspan="5" class="switch"></th>' +
 							  '<th class="next"><span class="{iconType} {rightArrow}"></span> </th>' +
 							  '</tr>' +
 			'</thead>',
-		contTemplate:     '<tbody><tr><td colspan="7"></td></tr></tbody>',
-		footTemplate:     '<tfoot><tr><th colspan="7" class="today"></th></tr></tfoot>'
+		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
+		footTemplate: '<tfoot><tr><th colspan="7" class="today"></th></tr></tfoot>'
 	};
 	DPGlobal.template = '<div class="datetimepicker">' +
 		'<div class="datetimepicker-minutes">' +
