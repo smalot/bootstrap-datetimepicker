@@ -2,6 +2,7 @@
  * bootstrap-datetimepicker.js
  * =========================================================
  * Copyright 2012 Stefan Petre
+ *
  * Improvements by Andrew Rowls
  * Improvements by Sébastien Malot
  * Improvements by Yun Lai
@@ -27,29 +28,31 @@
 
   // Add ECMA262-5 Array methods if not supported natively (IE8)
   if (!('indexOf' in Array.prototype)) {
-      Array.prototype.indexOf = function (find, i) {
-          if (i === undefined) i = 0;
-          if (i < 0) i += this.length;
-          if (i < 0) i = 0;
-          for (var n = this.length; i < n; i++)
-              if (i in this && this[i] === find)
-                  return i;
-          return -1;
-      };
+    Array.prototype.indexOf = function (find, i) {
+      if (i === undefined) i = 0;
+      if (i < 0) i += this.length;
+      if (i < 0) i = 0;
+      for (var n = this.length; i < n; i++) {
+        if (i in this && this[i] === find) {
+          return i;
+        }
+      }
+      return -1;
+    }
   }
 
-    function elementOrParentIsFixed (element) {
-        var $element = $(element);
-        var $checkElements = $element.add($element.parents());
-        var isFixed = false;
-        $checkElements.each(function(){
-            if ($(this).css('position') === 'fixed') {
-                isFixed = true;
-                return false;
-            }
-        });
-        return isFixed;
-    }
+  function elementOrParentIsFixed (element) {
+    var $element = $(element);
+    var $checkElements = $element.add($element.parents());
+    var isFixed = false;
+    $checkElements.each(function(){
+      if ($(this).css('position') === 'fixed') {
+        isFixed = true;
+        return false;
+      }
+    });
+    return isFixed;
+  }
 
   function UTCDate() {
     return new Date(Date.UTC.apply(Date, arguments));
@@ -61,7 +64,6 @@
   }
 
   // Picker object
-
   var Datetimepicker = function (element, options) {
     var that = this;
 
@@ -100,7 +102,7 @@
     this.icons = {
       leftArrow: this.fontAwesome ? 'fa-arrow-left' : (this.bootcssVer === 3 ? 'glyphicon-arrow-left' : 'icon-arrow-left'),
       rightArrow: this.fontAwesome ? 'fa-arrow-right' : (this.bootcssVer === 3 ? 'glyphicon-arrow-right' : 'icon-arrow-right')
-    };
+    }
     this.icontype = this.fontAwesome ? 'fa' : 'glyphicon';
 
     this._attachEvents();
