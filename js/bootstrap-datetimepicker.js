@@ -29,6 +29,19 @@
 
 !function ($) {
 
+  // Add ECMA262-5 Array methods if not supported natively (IE8)
+  if (!('indexOf' in Array.prototype)) {
+      Array.prototype.indexOf= function(find, i) {
+          if (i===undefined) i= 0;
+          if (i<0) i+= this.length;
+          if (i<0) i= 0;
+          for (var n= this.length; i<n; i++)
+              if (i in this && this[i]===find)
+                  return i;
+          return -1;
+      };
+  }
+
     function elementOrParentIsFixed(element) {
         var $element = $(element);
         var $checkElements = $element.add($element.parents());
