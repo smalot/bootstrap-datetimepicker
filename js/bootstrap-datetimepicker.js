@@ -74,6 +74,7 @@
     this.container = options.container || 'body';
 
     this.language = options.language || this.element.data('date-language') || 'en';
+    this.language = this.language in dates ? this.language : this.language.split('-')[0]; // fr-CA fallback to fr
     this.language = this.language in dates ? this.language : 'en';
     this.isRTL = dates[this.language].rtl || false;
     this.formatType = options.formatType || this.element.data('format-type') || 'standard';
