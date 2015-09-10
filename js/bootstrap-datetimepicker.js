@@ -753,7 +753,7 @@
         months.slice(0, startMonth + 1).addClass('disabled');
       }
       if (year == endYear) {
-        months.slice(endMonth).addClass('disabled');
+        months.slice(endMonth + 2).addClass('disabled');
       }
 
       html = '';
