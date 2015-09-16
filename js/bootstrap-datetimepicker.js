@@ -515,9 +515,10 @@
         left = offset.left;
       }
 
-      if(left+220 > document.body.clientWidth){
-                  left = document.body.clientWidth-220;
-              }
+      var bodyWidth = document.body.clientWidth || window.innerWidth;
+      if (left + 220 > bodyWidth) {
+        left = bodyWidth - 220;
+      }
 
       if (this.pickerPosition == 'top-left' || this.pickerPosition == 'top-right') {
         top = offset.top - this.picker.outerHeight();
