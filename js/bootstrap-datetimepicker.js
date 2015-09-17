@@ -108,6 +108,13 @@
 
     this._attachEvents();
 
+    this.clickedOutside = function (e) {
+        // Clicked outside the datetimepicker, hide it
+        if ($(e.target).closest('.datetimepicker').length === 0) {
+            that.hide();
+        }
+    }
+
     this.formatViewType = 'datetime';
     if ('formatViewType' in options) {
       this.formatViewType = options.formatViewType;
@@ -211,12 +218,8 @@
       var selector = this.bootcssVer === 3 ? '.prev span, .next span' : '.prev i, .next i';
       this.picker.find(selector).toggleClass(this.icons.leftArrow + ' ' + this.icons.rightArrow);
     }
-    $(document).on('mousedown', function (e) {
-      // Clicked outside the datetimepicker, hide it
-      if ($(e.target).closest('.datetimepicker').length === 0) {
-        that.hide();
-      }
-    });
+
+    $(document).on('mousedown', this.clickedOutside);
 
     this.autoclose = false;
     if ('autoclose' in options) {
@@ -362,6 +365,7 @@
 
     remove: function () {
       this._detachEvents();
+      $(document).off('mousedown', this.clickedOutside);
       this.picker.remove();
       delete this.picker;
       delete this.element.data().datetimepicker;
