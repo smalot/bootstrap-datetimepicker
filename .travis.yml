@@ -1,3 +1,4 @@
+sudo: false
 before_script:
   - cd ./tests
   - echo "new Date().toString();" | phantomjs
