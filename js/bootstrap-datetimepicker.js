@@ -533,9 +533,8 @@
       top = top - containerOffset.top;
       left = left - containerOffset.left;
 
-            if( !elementOrParentIsFixed(this.element) ){
-          top = top + document.body.scrollTop;
-            }
+      if( !elementOrParentIsFixed(this.element) ){
+      }
 
       this.picker.css({
         top:    top,
