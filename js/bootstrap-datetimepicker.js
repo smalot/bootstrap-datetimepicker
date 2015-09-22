@@ -728,14 +728,14 @@
 				.text(year)
 				.end()
 				.find('span').removeClass('active');
-			var offset;
+			var offset = months.length - 12;
 			if (currentYear == year) {
 				// getUTCMonths() returns 0 based, and we need to select the next one
                 // To cater bootstrap 2 we don't need to select the next one
-				offset = months.length - 12;
 				months.eq(this.date.getUTCMonth() + offset).addClass('active');
 			}
-			if (year < startYear || year > endYear) {
+			_log("debug");
+            if (year < startYear || year > endYear) {
 				months.addClass('disabled');
 			}
             if (year == startYear) {
