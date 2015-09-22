@@ -728,20 +728,21 @@
 				.text(year)
 				.end()
 				.find('span').removeClass('active');
+			var offset;
 			if (currentYear == year) {
 				// getUTCMonths() returns 0 based, and we need to select the next one
                 // To cater bootstrap 2 we don't need to select the next one
-                var offset = months.length - 12;
+				offset = months.length - 12;
 				months.eq(this.date.getUTCMonth() + offset).addClass('active');
 			}
 			if (year < startYear || year > endYear) {
 				months.addClass('disabled');
 			}
-			if (year == startYear) {
-                months.slice(0, startMonth - 1 + offset).addClass('disabled');
+            if (year == startYear) {
+                months.slice(0, startMonth - 1 + (offset?offset:0)).addClass('disabled');
             }
             if (year == endYear) {
-                months.slice(endMonth + offset).addClass('disabled');
+                months.slice(endMonth + (offset?offset:0)).addClass('disabled');
             }
 
 			html = '';
