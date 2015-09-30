@@ -1527,6 +1527,9 @@
       return {separators: separators, parts: parts};
     },
     parseDate: function (date, format, language, type, timezone) {
+      if (date && !date.toString().match(this.nonpunctuation)) {
+        return null;
+      }
       if (date instanceof Date) {
         var dateUTC = new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
         dateUTC.setMilliseconds(0);
