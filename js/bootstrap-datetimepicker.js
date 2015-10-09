@@ -1432,7 +1432,7 @@
     },
     validParts: function (type) {
       if (type == 'standard') {
-        return /hh?|HH?|p|P|ii?|ss?|dd?|DD?|mm?|MM?|yy(?:yy)?/g;
+        return /t|hh?|HH?|p|P|ii?|ss?|dd?|DD?|mm?|MM?|yy(?:yy)?/g;
       } else if (type == 'php') {
         return /[dDjlNwzFmMnStyYaABgGhHis]/g;
       } else {
@@ -1594,6 +1594,8 @@
       var val;
       if (type == 'standard') {
         val = {
+          // timestamp
+          t:    date.getTime(),
           // year
           yy:   date.getUTCFullYear().toString().substring(2),
           yyyy: date.getUTCFullYear(),
