@@ -380,6 +380,14 @@
       return this.date;
     },
 
+    getInitialDate: function () {
+      return this.initialDate
+    },
+
+    setInitialDate: function (initialDate) {
+      this.initialDate = initialDate;
+    },
+
     setDate: function (d) {
       this.setUTCDate(new Date(d.getTime() - (d.getTimezoneOffset() * 60000)));
     },
