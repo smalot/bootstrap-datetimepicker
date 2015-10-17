@@ -4,7 +4,7 @@
  */
 ;(function($){
 	$.fn.datetimepicker.dates['pt-BR'] = {
-        format: 'dd/mm/yyyy',
+        format: 'dd/mm/yyyy hh:ii:ss',
 		days: ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"],
 		daysShort: ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
 		daysMin: ["Do", "Se", "Te", "Qu", "Qu", "Se", "Sa", "Do"],
