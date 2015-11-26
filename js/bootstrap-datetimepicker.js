@@ -1091,8 +1091,20 @@
     moveMinute: function (date, dir) {
       if (!dir) return date;
       var new_date = new Date(date.valueOf());
+      var cur_mins = new_date.getUTCMinutes();
+      var remainder = cur_mins % this.minuteStep;
+      var new_minutes;
       //dir = dir > 0 ? 1 : -1;
-      new_date.setUTCMinutes(new_date.getUTCMinutes() + (dir * this.minuteStep));
+      if(remainder > (this.minuteStep / 2))
+      {
+        new_minutes = this.minuteStep - remainder + cur_mins;
+        new_date.setUTCMinutes(new_minutes + (dir * this.minuteStep)-this.minuteStep);
+      }
+      else
+      {
+        new_minutes = cur_mins - remainder;
+        new_date.setUTCMinutes(new_minutes + (dir * this.minuteStep);
+      }
       return new_date;
     },
 
