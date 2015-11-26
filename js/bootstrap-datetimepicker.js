@@ -614,9 +614,9 @@
         this.picker.find('.datetimepicker-minutes thead th:eq(1)').text(formatted);
       } else {
         this.picker.find('.datetimepicker-hours thead th:eq(1)')
-          .text(dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
+          .text(dayMonth + '. ' + dates[this.language].months[month] + ' ' + year);
         this.picker.find('.datetimepicker-minutes thead th:eq(1)')
-          .text(dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
+          .text(dayMonth + '. ' + dates[this.language].months[month] + ' ' + year);
       }
       this.picker.find('tfoot th.today')
         .text(dates[this.language].today)
