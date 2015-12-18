@@ -1082,7 +1082,7 @@
       }
       this.element.trigger({
         type: 'changeDate',
-        date: this.date
+        date: this.getDate()
       });
       if(date == null)
         this.date = this.viewDate;
@@ -1287,7 +1287,7 @@
         }
         this.element.trigger({
           type: 'changeDate',
-          date: this.date
+          date: this.getDate()
         });
       }
     },
