@@ -76,8 +76,8 @@
 		this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
 
 		this.icons = {
-			leftArrow: this.fontAwesome ? 'fa-arrow-left' : (this.bootcssVer === 3 ? 'glyphicon-arrow-left' : 'icon-arrow-left'),
-			rightArrow: this.fontAwesome ? 'fa-arrow-right' : (this.bootcssVer === 3 ? 'glyphicon-arrow-right' : 'icon-arrow-right')
+			leftArrow: this.fontAwesome ? 'fa-arrow-left' : (this.bootcssVer !== 3 ? 'icon-arrow-left' : 'glyphicon-arrow-left'),
+			rightArrow: this.fontAwesome ? 'fa-arrow-right' : (this.bootcssVer !== 3 ? 'icon-arrow-right' : 'glyphicon-arrow-right')
 		};
 		this.icontype = this.fontAwesome ? 'fa' : 'glyphicon';
 
