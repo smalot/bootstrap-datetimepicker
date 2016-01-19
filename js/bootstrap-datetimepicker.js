@@ -242,9 +242,11 @@
     this.weekEnd = ((this.weekStart + 6) % 7);
     this.startDate = -Infinity;
     this.endDate = Infinity;
+    this.datesDisabled = [];
     this.daysOfWeekDisabled = [];
     this.setStartDate(options.startDate || this.element.data('date-startdate'));
     this.setEndDate(options.endDate || this.element.data('date-enddate'));
+    this.setDatesDisabled(options.datesDisabled || this.element.data('date-dates-disabled'));
     this.setDaysOfWeekDisabled(options.daysOfWeekDisabled || this.element.data('date-days-of-week-disabled'));
     this.setMinutesDisabled(options.minutesDisabled || this.element.data('date-minute-disabled'));
     this.setHoursDisabled(options.hoursDisabled || this.element.data('date-hour-disabled'));
@@ -447,6 +449,18 @@
       if (this.endDate !== Infinity) {
         this.endDate = DPGlobal.parseDate(this.endDate, this.format, this.language, this.formatType);
       }
+      this.update();
+      this.updateNavArrows();
+    },
+
+    setDatesDisabled: function (datesDisabled) {
+      this.datesDisabled = datesDisabled || [];
+      if (!$.isArray(this.datesDisabled)) {
+        this.datesDisabled = this.datesDisabled.split(/,\s*/);
+      }
+      this.datesDisabled = $.map(this.datesDisabled, function (d) {
+        return DPGlobal.parseDate(d, this.format, this.language, this.formatType).toDateString();
+      });
       this.update();
       this.updateNavArrows();
     },
@@ -655,7 +669,8 @@
           clsName += ' active';
         }
         if ((prevMonth.valueOf() + 86400000) <= this.startDate || prevMonth.valueOf() > this.endDate ||
-          $.inArray(prevMonth.getUTCDay(), this.daysOfWeekDisabled) !== -1) {
+          $.inArray(prevMonth.getUTCDay(), this.daysOfWeekDisabled) !== -1 ||
+					$.inArray(prevMonth.toDateString(), this.datesDisabled) !== -1) {
           clsName += ' disabled';
         }
         html.push('<td class="day' + clsName + '">' + prevMonth.getUTCDate() + '</td>');
