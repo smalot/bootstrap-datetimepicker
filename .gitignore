@@ -3,3 +3,4 @@
 *.iml
 atlassian-ide-plugin.xml
 yuicompressor-*
+prepros.cfg
