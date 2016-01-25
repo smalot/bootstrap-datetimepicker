@@ -99,6 +99,7 @@
     this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
     this.initialDate = options.initialDate || new Date();
     this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
+    this.title = typeof options.title === 'undefined' ? false : options.title;
 
     this.icons = {
       leftArrow: this.fontAwesome ? 'fa-arrow-left' : (this.bootcssVer === 3 ? 'glyphicon-arrow-left' : 'icon-arrow-left'),
@@ -465,6 +466,12 @@
       this.updateNavArrows();
     },
 
+    setTitle: function (selector, value) {
+      return this.picker.find(selector)
+        .find('th:eq(1)')
+        .text(this.title === false ? value : this.title);
+    },
+
     setDaysOfWeekDisabled: function (daysOfWeekDisabled) {
       this.daysOfWeekDisabled = daysOfWeekDisabled || [];
       if (!$.isArray(this.daysOfWeekDisabled)) {
@@ -620,17 +627,14 @@
         endMonth = this.endDate !== Infinity ? this.endDate.getUTCMonth() + 1 : Infinity,
         currentDate = (new UTCDate(this.date.getUTCFullYear(), this.date.getUTCMonth(), this.date.getUTCDate())).valueOf(),
         today = new Date();
-      this.picker.find('.datetimepicker-days thead th:eq(1)')
-        .text(dates[this.language].months[month] + ' ' + year);
+      this.setTitle('.datetimepicker-days', dates[this.language].months[month] + ' ' + year)
       if (this.formatViewType == 'time') {
         var formatted = this.getFormattedDate();
-        this.picker.find('.datetimepicker-hours thead th:eq(1)').text(formatted);
-        this.picker.find('.datetimepicker-minutes thead th:eq(1)').text(formatted);
+        this.setTitle('.datetimepicker-hours', formatted);
+        this.setTitle('.datetimepicker-minutes', formatted);
       } else {
-        this.picker.find('.datetimepicker-hours thead th:eq(1)')
-          .text(dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
-        this.picker.find('.datetimepicker-minutes thead th:eq(1)')
-          .text(dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
+        this.setTitle('.datetimepicker-hours', dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
+        this.setTitle('.datetimepicker-minutes', dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
       }
       this.picker.find('tfoot th.today')
         .text(dates[this.language].today)
@@ -751,9 +755,7 @@
       this.picker.find('.datetimepicker-minutes td').html(html.join(''));
 
       var currentYear = this.date.getUTCFullYear();
-      var months = this.picker.find('.datetimepicker-months')
-        .find('th:eq(1)')
-        .text(year)
+      var months = this.setTitle('.datetimepicker-months', year)
         .end()
         .find('span').removeClass('active');
       if (currentYear == year) {
@@ -774,9 +776,7 @@
 
       html = '';
       year = parseInt(year / 10, 10) * 10;
-      var yearCont = this.picker.find('.datetimepicker-years')
-        .find('th:eq(1)')
-        .text(year + '-' + (year + 9))
+      var yearCont = this.setTitle('.datetimepicker-years', year + '-' + (year + 9))
         .end()
         .find('td');
       year -= 1;
