@@ -8,7 +8,7 @@
  * Improvements by Yun Lai
  * Improvements by Kenneth Henderick
  * Improvements by CuGBabyBeaR
- * Improvements by Christian Vaas
+ * Improvements by Christian Vaas <auspex@auspex.eu>
  *
  * Project URL : http://www.malot.fr/bootstrap-datetimepicker
  *
