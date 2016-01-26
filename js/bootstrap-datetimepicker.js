@@ -538,6 +538,9 @@
       } else {
         offset = this.element.offset();
         left = offset.left;
+        if (this.pickerPosition == 'bottom-left' || this.pickerPosition == 'top-left') {
+          left += this.element.outerWidth() - this.picker.outerWidth();
+        }
       }
 
       var bodyWidth = document.body.clientWidth || window.innerWidth;
@@ -545,14 +548,16 @@
         left = bodyWidth - 220;
       }
 
-      /*if (this.pickerPosition == 'top-left' || this.pickerPosition == 'top-right') {
-        top = offset.top - this.picker.outerHeight();
+      if (this.component) {
+        top = top - containerOffset.top + 169;
+        left = left - containerOffset.left + 210;
       } else {
-        top = offset.top + this.height;
-      }*/
-
-      top = top - containerOffset.top + 169;
-      left = left - containerOffset.left + 210;
+        if (this.pickerPosition == 'top-left' || this.pickerPosition == 'top-right') {
+          top = offset.top - this.picker.outerHeight();
+        } else {
+          top = offset.top + this.height;
+        }
+      }
 
       this.picker.css({
         top:    top,
