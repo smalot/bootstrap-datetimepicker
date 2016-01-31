@@ -24,7 +24,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * ========================================================= */
-!function ($) {
+
+(function(factory){
+    if (typeof define === 'function' && define.amd)
+      define(['jquery'], factory);
+    else if (typeof exports === 'object')
+      factory(require('jquery'));
+    else
+      factory(jQuery);
+
+}(function($, undefined){
 
   // Add ECMA262-5 Array methods if not supported natively (IE8)
   if (!('indexOf' in Array.prototype)) {
@@ -1843,4 +1852,4 @@
     $('[data-provide="datetimepicker-inline"]').datetimepicker();
   });
 
-}(window.jQuery);
+}));
