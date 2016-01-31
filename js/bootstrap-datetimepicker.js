@@ -246,6 +246,7 @@
     }
 
     this.todayBtn = (options.todayBtn || this.element.data('date-today-btn') || false);
+    this.clearBtn = (options.clearBtn || this.element.data('date-clear-btn') || false);
     this.todayHighlight = (options.todayHighlight || this.element.data('date-today-highlight') || false);
 
     this.weekStart = ((options.weekStart || this.element.data('date-weekstart') || dates[this.language].weekStart || 0) % 7);
@@ -651,8 +652,11 @@
         this.setTitle('.datetimepicker-minutes', dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
       }
       this.picker.find('tfoot th.today')
-        .text(dates[this.language].today)
+        .text(dates[this.language].today || dates['en'].today)
         .toggle(this.todayBtn !== false);
+      this.picker.find('tfoot th.clear')
+        .text(dates[this.language].clear || dates['en'].clear)
+        .toggle(this.clearBtn !== false);
       this.updateNavArrows();
       this.fillMonths();
       /*var prevMonth = UTCDate(year, month, 0,0,0,0,0);
@@ -952,6 +956,12 @@
                   startDate: this.startDate,
                   endDate:   this.endDate
                 });
+                break;
+              case 'clear':
+                this.reset();
+                if (this.autoclose) {
+                  this.hide();
+                }
                 break;
               case 'today':
                 var date = new Date();
@@ -1406,7 +1416,8 @@
       monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       meridiem:    ['am', 'pm'],
       suffix:      ['st', 'nd', 'rd', 'th'],
-      today:       'Today'
+      today:       'Today',
+      clear:       'Clear'
     }
   };
 
@@ -1748,7 +1759,10 @@
                 '</tr>' +
       '</thead>',
     contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
-    footTemplate: '<tfoot><tr><th colspan="7" class="today"></th></tr></tfoot>'
+    footTemplate: '<tfoot>' + 
+                    '<tr><th colspan="7" class="today"></th></tr>' +
+                    '<tr><th colspan="7" class="clear"></th></tr>' +
+                  '</tfoot>'
   };
   DPGlobal.template = '<div class="datetimepicker">' +
     '<div class="datetimepicker-minutes">' +

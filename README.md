@@ -213,6 +213,12 @@ Number, String. Default: 4, 'decade'
 
 The highest view that the datetimepicker should show.
 
+### clearBtn
+
+Boolean. Default: false
+
+If true, displays a "Clear" button at the bottom of the datetimepicker to clear the current selection. Moreover, the datetimepicker will be closed if autoclose is set to true.
+
 ### todayBtn
 
 Boolean, "linked".  Default: false
