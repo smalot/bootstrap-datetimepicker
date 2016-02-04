@@ -485,6 +485,24 @@ $('#datetimepicker').datetimepicker('setHoursDisabled');
 $('#datetimepicker').datetimepicker('setHoursDisabled', null);
 ```
 
+### setInitialDate
+
+Arguments:
+
+* setInitialDate (String)
+
+Sets a new inital date on the datetimepicker.
+
+```javascript
+$('#datetimepicker').datetimepicker('setInitialDate', '2012-12-31');
+```
+
+Get the inital date on the datetimepicker.
+
+```javascript
+$('#datetimepicker').datetimepicker('getInitialDate');
+```
+
 ## Events
 
 Datetimepicker class exposes a few events for manipulating the dates.
