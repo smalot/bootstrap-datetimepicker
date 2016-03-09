@@ -471,7 +471,7 @@
       }
       this.datesDisabled = $.map(this.datesDisabled, function (d) {
         return DPGlobal.parseDate(d, this.format, this.language, this.formatType).toDateString();
-      });
+      }.bind(this));
       this.update();
       this.updateNavArrows();
     },
