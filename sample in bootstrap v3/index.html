@@ -11,6 +11,7 @@
     <form action="" class="form-horizontal"  role="form">
         <fieldset>
             <legend>Test</legend>
+
             <div class="form-group">
                 <label for="dtp_input1" class="col-md-2 control-label">DateTime Picking</label>
                 <div class="input-group date form_datetime col-md-5" data-date="1979-09-16T05:25:07Z" data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
@@ -38,6 +39,12 @@
                 </div>
 				<input type="hidden" id="dtp_input3" value="" /><br/>
             </div>
+            <div class="form-group">
+                <label for="dates-disabled" class="col-md-2 control-label">Dates Disabled</label>
+                <div class="input-group col-md-5">
+                    <input class="dates-disabled form-control" id="dates-disabled">
+                </div>
+            </div>
         </fieldset>
     </form>
 </div>
@@ -46,7 +53,9 @@
 <script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="../js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
 <script type="text/javascript" src="../js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../js/locales/bootstrap-datetimepicker.bn.js" charset="UTF-8"></script>
 <script type="text/javascript">
+
     $('.form_datetime').datetimepicker({
         //language:  'fr',
         weekStart: 1,
@@ -57,6 +66,7 @@
 		forceParse: 0,
         showMeridian: 1
     });
+
 	$('.form_date').datetimepicker({
         language:  'fr',
         weekStart: 1,
@@ -77,6 +87,11 @@
 		minView: 0,
 		maxView: 1,
 		forceParse: 0
+    });
+    $('.dates-disabled').datetimepicker({
+
+        datesDisabled: ['2016-03-05', '2016-03-10'],
+        language: 'bn'
     });
 </script>
 

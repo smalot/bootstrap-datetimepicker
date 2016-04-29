@@ -177,6 +177,11 @@ Date.  Default: End of time
 
 The latest date that may be selected; all later dates will be disabled.
 
+### datesDisabled
+String, Array. Default: []
+
+Array of date strings or a single date string formatted in the given date format
+
 ### daysOfWeekDisabled
 
 String, Array.  Default: '', []
