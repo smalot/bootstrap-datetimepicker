@@ -120,7 +120,7 @@
 
     this.clickedOutside = function (e) {
         // Clicked outside the datetimepicker, hide it
-        if ($(e.target).closest('.datetimepicker').length === 0) {
+        if ($(e.target).closest('.datetimepicker').length === 0 && $(e.target).closest(that.element).length === 0) {
             that.hide();
         }
     }
@@ -343,7 +343,14 @@
         e.stopPropagation();
         e.preventDefault();
       }
-      this.isVisible = true;
+      this.element.off('click.show').on('click.show', $.proxy(function() {
+        if (!this.isVisible) {
+          this.picker.show();
+          this.isVisible = true;
+        } else {
+          this.hide();
+        }
+      }, this));
       this.element.trigger({
         type: 'show',
         date: this.date
