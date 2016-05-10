@@ -643,7 +643,7 @@
         hours = d.getUTCHours(),
         minutes = d.getUTCMinutes(),
         startYear = this.startDate !== -Infinity ? this.startDate.getUTCFullYear() : -Infinity,
-        startMonth = this.startDate !== -Infinity ? this.startDate.getUTCMonth() + 1 : -Infinity,
+        startMonth = this.startDate !== -Infinity ? this.startDate.getUTCMonth() : -Infinity,
         endYear = this.endDate !== Infinity ? this.endDate.getUTCFullYear() : Infinity,
         endMonth = this.endDate !== Infinity ? this.endDate.getUTCMonth() + 1 : Infinity,
         currentDate = (new UTCDate(this.date.getUTCFullYear(), this.date.getUTCMonth(), this.date.getUTCDate())).valueOf(),
@@ -792,7 +792,7 @@
         months.addClass('disabled');
       }
       if (year == startYear) {
-        months.slice(0, startMonth + 1).addClass('disabled');
+        months.slice(0, startMonth).addClass('disabled');
       }
       if (year == endYear) {
         months.slice(endMonth).addClass('disabled');
