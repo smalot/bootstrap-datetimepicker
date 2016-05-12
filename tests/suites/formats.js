@@ -245,3 +245,11 @@ test('Untrimmed datetime value', patch_date(function(Date){
       .datetimepicker('setValue');
   equal(this.input.val(), '2012-03-05 00:00');
 }));
+
+test('When parsing does not work uses date parsing', function(){
+    this.input
+        .val('8/19/1986')
+        .datetimepicker({format: 'mm/dd/yy HH:ii P'})
+        .datetimepicker('setValue');
+    equal(this.input.val(), '08/19/86 12:00 AM');
+});
