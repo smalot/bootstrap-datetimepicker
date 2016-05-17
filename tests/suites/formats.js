@@ -245,3 +245,12 @@ test('Untrimmed datetime value', patch_date(function(Date){
       .datetimepicker('setValue');
   equal(this.input.val(), '2012-03-05 00:00');
 }));
+
+
+test('With timezone option', patch_date(function(Date){
+  this.input
+      .val('2012-03-05')
+      .datetimepicker({format: 'yyyy-mm-dd hh:ii P Z'})
+      .datetimepicker('setValue');
+  equal(this.input.val(), '2012-03-05 00:00 AM UTC');
+}));

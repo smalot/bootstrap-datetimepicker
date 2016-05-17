@@ -109,6 +109,8 @@
     this.initialDate = options.initialDate || new Date();
     this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
     this.title = typeof options.title === 'undefined' ? false : options.title;
+    this.defaultTimeZone = (new Date).toString().split('(')[1].slice(0, -1);
+    this.timezone = options.timezone || this.defaultTimeZone;
 
     this.icons = {
       leftArrow: this.fontAwesome ? 'fa-arrow-left' : (this.bootcssVer === 3 ? 'glyphicon-arrow-left' : 'icon-arrow-left'),
@@ -451,13 +453,13 @@
 
     getFormattedDate: function (format) {
       if (format == undefined) format = this.format;
-      return DPGlobal.formatDate(this.date, format, this.language, this.formatType);
+      return DPGlobal.formatDate(this.date, format, this.language, this.formatType, this.timezone);
     },
 
     setStartDate: function (startDate) {
       this.startDate = startDate || -Infinity;
       if (this.startDate !== -Infinity) {
-        this.startDate = DPGlobal.parseDate(this.startDate, this.format, this.language, this.formatType);
+        this.startDate = DPGlobal.parseDate(this.startDate, this.format, this.language, this.formatType, this.timezone);
       }
       this.update();
       this.updateNavArrows();
@@ -466,7 +468,7 @@
     setEndDate: function (endDate) {
       this.endDate = endDate || Infinity;
       if (this.endDate !== Infinity) {
-        this.endDate = DPGlobal.parseDate(this.endDate, this.format, this.language, this.formatType);
+        this.endDate = DPGlobal.parseDate(this.endDate, this.format, this.language, this.formatType, this.timezone);
       }
       this.update();
       this.updateNavArrows();
@@ -478,7 +480,7 @@
         this.datesDisabled = this.datesDisabled.split(/,\s*/);
       }
       this.datesDisabled = $.map(this.datesDisabled, function (d) {
-        return DPGlobal.parseDate(d, this.format, this.language, this.formatType).toDateString();
+        return DPGlobal.parseDate(d, this.format, this.language, this.formatType, this.timezone).toDateString();
       });
       this.update();
       this.updateNavArrows();
@@ -599,7 +601,7 @@
         fromArgs = false;
       }
 
-      this.date = DPGlobal.parseDate(date, this.format, this.language, this.formatType);
+      this.date = DPGlobal.parseDate(date, this.format, this.language, this.formatType, this.timezone);
 
       if (fromArgs) this.setValue();
 
@@ -1478,7 +1480,7 @@
     },
     validParts: function (type) {
       if (type == 'standard') {
-        return /t|hh?|HH?|p|P|ii?|ss?|dd?|DD?|mm?|MM?|yy(?:yy)?/g;
+        return /t|hh?|HH?|p|P|z|Z|ii?|ss?|dd?|DD?|mm?|MM?|yy(?:yy)?/g;
       } else if (type == 'php') {
         return /[dDjlNwzFmMnStyYaABgGhHis]/g;
       } else {
@@ -1496,7 +1498,7 @@
       }
       return {separators: separators, parts: parts};
     },
-    parseDate: function (date, format, language, type) {
+    parseDate: function (date, format, language, type, timezone) {
       if (date instanceof Date) {
         var dateUTC = new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
         dateUTC.setMilliseconds(0);
@@ -1539,7 +1541,7 @@
       var parts = date && date.toString().match(this.nonpunctuation) || [],
         date = new Date(0, 0, 0, 0, 0, 0, 0),
         parsed = {},
-        setters_order = ['hh', 'h', 'ii', 'i', 'ss', 's', 'yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'D', 'DD', 'd', 'dd', 'H', 'HH', 'p', 'P'],
+        setters_order = ['hh', 'h', 'ii', 'i', 'ss', 's', 'yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'D', 'DD', 'd', 'dd', 'H', 'HH', 'p', 'P', 'z', 'Z'],
         setters_map = {
           hh:   function (d, v) {
             return d.setUTCHours(v);
@@ -1588,12 +1590,16 @@
           },
           p:    function (d, v) {
             return d.setUTCHours(v == 1 ? d.getUTCHours() + 12 : d.getUTCHours());
+          },
+          z:    function () {
+            return timezone
           }
         },
         val, filtered, part;
       setters_map['M'] = setters_map['MM'] = setters_map['mm'] = setters_map['m'];
       setters_map['dd'] = setters_map['d'];
       setters_map['P'] = setters_map['p'];
+      setters_map['Z'] = setters_map['z'];
       date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
       if (parts.length == format.parts.length) {
         for (var i = 0, cnt = format.parts.length; i < cnt; i++) {
@@ -1621,6 +1627,11 @@
               case 'P':
                 val = $.inArray(parts[i].toLowerCase(), dates[language].meridiem);
                 break;
+              case 'z':
+              case 'Z':
+                timezone;
+                break;
+
             }
           }
           parsed[part] = val;
@@ -1633,7 +1644,7 @@
       }
       return date;
     },
-    formatDate:       function (date, format, language, type) {
+    formatDate:       function (date, format, language, type, timezone) {
       if (date == null) {
         return '';
       }
@@ -1658,7 +1669,9 @@
           // minute
           i:    date.getUTCMinutes(),
           // second
-          s:    date.getUTCSeconds()
+          s:    date.getUTCSeconds(),
+          // timezone
+          z:    timezone
         };
 
         if (dates[language].meridiem.length == 2) {
@@ -1669,6 +1682,7 @@
         }
         val.HH = (val.H < 10 ? '0' : '') + val.H;
         val.P = val.p.toUpperCase();
+        val.Z = val.z;
         val.hh = (val.h < 10 ? '0' : '') + val.h;
         val.ii = (val.i < 10 ? '0' : '') + val.i;
         val.ss = (val.s < 10 ? '0' : '') + val.s;
