@@ -158,6 +158,7 @@ The date format, combination of p, P, h, hh, i, ii, s, ss, d, dd, m, mm, M, MM, 
  * yy : two digit representation of a year
  * yyyy : full numeric representation of a year, 4 digits
  * t : unix epoch timestamp
+ * Z : abbreviated timezone name
 
 ### weekStart
 
@@ -296,6 +297,23 @@ You can initialize the viewer with a date. By default it's now, so you can speci
 Number. Default: undefined
 
 zIndex value is being automatically calculated based on the DOM tree, where we seek the highest value. To skip this process you can set the value manually.
+
+### timezone
+
+String. Default: Clients current timezone abbreviated name
+
+You can allow the viewer to display the date along with the given timezone. Note that this has to be used in conjunction with the `Z` format option. Example below: 
+
+
+```javascript
+$('#date-end').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii P Z'
+        timezone: 'GMT'
+    });
+```
+
+![](http://s32.postimg.org/55x4fud05/Screen_Shot_2016_05_17_at_5_43_34_PM.png)
+
 
 ### onRender
 
