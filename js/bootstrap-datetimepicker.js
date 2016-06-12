@@ -1074,7 +1074,7 @@
                 month = this.viewDate.getUTCMonth(),
                 hours = this.viewDate.getUTCHours(),
                 minutes = this.viewDate.getUTCMinutes(),
-                seconds = new Date().getUTCSeconds();
+                seconds = this.viewDate.getUTCSeconds();
               if (target.is('.old')) {
                 if (month === 0) {
                   month = 11;
