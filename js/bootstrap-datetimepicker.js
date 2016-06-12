@@ -388,6 +388,9 @@
 
     getDate: function () {
       var d = this.getUTCDate();
+      if(d == null) {
+      	d = new Date();
+      }
       return new Date(d.getTime() + (d.getTimezoneOffset() * 60000));
     },
 
@@ -1071,7 +1074,7 @@
                 month = this.viewDate.getUTCMonth(),
                 hours = this.viewDate.getUTCHours(),
                 minutes = this.viewDate.getUTCMinutes(),
-                seconds = this.viewDate.getUTCSeconds();
+                seconds = new Date().getUTCSeconds();
               if (target.is('.old')) {
                 if (month === 0) {
                   month = 11;
