@@ -334,6 +334,23 @@ Boolean. Default: false
 
 If true, [Font Awesome](http://fontawesome.io/) will be used.
 
+### specialDates
+
+Array. Default: undefined
+
+Given an array of objects, dates can be given custom classes. The object must have the `className` and `dates` as an Array of Date objects, for example:
+
+ ```javascript
+$('#date-picker')
+    .datetimepicker({
+        specialDates: [
+            { className: "foobar", dates: [ new Date("2013-01-02") ] }
+        ]
+    });
+```
+
+ When rendered, the date 2013-01-02 will have an extra "foobar" class on the element.
+
 ## Markup
 
 Format as component.

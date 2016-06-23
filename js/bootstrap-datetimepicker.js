@@ -111,6 +111,7 @@
     this.title = typeof options.title === 'undefined' ? false : options.title;
     this.defaultTimeZone = (new Date).toString().split('(')[1].slice(0, -1);
     this.timezone = options.timezone || this.defaultTimeZone;
+    this.specialDates = options.specialDates || undefined;
 
     this.icons = {
       leftArrow: this.fontAwesome ? 'fa-arrow-left' : (this.bootcssVer === 3 ? 'glyphicon-arrow-left' : 'icon-arrow-left'),
@@ -702,6 +703,20 @@
           $.inArray(prevMonth.getUTCDay(), this.daysOfWeekDisabled) !== -1 ||
 					$.inArray(prevMonth.toDateString(), this.datesDisabled) !== -1) {
           clsName += ' disabled';
+        }
+        // Add classes passed in via specialDates
+        if (this.specialDates) {
+          for (var s=0; s<this.specialDates.length; s++) {
+            for (var di=0; di<this.specialDates[s].dates.length; di++) {
+              specialDate = DPGlobal.parseDate(this.specialDates[s].dates[di], this.format, this.language, this.formatType, this.timezone);
+              if (prevMonth.getUTCFullYear() === specialDate.getUTCFullYear() &&
+                  prevMonth.getUTCMonth() === specialDate.getUTCMonth() &&
+                  prevMonth.getUTCDate() === specialDate.getUTCDate()) {
+                clsName += ' ' + this.specialDates[s].className;
+                break;
+              }
+            }
+          }
         }
         html.push('<td class="day' + clsName + '">' + prevMonth.getUTCDate() + '</td>');
         if (prevMonth.getUTCDay() == this.weekEnd) {
