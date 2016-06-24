@@ -20,7 +20,7 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either ethis.defaultTimeZonexpress or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * ========================================================= */
@@ -109,7 +109,7 @@
     this.initialDate = options.initialDate || new Date();
     this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
     this.title = typeof options.title === 'undefined' ? false : options.title;
-    this.defaultTimeZone = (new Date).toString().split('(')[1].slice(0, -1);
+    this.defaultTimeZone='GMT '+(new Date()).getTimezoneOffset()/60;
     this.timezone = options.timezone || this.defaultTimeZone;
 
     this.icons = {
