@@ -109,7 +109,7 @@
     this.initialDate = options.initialDate || new Date();
     this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
     this.title = typeof options.title === 'undefined' ? false : options.title;
-    this.defaultTimeZone = (new Date).toString().split('(')[1].slice(0, -1);
+    this.defaultTimeZone = 'GMT '+(new Date()).getTimezoneOffset()/60;
     this.timezone = options.timezone || this.defaultTimeZone;
 
     this.icons = {
@@ -388,6 +388,9 @@
 
     getDate: function () {
       var d = this.getUTCDate();
+      if(d == null) {
+      	d = new Date();
+      }
       return new Date(d.getTime() + (d.getTimezoneOffset() * 60000));
     },
 
@@ -996,7 +999,7 @@
                 day = this.viewDate.getUTCDate(),
                 hours = this.viewDate.getUTCHours(),
                 minutes = this.viewDate.getUTCMinutes(),
-                seconds = this.viewDate.getUTCSeconds();
+                seconds = new Date().getUTCSeconds();
 
               if (target.is('.month')) {
                 this.viewDate.setUTCDate(1);
