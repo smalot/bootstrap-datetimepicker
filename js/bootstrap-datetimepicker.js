@@ -63,6 +63,24 @@
     return isFixed;
   }
 
+  // Add timezone abbreviation support for ie6+, Chrome, Firefox
+  function timeZoneAbbreviation() {
+    var abbreviation, date, formattedStr, i, len, matchedStrings, ref, str;
+    date = (new Date).toString();
+    formattedStr = ((ref = date.split('(')[1]) != null ? ref.slice(0, -1) : void 0) || date.split(' ');
+    if (formattedStr instanceof Array) {
+      matchedStrings = [];
+      for (i = 0, len = formattedStr.length; i < len; i++) {
+        str = formattedStr[i];
+        if (abbreviation = (ref = str.match(/\b[A-Z]+\b/)) != null ? ref[0] : void 0) {
+          matchedStrings.push(abbreviation);
+        }
+      }
+      formattedStr = matchedStrings.pop();
+    }
+    return formattedStr;
+  };
+
   function UTCDate() {
     return new Date(Date.UTC.apply(Date, arguments));
   }
@@ -109,8 +127,7 @@
     this.initialDate = options.initialDate || new Date();
     this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
     this.title = typeof options.title === 'undefined' ? false : options.title;
-    this.defaultTimeZone = (new Date).toString().split('(')[1].slice(0, -1);
-    this.timezone = options.timezone || this.defaultTimeZone;
+    this.timezone = options.timezone || timeZoneAbbreviation();
 
     this.icons = {
       leftArrow: this.fontAwesome ? 'fa-arrow-left' : (this.bootcssVer === 3 ? 'glyphicon-arrow-left' : 'icon-arrow-left'),
