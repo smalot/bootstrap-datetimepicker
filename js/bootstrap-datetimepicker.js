@@ -9,6 +9,7 @@
  * Improvements by Kenneth Henderick
  * Improvements by CuGBabyBeaR
  * Improvements by Christian Vaas <auspex@auspex.eu>
+ * Improvements by Ray <easyproject.cn>
  *
  * Project URL : http://www.malot.fr/bootstrap-datetimepicker
  *
@@ -109,7 +110,8 @@
     this.initialDate = options.initialDate || new Date();
     this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
     this.title = typeof options.title === 'undefined' ? false : options.title;
-    this.defaultTimeZone = (new Date).toString().split('(')[1].slice(0, -1);
+    var dtz=(new Date).toString().split('(');
+    this.defaultTimeZone = dtz.length>1?dtz[1].slice(0, -1):"";
     this.timezone = options.timezone || this.defaultTimeZone;
 
     this.icons = {
