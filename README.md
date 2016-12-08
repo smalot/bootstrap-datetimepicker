@@ -323,7 +323,7 @@ This event is fired when a day is rendered inside the datepicker. Should return 
 $('#date-end')
     .datetimepicker({
         onRender: function(date) {
-            return ev.date.valueOf() < date-start-display.valueOf() ? ' disabled' : '';
+            return date.valueOf() < date-start-display.valueOf() ? ' disabled' : '';
         }
     });
 ```

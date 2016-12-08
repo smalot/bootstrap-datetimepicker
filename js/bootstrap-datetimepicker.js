@@ -270,6 +270,7 @@
 
     this.weekStart = ((options.weekStart || this.element.data('date-weekstart') || dates[this.language].weekStart || 0) % 7);
     this.weekEnd = ((this.weekStart + 6) % 7);
+    this.onRender = options.onRender || function () { return ''; };
     this.startDate = -Infinity;
     this.endDate = Infinity;
     this.datesDisabled = [];
@@ -697,12 +698,11 @@
       nextMonth.setUTCDate(nextMonth.getUTCDate() + 42);
       nextMonth = nextMonth.valueOf();
       var html = [];
-      var clsName;
+      var clsName = this.onRender(prevMonth)
       while (prevMonth.valueOf() < nextMonth) {
         if (prevMonth.getUTCDay() == this.weekStart) {
           html.push('<tr>');
         }
-        clsName = '';
         if (prevMonth.getUTCFullYear() < year || (prevMonth.getUTCFullYear() == year && prevMonth.getUTCMonth() < month)) {
           clsName += ' old';
         } else if (prevMonth.getUTCFullYear() > year || (prevMonth.getUTCFullYear() == year && prevMonth.getUTCMonth() > month)) {
