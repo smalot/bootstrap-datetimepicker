@@ -698,11 +698,12 @@
       nextMonth.setUTCDate(nextMonth.getUTCDate() + 42);
       nextMonth = nextMonth.valueOf();
       var html = [];
-      var clsName = this.onRender(prevMonth)
+      var clsName;
       while (prevMonth.valueOf() < nextMonth) {
         if (prevMonth.getUTCDay() == this.weekStart) {
           html.push('<tr>');
         }
+        clsName = this.onRender(prevMonth);
         if (prevMonth.getUTCFullYear() < year || (prevMonth.getUTCFullYear() == year && prevMonth.getUTCMonth() < month)) {
           clsName += ' old';
         } else if (prevMonth.getUTCFullYear() > year || (prevMonth.getUTCFullYear() == year && prevMonth.getUTCMonth() > month)) {
