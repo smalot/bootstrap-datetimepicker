@@ -63,6 +63,19 @@
     return isFixed;
   }
 
+  function clientTimezone() {
+    var gmtTimezone = 'GMT';
+
+    var currentTimezone = (new Date).getTimezoneOffset() / -60;
+    if (currentTimezone < 0) {
+      gmtTimezone += currentTimezone;
+    } else if (currentTimezone > 0) {
+      gmtTimezone += '+' + currentTimezone;
+    }
+
+    return gmtTimezone;
+  }
+
   function UTCDate() {
     return new Date(Date.UTC.apply(Date, arguments));
   }
@@ -109,7 +122,7 @@
     this.initialDate = options.initialDate || new Date();
     this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
     this.title = typeof options.title === 'undefined' ? false : options.title;
-    this.defaultTimeZone = (new Date).toString().split('(')[1].slice(0, -1);
+    this.defaultTimeZone = clientTimezone();
     this.timezone = options.timezone || this.defaultTimeZone;
 
     this.icons = {
