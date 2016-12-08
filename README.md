@@ -1,16 +1,14 @@
 # Project : bootstrap-datetimepicker
 ======================================
 
-[![Build Status](https://travis-ci.org/smalot/bootstrap-datetimepicker.svg?branch=master)](https://travis-ci.org/smalot/bootstrap-datetimepicker)
-
-[Homepage](http://www.malot.fr/bootstrap-datetimepicker/)
-
-[Demo page](http://www.malot.fr/bootstrap-datetimepicker/demo.php)
+[![Build Status](https://travis-ci.org/jmperro/bootstrap-datetimepicker.svg?branch=master)](https://travis-ci.org/jmperro/bootstrap-datetimepicker)
 
 # Project forked
 
-This project is a fork of [bootstrap-datepicker project](https://github.com/eternicode/bootstrap-datepicker).
+This project is a fork of [bootstrap-datepicker project](https://github.com/smalot/bootstrap-datetimepicker).
 
+
+#With onRender event fixed!
 
 # Home
 
@@ -323,7 +321,7 @@ This event is fired when a day is rendered inside the datepicker. Should return 
 $('#date-end')
     .datetimepicker({
         onRender: function(date) {
-            return ev.date.valueOf() < date-start-display.valueOf() ? ' disabled' : '';
+            return date.valueOf() < date-start-display.valueOf() ? ' disabled' : '';
         }
     });
 ```
@@ -654,3 +652,4 @@ If your browser (or those of your users) is displaying characters wrong, chances
 ```html
 <script type="text/javascript" src="bootstrap-datetimepicker.de.js" charset="UTF-8"></script>
 ```
+on

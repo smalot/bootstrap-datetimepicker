@@ -270,6 +270,7 @@
 
     this.weekStart = ((options.weekStart || this.element.data('date-weekstart') || dates[this.language].weekStart || 0) % 7);
     this.weekEnd = ((this.weekStart + 6) % 7);
+    this.onRender = options.onRender;
     this.startDate = -Infinity;
     this.endDate = Infinity;
     this.datesDisabled = [];
@@ -702,7 +703,8 @@
         if (prevMonth.getUTCDay() == this.weekStart) {
           html.push('<tr>');
         }
-        clsName = '';
+        //clsName = '';
+        clsName = this.onRender(prevMonth);
         if (prevMonth.getUTCFullYear() < year || (prevMonth.getUTCFullYear() == year && prevMonth.getUTCMonth() < month)) {
           clsName += ' old';
         } else if (prevMonth.getUTCFullYear() > year || (prevMonth.getUTCFullYear() == year && prevMonth.getUTCMonth() > month)) {
@@ -1433,6 +1435,9 @@
   };
 
   $.fn.datetimepicker.defaults = {
+	onRender: function(date) {
+		return '';
+	}
   };
   $.fn.datetimepicker.Constructor = Datetimepicker;
   var dates = $.fn.datetimepicker.dates = {
