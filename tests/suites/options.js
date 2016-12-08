@@ -394,3 +394,31 @@ test('zIndex: set in options', function(){
     ok(parseInt(picker.css('z-index'), 10) == zIndex, 'has a value defined in the options');
 
 });
+
+test('specialDates', function(){
+    var input = $('<input />')
+                .appendTo('#qunit-fixture')
+                .val('2013-01-25')
+                .datetimepicker({
+                    format: 'yyyy-mm-dd',
+                    startView: 2,
+                    viewSelect: 2,
+                    specialDates: [
+                        {
+                            className: "foobar",
+                            dates: [new Date("2013-01-28"), new Date(Date.UTC(2013, 0, 26))]
+                        }
+                    ]
+                }),
+        dp = input.data('datetimepicker'),
+        picker = dp.picker,
+        target;
+
+    input.focus();
+    target = picker.find('.datetimepicker-days tbody td:contains(28)');
+    ok(target.hasClass('foobar'), 'Given special date is not marked with "foobar" class');
+    target = picker.find('.datetimepicker-days tbody td:contains(26)');
+    ok(target.hasClass('foobar'), 'Given special date is not marked with "foobar" class');
+    target = picker.find('.datetimepicker-days tbody td:contains(27)');
+    ok(!target.hasClass('foobar'), 'Given special date is marked with "foobar" class');
+});
