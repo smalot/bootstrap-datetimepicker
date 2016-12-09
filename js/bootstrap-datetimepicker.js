@@ -268,7 +268,15 @@
     this.clearBtn = (options.clearBtn || this.element.data('date-clear-btn') || false);
     this.todayHighlight = (options.todayHighlight || this.element.data('date-today-highlight') || false);
 
-    this.weekStart = ((options.weekStart || this.element.data('date-weekstart') || dates[this.language].weekStart || 0) % 7);
+    this.weekStart = 0;
+    if (typeof options.weekStart !== 'undefined') {
+      this.weekStart = options.weekStart;
+    } else if (typeof this.element.data('date-weekstart') !== 'undefined') {
+      this.weekStart = this.element.data('date-weekstart');
+    } else if (typeof dates[this.language].weekStart !== 'undefined') {
+      this.weekStart = dates[this.language].weekStart;
+    }
+    this.weekStart = this.weekStart % 7;
     this.weekEnd = ((this.weekStart + 6) % 7);
     this.onRender = options.onRender || function () { return ''; };
     this.startDate = -Infinity;
