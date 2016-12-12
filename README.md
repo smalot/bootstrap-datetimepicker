@@ -315,15 +315,67 @@ $('#date-end').datetimepicker({
 ![](http://s32.postimg.org/55x4fud05/Screen_Shot_2016_05_17_at_5_43_34_PM.png)
 
 
-### onRender
+### onRenderYear
 
-This event is fired when a day is rendered inside the datepicker. Should return a string. Return 'disabled' to disable the day from being selected.
+This event is fired when a year is rendered inside the datepicker. Should return an array of classes to add to this element. Return ['disabled'] to disable the day from being selected.
 
 ```javascript
-$('#date-end')
+$('#date')
     .datetimepicker({
-        onRender: function(date) {
-            return date.valueOf() < date-start-display.valueOf() ? ' disabled' : '';
+        onRenderYear: function(year) {
+            return year <= 2000 ? ['disabled'] : [];
+        }
+    });
+```
+
+### onRenderMonth
+
+This event is fired when a month is rendered inside the datepicker. Should return an array of classes to add to this element. Return ['disabled'] to disable the day from being selected.
+
+```javascript
+$('#date')
+    .datetimepicker({
+        onRenderMonth: function(month) {
+            return month <= 10 && month >= 8 ? ['disabled'] : [];
+        }
+    });
+```
+
+### onRenderDay
+
+This event is fired when a day is rendered inside the datepicker. Should return an array of classes to add to this element. Return ['disabled'] to disable the day from being selected.
+
+```javascript
+$('#date')
+    .datetimepicker({
+        onRenderDay: function(date) {
+            return date.valueOf() < date-start-display.valueOf() ? ['disabled'] : [];
+        }
+    });
+```
+
+### onRenderHour
+
+This event is fired when a hour is rendered inside the datepicker. Should return an array of classes to add to this element. Return ['disabled'] to disable the day from being selected.
+
+```javascript
+$('#date')
+    .datetimepicker({
+        onRenderHour: function(hour) {
+            return hour <= 10 && hour >= 8 ? ['disabled'] : [];
+        }
+    });
+```
+
+### onRenderMinute
+
+This event is fired when a minute is rendered inside the datepicker. Should return an array of classes to add to this element. Return ['disabled'] to disable the day from being selected.
+
+```javascript
+$('#date')
+    .datetimepicker({
+        onRenderMinute: function(minute) {
+            return minute <= 10 && minute >= 8 ? ['disabled'] : [];
         }
     });
 ```
