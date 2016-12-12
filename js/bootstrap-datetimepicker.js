@@ -279,7 +279,7 @@
     this.weekStart = this.weekStart % 7;
     this.weekEnd = ((this.weekStart + 6) % 7);
     this.onRenderDay = function (day) {
-      var render = (options.onRenderDay || function () { return []; })(date);
+      var render = (options.onRenderDay || function () { return []; })(day);
       if (typeof render == 'string') {
         render = [render];
       }
@@ -287,7 +287,7 @@
       return res.concat((render ? render : []));
     };
     this.onRenderHour = function (hour) {
-      var render = (options.onRenderHour || function () { return []; })(date);
+      var render = (options.onRenderHour || function () { return []; })(hour);
       var res = ['hour'];
       if (typeof render == 'string') {
         render = [render];
@@ -295,7 +295,7 @@
       return res.concat((render ? render : []));
     };
     this.onRenderMinute = function (minute) {
-      var render = (options.onRenderMinute || function () { return []; })(date);
+      var render = (options.onRenderMinute || function () { return []; })(minute);
       var res = ['minute'];
       if (typeof render == 'string') {
         render = [render];
@@ -303,7 +303,7 @@
       return res.concat((render ? render : []));
     };
     this.onRenderYear = function (year) {
-      var render = (options.onRenderYear || function () { return []; })(date);
+      var render = (options.onRenderYear || function () { return []; })(year);
       var res = ['year'];
       if (typeof render == 'string') {
         render = [render];
@@ -311,7 +311,7 @@
       return res.concat((render ? render : []));
     }
     this.onRenderMonth = function (month) {
-      var render = (options.onRenderMonth || function () { return []; })(date);
+      var render = (options.onRenderMonth || function () { return []; })(month);
       var res = ['month'];
       if (typeof render == 'string') {
         render = [render];
