@@ -653,6 +653,8 @@
       });
     },
 
+    hour_minute: "^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]",
+
     update: function () {
       var date, fromArgs = false;
       if (arguments && arguments.length && (typeof arguments[0] === 'string' || arguments[0] instanceof Date)) {
@@ -668,6 +670,12 @@
       if (!date) {
         date = new Date();
         fromArgs = false;
+      }
+
+      if (typeof date === "string") {
+        if (new RegExp(this.hour_minute).test(date) || new RegExp(this.hour_minute + ":[0-5][0-9]").test(date)) {
+          date = this.getDate()
+        }
       }
 
       this.date = DPGlobal.parseDate(date, this.format, this.language, this.formatType, this.timezone);
