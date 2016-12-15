@@ -137,7 +137,7 @@
 
     this._attachEvents();
 
-    this.clickedOutside = function (e) {
+    this.clickedOutside = options.clickedOutside || function (e) {
         // Clicked outside the datetimepicker, hide it
         if ($(e.target).closest('.datetimepicker').length === 0) {
             that.hide();
@@ -248,7 +248,7 @@
       this.picker.find(selector).toggleClass(this.icons.leftArrow + ' ' + this.icons.rightArrow);
     }
 
-    $(document).on('mousedown', this.clickedOutside);
+    $(document).on('mousedown', {datetimepicker: this}, this.clickedOutside);
 
     this.autoclose = false;
     if ('autoclose' in options) {
