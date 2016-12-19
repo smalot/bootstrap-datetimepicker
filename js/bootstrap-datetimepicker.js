@@ -308,6 +308,12 @@
       if (typeof render == 'string') {
         render = [render];
       }
+      if (this.date.getUTCFullYear() === d.getUTCFullYear()) {
+        classes.push('active');
+      }
+      if (this.startDate.getUTCFullYear() < startYear || d.getUTCFullYear() > this.endDate.getUTCFullYear()) {
+        classes.push('disabled');
+      }
       return res.concat((render ? render : []));
     }
     this.onRenderMonth = function (month) {
@@ -874,14 +880,10 @@
         .end()
         .find('td');
       year -= 1;
+      var d = new Date(this.viewDate);
       for (var i = -1; i < 11; i++) {
-        classes = this.onRenderYear(year);
-        if (currentYear == year) {
-          classes.push('active');
-        }
-        if (year < startYear || year > endYear) {
-          classes.push('disabled');
-        }
+        d.setUTCFullYear(year);
+        classes = this.onRenderYear(d);
         if (i == -1 || i == 10) {
           classes.push(old);
         }
