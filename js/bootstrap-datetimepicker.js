@@ -278,40 +278,40 @@
     }
     this.weekStart = this.weekStart % 7;
     this.weekEnd = ((this.weekStart + 6) % 7);
-    this.onRenderDay = function (day) {
-      var render = (options.onRenderDay || function () { return []; })(day);
+    this.onRenderDay = function (date) {
+      var render = (options.onRenderDay || function () { return []; })(date);
       if (typeof render == 'string') {
         render = [render];
       }
       var res = ['day'];
       return res.concat((render ? render : []));
     };
-    this.onRenderHour = function (hour) {
-      var render = (options.onRenderHour || function () { return []; })(hour);
+    this.onRenderHour = function (date) {
+      var render = (options.onRenderHour || function () { return []; })(date);
       var res = ['hour'];
       if (typeof render == 'string') {
         render = [render];
       }
       return res.concat((render ? render : []));
     };
-    this.onRenderMinute = function (minute) {
-      var render = (options.onRenderMinute || function () { return []; })(minute);
+    this.onRenderMinute = function (date) {
+      var render = (options.onRenderMinute || function () { return []; })(date);
       var res = ['minute'];
       if (typeof render == 'string') {
         render = [render];
       }
       return res.concat((render ? render : []));
     };
-    this.onRenderYear = function (year) {
-      var render = (options.onRenderYear || function () { return []; })(year);
+    this.onRenderYear = function (date) {
+      var render = (options.onRenderYear || function () { return []; })(date);
       var res = ['year'];
       if (typeof render == 'string') {
         render = [render];
       }
       return res.concat((render ? render : []));
     }
-    this.onRenderMonth = function (month) {
-      var render = (options.onRenderMonth || function () { return []; })(month);
+    this.onRenderMonth = function (date) {
+      var render = (options.onRenderMonth || function () { return []; })(date);
       var res = ['month'];
       if (typeof render == 'string') {
         render = [render];
@@ -695,11 +695,12 @@
     },
 
     fillMonths: function () {
-      var html = '',
-        i = 0;
-      while (i < 12) {
-        var classes = this.onRenderMonth(i + 1)
-        html += '<span class="' + classes.join(' ') + '">' + dates[this.language].monthsShort[i++] + '</span>';
+      var html = '';
+      var d = new Date(this.viewDate);
+      for (var i = 0; i < 12; i++) {
+        d.setUTCMonth(i);
+        var classes = this.onRenderMonth(d);
+        html += '<span class="' + classes.join(' ') + '">' + dates[this.language].monthsShort[i] + '</span>';
       }
       this.picker.find('.datetimepicker-months td').html(html);
     },
@@ -782,8 +783,10 @@
       html = [];
       var txt = '', meridian = '', meridianOld = '';
       var hoursDisabled = this.hoursDisabled || [];
+      var d = new Date(this.viewDate)
       for (var i = 0; i < 24; i++) {
-        classes = this.onRenderHour(i + 1);
+        d.setUTCHours(i);
+        classes = this.onRenderHour(d);
         if (hoursDisabled.indexOf(i) !== -1) {
           classes.push('disabled');
         }
@@ -823,10 +826,12 @@
       html = [];
       txt = '', meridian = '', meridianOld = '';
       var minutesDisabled = this.minutesDisabled || [];
+      var d = new Date(this.viewDate);
       for (var i = 0; i < 60; i += this.minuteStep) {
         if (minutesDisabled.indexOf(i) !== -1) continue;
         var actual = UTCDate(year, month, dayMonth, hours, i, 0);
-        classes = this.onRenderMinute(i + this.minuteStep);
+        d.setUTCMinutes(i + this.minuteStep);
+        classes = this.onRenderMinute(d);
         if (actual.valueOf() < this.startDate || actual.valueOf() > this.endDate) {
           classes.push('disabled');
         } else if (Math.floor(minutes / this.minuteStep) == Math.floor(i / this.minuteStep)) {
@@ -878,8 +883,10 @@
         .end()
         .find('td');
       year -= 1;
+      var d = new Date(this.viewDate);
       for (var i = -1; i < 11; i++) {
-        classes = this.onRenderYear(year);
+        d.setUTCFullYear(year);
+        classes = this.onRenderYear(d);
         if (currentYear == year) {
           classes.push('active');
         }
