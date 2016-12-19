@@ -1,4 +1,4 @@
-# PHP Storm
+node_modules/
 .idea
 *.iml
 atlassian-ide-plugin.xml
