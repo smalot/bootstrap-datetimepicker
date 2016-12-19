@@ -956,7 +956,7 @@
           } else {
             this.picker.find('.prev').css({visibility: 'visible'});
           }
-          if (&& year >= this.endDate.getUTCFullYear()) {
+          if (year >= this.endDate.getUTCFullYear()) {
             this.picker.find('.next').css({visibility: 'hidden'});
           } else {
             this.picker.find('.next').css({visibility: 'visible'});
