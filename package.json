@@ -24,5 +24,12 @@
   "bugs": {
     "url":  "https://github.com/smalot/bootstrap-datetimepicker"
   },
-  "main": "./js/bootstrap-datetimepicker.js"
+  "main": "./js/bootstrap-datetimepicker.js",
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-version-check": "^0.3.7",
+    "jshint": "^2.9.4",
+    "load-grunt-tasks": "^3.4.1"
+  }
 }
