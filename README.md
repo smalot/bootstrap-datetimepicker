@@ -322,8 +322,10 @@ This event is fired when a year is rendered inside the datepicker. Should return
 ```javascript
 $('#date')
     .datetimepicker({
-        onRenderYear: function(year) {
-            return year <= 2000 ? ['disabled'] : [];
+        onRenderYear: function(date) {
+            //Disable picking dates from any year apart from 2015/2016
+            if (date.getFullYear() < 2015 || date.getFullYear() > 2016)
+                return ['disabled']
         }
     });
 ```
@@ -335,8 +337,10 @@ This event is fired when a month is rendered inside the datepicker. Should retur
 ```javascript
 $('#date')
     .datetimepicker({
-        onRenderMonth: function(month) {
-            return month <= 10 && month >= 8 ? ['disabled'] : [];
+        onRenderMonth: function(date) {
+            //Disable every other month in the year 2016
+            if (date.getUTCMonth() % 2 === 0 && date.getUTCFullYear() === 2016)
+                return ['disabled']
         }
     });
 ```
@@ -349,7 +353,9 @@ This event is fired when a day is rendered inside the datepicker. Should return 
 $('#date')
     .datetimepicker({
         onRenderDay: function(date) {
-            return date.valueOf() < date-start-display.valueOf() ? ['disabled'] : [];
+            //Disable dates 18-24 of every month
+            if (date.getDate() >= 18 && date.getDate() <= 24)
+                return ['disabled'];
         }
     });
 ```
@@ -362,7 +368,9 @@ This event is fired when a hour is rendered inside the datepicker. Should return
 $('#date')
     .datetimepicker({
         onRenderHour: function(hour) {
-            return hour <= 10 && hour >= 8 ? ['disabled'] : [];
+            //Disable any time between 12:00 and 13:59
+            if (date.getUTCHours() === 12 || date.getUTCHours() === 13)
+                return ['disabled'];
         }
     });
 ```
@@ -375,7 +383,9 @@ This event is fired when a minute is rendered inside the datepicker. Should retu
 $('#date')
     .datetimepicker({
         onRenderMinute: function(minute) {
-            return minute <= 10 && minute >= 8 ? ['disabled'] : [];
+            //Disable all times between 30 past and 20 to every hour for workdays
+            if (date.getDay() !== 0 && date.getDay() !== 6 && date.getUTCMinutes() >= 30 && date.getUTCMinutes() <= 40)
+                return ['disabled'];
         }
     });
 ```
