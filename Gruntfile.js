@@ -9,7 +9,7 @@ module.exports = (grunt) => {
         jshintrc: '.jshintrc'
       },
       all: {
-        src: ['./js/*.js']
+        src: ['./js/bootstrap-datetimepicker.js']
       }
     },
     versioncheck: {
