@@ -57,7 +57,7 @@
     formattedStr = ((ref = date.split('(')[1]) !== null ? ref.slice(0, -1) : 0) || date.split(' ');
     if (formattedStr instanceof Array) {
       matchedStrings = [];
-      for (i = 0, len = formattedStr.length; i < len; i++) {
+      for (var i = 0, len = formattedStr.length; i < len; i++) {
         str = formattedStr[i];
         if ((abbreviation = (ref = str.match(/\b[A-Z]+\b/)) !== null) ? ref[0] : 0) {
           matchedStrings.push(abbreviation);
@@ -707,7 +707,6 @@
         month = d.getUTCMonth(),
         dayMonth = d.getUTCDate(),
         hours = d.getUTCHours(),
-        minutes = d.getUTCMinutes(),
         startYear = this.startDate.getUTCFullYear(),
         startMonth = this.startDate.getUTCMonth(),
         endYear = this.endDate.getUTCFullYear(),
@@ -1608,7 +1607,6 @@
         return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), 0);
       }
       var parts = date && date.toString().match(this.nonpunctuation) || [],
-        date = new Date(0, 0, 0, 0, 0, 0, 0),
         parsed = {},
         setters_order = ['hh', 'h', 'ii', 'i', 'ss', 's', 'yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'D', 'DD', 'd', 'dd', 'H', 'HH', 'p', 'P', 'z', 'Z'],
         setters_map = {
@@ -1665,6 +1663,7 @@
           }
         },
         val, filtered, part;
+      date = new Date(0, 0, 0, 0, 0, 0, 0)
       setters_map['M'] = setters_map['MM'] = setters_map['mm'] = setters_map['m'];
       setters_map['dd'] = setters_map['d'];
       setters_map['P'] = setters_map['p'];
@@ -1713,7 +1712,7 @@
       }
       return date;
     },
-    formatDate:       function (date, format, language, type, timezone) {
+    formatDate: function (date, format, language, type, timezone) {
       if (date === null) {
         return '';
       }
@@ -1794,18 +1793,18 @@
       } else {
         throw new Error('Invalid format type.');
       }
-      var date = [],
+      var result = [],
         seps = $.extend([], format.separators);
       for (var i = 0, cnt = format.parts.length; i < cnt; i++) {
         if (seps.length) {
-          date.push(seps.shift());
+          result.push(seps.shift());
         }
-        date.push(val[format.parts[i]]);
+        result.push(val[format.parts[i]]);
       }
       if (seps.length) {
-        date.push(seps.shift());
+        result.push(seps.shift());
       }
-      return date.join('');
+      return result.join('');
     },
     convertViewMode:  function (viewMode) {
       switch (viewMode) {
