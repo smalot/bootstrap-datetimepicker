@@ -230,7 +230,7 @@
       this.picker.find(selector).toggleClass(this.icons.leftArrow + ' ' + this.icons.rightArrow);
     }
 
-    $(document).on('mousedown', this.clickedOutside);
+    $(document).on('mousedown touchend', this.clickedOutside);
 
     this.autoclose = false;
     if ('autoclose' in options) {
