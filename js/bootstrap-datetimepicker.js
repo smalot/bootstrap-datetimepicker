@@ -282,6 +282,11 @@
       if (typeof render === 'string') {
         render = [render];
       }
+      if (date < this.startDate || date > this.endDate) {
+        res.push('disabled');
+      } else if (Math.floor(this.date.getUTCMinutes() / this.minuteStep) === Math.floor(date.getUTCMinutes() / this.minuteStep)) {
+        res.push('active');
+      }
       return res.concat((render ? render : []));
     };
     this.onRenderYear = function (date) {
@@ -293,7 +298,7 @@
       if (this.date.getUTCFullYear() === date.getUTCFullYear()) {
         res.push('active');
       }
-      if (date.getUTCFullYear() < this.startDate.getUTCFullYear() || date.getUTCFullYear() > this.endDate.getUTCFullYear()) {
+      if (date < this.startDate || date > this.endDate) {
         res.push('disabled');
       }
       return res.concat((render ? render : []));
@@ -819,14 +824,9 @@
       d = new Date(this.viewDate);
       for (var i = 0; i < 60; i += this.minuteStep) {
         if (minutesDisabled.indexOf(i) !== -1) continue;
-        var actual = UTCDate(year, month, dayMonth, hours, i, 0);
-        d.setUTCMinutes(i + this.minuteStep);
+        d.setUTCMinutes(i);
+        d.setUTCSeconds(0);
         classes = this.onRenderMinute(d);
-        if (actual.valueOf() < this.startDate || actual.valueOf() > this.endDate) {
-          classes.push('disabled');
-        } else if (Math.floor(minutes / this.minuteStep) === Math.floor(i / this.minuteStep)) {
-          classes.push('active');
-        }
         if (this.showMeridian && dates[this.language].meridiem.length === 2) {
           meridian = (hours < 12 ? dates[this.language].meridiem[0] : dates[this.language].meridiem[1]);
           if (meridian !== meridianOld) {
