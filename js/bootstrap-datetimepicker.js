@@ -293,9 +293,7 @@
       if (this.date.getUTCFullYear() === date.getUTCFullYear()) {
         res.push('active');
       }
-      var startYear = (this.startDate !== -Infinity ? this.startDate.getUTCFullYear() : -Infinity)
-      var endYear = (this.endDate !== Infinity ? this.endDate.getUTCFullYear() : Infinity)
-      if (date.getUTCFullYear() < startYear || date.getUTCFullYear() > endYear) {
+      if (date.getUTCFullYear() < this.startDate.getUTCFullYear() || date.getUTCFullYear() > this.endDate.getUTCFullYear()) {
         res.push('disabled');
       }
       return res.concat((render ? render : []));
@@ -308,8 +306,8 @@
       }
       return res.concat((render ? render : []));
     }
-    this.startDate = -Infinity;
-    this.endDate = Infinity;
+    this.startDate = new Date(-8639968443048000);
+    this.endDate = new Date(8639968443048000);
     this.datesDisabled = [];
     this.daysOfWeekDisabled = [];
     this.setStartDate(options.startDate || this.element.data('date-startdate'));
@@ -515,8 +513,8 @@
     },
 
     setStartDate: function (startDate) {
-      this.startDate = startDate || -Infinity;
-      if (this.startDate !== -Infinity) {
+      this.startDate = startDate || this.startDate;
+      if (this.startDate.valueOf() !== 8639968443048000) {
         this.startDate = DPGlobal.parseDate(this.startDate, this.format, this.language, this.formatType, this.timezone);
       }
       this.update();
@@ -524,8 +522,8 @@
     },
 
     setEndDate: function (endDate) {
-      this.endDate = endDate || Infinity;
-      if (this.endDate !== Infinity) {
+      this.endDate = endDate || this.endDate;
+      if (this.endDate.valueOf() !== 8639968443048000) {
         this.endDate = DPGlobal.parseDate(this.endDate, this.format, this.language, this.formatType, this.timezone);
       }
       this.update();
@@ -705,10 +703,10 @@
         dayMonth = d.getUTCDate(),
         hours = d.getUTCHours(),
         minutes = d.getUTCMinutes(),
-        startYear = this.startDate !== -Infinity ? this.startDate.getUTCFullYear() : -Infinity,
-        startMonth = this.startDate !== -Infinity ? this.startDate.getUTCMonth() : -Infinity,
-        endYear = this.endDate !== Infinity ? this.endDate.getUTCFullYear() : Infinity,
-        endMonth = this.endDate !== Infinity ? this.endDate.getUTCMonth() + 1 : Infinity,
+        startYear = this.startDate.getUTCFullYear(),
+        startMonth = this.startDate.getUTCMonth(),
+        endYear = this.endDate.getUTCFullYear(),
+        endMonth = this.endDate.getUTCMonth() + 1,
         currentDate = (new UTCDate(this.date.getUTCFullYear(), this.date.getUTCMonth(), this.date.getUTCDate())).valueOf(),
         today = new Date();
       this.setTitle('.datetimepicker-days', dates[this.language].months[month] + ' ' + year)
@@ -897,7 +895,7 @@
         hour = d.getUTCHours();
       switch (this.viewMode) {
         case 0:
-          if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
+          if (year <= this.startDate.getUTCFullYear()
             && month <= this.startDate.getUTCMonth()
             && day <= this.startDate.getUTCDate()
             && hour <= this.startDate.getUTCHours()) {
@@ -905,7 +903,7 @@
           } else {
             this.picker.find('.prev').css({visibility: 'visible'});
           }
-          if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
+          if (year >= this.endDate.getUTCFullYear()
             && month >= this.endDate.getUTCMonth()
             && day >= this.endDate.getUTCDate()
             && hour >= this.endDate.getUTCHours()) {
@@ -915,14 +913,14 @@
           }
           break;
         case 1:
-          if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
+          if (year <= this.startDate.getUTCFullYear()
             && month <= this.startDate.getUTCMonth()
             && day <= this.startDate.getUTCDate()) {
             this.picker.find('.prev').css({visibility: 'hidden'});
           } else {
             this.picker.find('.prev').css({visibility: 'visible'});
           }
-          if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
+          if (year >= this.endDate.getUTCFullYear()
             && month >= this.endDate.getUTCMonth()
             && day >= this.endDate.getUTCDate()) {
             this.picker.find('.next').css({visibility: 'hidden'});
@@ -931,13 +929,13 @@
           }
           break;
         case 2:
-          if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
+          if (year <= this.startDate.getUTCFullYear()
             && month <= this.startDate.getUTCMonth()) {
             this.picker.find('.prev').css({visibility: 'hidden'});
           } else {
             this.picker.find('.prev').css({visibility: 'visible'});
           }
-          if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
+          if (year >= this.endDate.getUTCFullYear()
             && month >= this.endDate.getUTCMonth()) {
             this.picker.find('.next').css({visibility: 'hidden'});
           } else {
@@ -946,12 +944,12 @@
           break;
         case 3:
         case 4:
-          if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()) {
+          if (year <= this.startDate.getUTCFullYear()) {
             this.picker.find('.prev').css({visibility: 'hidden'});
           } else {
             this.picker.find('.prev').css({visibility: 'visible'});
           }
-          if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()) {
+          if (year >= this.endDate.getUTCFullYear()) {
             this.picker.find('.next').css({visibility: 'hidden'});
           } else {
             this.picker.find('.next').css({visibility: 'visible'});
