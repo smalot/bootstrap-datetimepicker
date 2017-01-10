@@ -298,7 +298,9 @@
       if (this.date.getUTCFullYear() === date.getUTCFullYear()) {
         res.push('active');
       }
-      if (date < this.startDate || date > this.endDate) {
+      var currentYear = date.getUTCFullYear();
+      var endYear = this.endDate.getUTCFullYear();
+      if (date < this.startDate || currentYear > endYear) {
         res.push('disabled');
       }
       return res.concat((render ? render : []));
