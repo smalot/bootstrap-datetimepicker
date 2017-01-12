@@ -418,6 +418,7 @@
       this.picker.hide();
       $(window).off('resize', this.place);
       this.viewMode = this.startViewMode;
+      this.viewDate = new Date(this.date);
       this.showMode();
       if (!this.isInput) {
         $(document).off('mousedown', this.hide);
@@ -677,11 +678,11 @@
 
       if (fromArgs) this.setValue();
 
-      if (this.date < this.startDate) {
+      if (this.viewDate < this.startDate) {
         this.viewDate = new Date(this.startDate);
-      } else if (this.date > this.endDate) {
+      } else if (this.viewDate > this.endDate) {
         this.viewDate = new Date(this.endDate);
-      } else {
+      } else if(!this.viewDate){
         this.viewDate = new Date(this.date);
       }
       this.fill();
