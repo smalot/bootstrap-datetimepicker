@@ -222,7 +222,7 @@
     if (this.isInline) {
       this.picker.addClass('datetimepicker-inline');
     } else {
-      this.picker.addClass('datetimepicker-dropdown-' + this.getAutoPosition() + ' dropdown-menu');
+      this.picker.addClass('datetimepicker-dropdown-' + this.getAutoPosition(true) + ' dropdown-menu');
     }
     if (this.isRTL) {
       this.picker.addClass('datetimepicker-rtl');
@@ -592,25 +592,46 @@
       this.updateNavArrows();
     },
 
-    getAutoPosition: function () { 
+    getAutoHorizonalPosition: function(inverse) {
         if (this.pickerPosition != 'auto') { 
             return this.pickerPosition; 
-        } 
+        }
+ 
+        var offset = this.component ? this.component.offset() : this.element.offset(); 
+        var pickerWidth = this.picker.outerWidth();
+        var pickerWidthWithMargin = this.picker.outerWidth(true);
+        var leftOverflow = $(window).width() - (offset.left + pickerWidthWithMargin + pickerWidth);
+
+        var side = leftOverflow < 0 ? 'left' : 'right';
+
+        var position = side;
+
+        if (!!inverse) {
+            position = side == 'left' ? 'right' : 'left'
+        }
+ 
+        return position;
+    },
+
+    getAutoVerticalPosition: function() {
+        if (this.pickerPosition != 'auto') { 
+            return this.pickerPosition; 
+        }
  
         var offset = this.component ? this.component.offset() : this.element.offset(); 
         var pickerHeight = this.picker.outerHeight(); 
         var pickerHeightWithMargin = this.picker.outerHeight(true); 
         var bottomOverflow = $(window).height() - (offset.top + pickerHeightWithMargin + pickerHeight); 
  
-        var prefix = bottomOverflow < 0 ? 'top' : 'bottom'; 
+        return bottomOverflow < 0 ? 'top' : 'bottom';
+    },
+
+    getAutoPosition: function (inverse) { 
+        if (this.pickerPosition != 'auto') { 
+            return this.pickerPosition; 
+        }
  
-        var pickerWidth = this.picker.outerWidth(); 
-        var pickerWidthWithMargin = this.picker.outerWidth(true); 
-        var leftOverflow = $(window).width() - (offset.left + pickerWidthWithMargin + pickerWidth); 
- 
-        var suffix = leftOverflow < 0 ? 'left' : 'right'; 
- 
-        return prefix + '-' + suffix; 
+        return this.getAutoVerticalPosition() + '-' + this.getAutoHorizonalPosition(inverse);
     },
 
     place: function () {
