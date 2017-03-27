@@ -104,7 +104,7 @@
     this.linkField = options.linkField || this.element.data('link-field') || false;
     this.linkFormat = DPGlobal.parseFormat(options.linkFormat || this.element.data('link-format') || DPGlobal.getDefaultFormat(this.formatType, 'link'), this.formatType);
     this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
-    this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
+    this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'auto';
     this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
     this.initialDate = options.initialDate || new Date();
     this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
@@ -222,7 +222,7 @@
     if (this.isInline) {
       this.picker.addClass('datetimepicker-inline');
     } else {
-      this.picker.addClass('datetimepicker-dropdown-' + this.pickerPosition + ' dropdown-menu');
+      this.picker.addClass('datetimepicker-dropdown-' + this.getAutoPosition() + ' dropdown-menu');
     }
     if (this.isRTL) {
       this.picker.addClass('datetimepicker-rtl');
@@ -592,6 +592,27 @@
       this.updateNavArrows();
     },
 
+    getAutoPosition: function () { 
+        if (this.pickerPosition != 'auto') { 
+            return this.pickerPosition; 
+        } 
+ 
+        var offset = this.component ? this.component.offset() : this.element.offset(); 
+        var pickerHeight = this.picker.outerHeight(); 
+        var pickerHeightWithMargin = this.picker.outerHeight(true); 
+        var bottomOverflow = $(window).height() - (offset.top + pickerHeightWithMargin + pickerHeight); 
+ 
+        var prefix = bottomOverflow < 0 ? 'top' : 'bottom'; 
+ 
+        var pickerWidth = this.picker.outerWidth(); 
+        var pickerWidthWithMargin = this.picker.outerWidth(true); 
+        var leftOverflow = $(window).width() - (offset.left + pickerWidthWithMargin + pickerWidth); 
+ 
+        var suffix = leftOverflow < 0 ? 'left' : 'right'; 
+ 
+        return prefix + '-' + suffix; 
+    },
+
     place: function () {
       if (this.isInline) return;
 
@@ -612,6 +633,10 @@
       } else {
         containerOffset = $(this.container).offset();
       }
+
+      if (this.pickerPosition == 'auto') { 
+          this.pickerPosition = this.getAutoPosition(); 
+      } 
 
       if (this.component) {
         offset = this.component.offset();
