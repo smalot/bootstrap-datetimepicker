@@ -367,7 +367,7 @@ This event is fired when a hour is rendered inside the datepicker. Should return
 ```javascript
 $('#date')
     .datetimepicker({
-        onRenderHour: function(hour) {
+        onRenderHour: function(date) {
             //Disable any time between 12:00 and 13:59
             if (date.getUTCHours() === 12 || date.getUTCHours() === 13)
                 return ['disabled'];
@@ -382,7 +382,7 @@ This event is fired when a minute is rendered inside the datepicker. Should retu
 ```javascript
 $('#date')
     .datetimepicker({
-        onRenderMinute: function(minute) {
+        onRenderMinute: function(date) {
             //Disable all times between 30 past and 20 to every hour for workdays
             if (date.getDay() !== 0 && date.getDay() !== 6 && date.getUTCMinutes() >= 30 && date.getUTCMinutes() <= 40)
                 return ['disabled'];
