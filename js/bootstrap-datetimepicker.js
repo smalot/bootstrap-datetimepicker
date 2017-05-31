@@ -92,6 +92,7 @@
     this.isVisible = false;
     this.isInput = this.element.is('input');
     this.fontAwesome = options.fontAwesome || this.element.data('font-awesome') || false;
+    this.hideDisabled = options.hideDisabled || false;
 
     this.bootcssVer = options.bootcssVer || (this.isInput ? (this.element.is('.form-control') ? 3 : 2) : ( this.bootcssVer = this.element.is('.input-group') ? 3 : 2 ));
 
@@ -814,7 +815,13 @@
           } else {
             classes.push('hour_pm');
           }
-          html.push('<span class="' + classes.join(' ') + '">' + txt + '</span>');
+          if ( this.hideDisabled ) {
+            if ( $.inArray( 'disabled', classes ) == -1 ){
+              html.push('<span class="' + classes.join(' ') + '">' + txt + '</span>');
+            }
+          } else {
+            html.push('<span class="' + classes.join(' ') + '">' + txt + '</span>');
+          }
           if (i === 23) {
             html.push('</fieldset>');
           }
