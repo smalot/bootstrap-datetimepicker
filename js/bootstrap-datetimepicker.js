@@ -1,4 +1,4 @@
-﻿/* =========================================================
+/* =========================================================
  * bootstrap-datetimepicker.js
  * =========================================================
  * Copyright 2012 Stefan Petre
@@ -24,17 +24,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * ========================================================= */
-
 (function(factory){
-    if (typeof define === 'function' && define.amd)
-      define(['jquery'], factory);
-    else if (typeof exports === 'object')
-      factory(require('jquery'));
-    else
-      factory(jQuery);
+  if (typeof define === 'function' && define.amd)
+    define(['jquery'], factory);
+  else if (typeof exports === 'object')
+    factory(require('jquery'));
+  else
+    factory(jQuery);
 
 }(function($, undefined){
-
+  console.log('wuyu');
   // Add ECMA262-5 Array methods if not supported natively (IE8)
   if (!('indexOf' in Array.prototype)) {
     Array.prototype.indexOf = function (find, i) {
@@ -71,7 +70,11 @@
   function UTCDate() {
     return new Date(Date.UTC.apply(Date, arguments));
   }
-
+  // add
+  function UTCToday() {
+    var today = new Date();
+    return UTCDate(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), today.getUTCHours(), today.getUTCMinutes(), today.getUTCSeconds(), 0);
+  }
   // Picker object
   var Datetimepicker = function (element, options) {
     var that = this;
@@ -118,12 +121,12 @@
     this.icontype = this.fontAwesome ? 'fa' : 'glyphicon';
 
     this._attachEvents();
-
+    this.formatViewType = "datetime";
     this.clickedOutside = function (e) {
-        // Clicked outside the datetimepicker, hide it
-        if ($(e.target).closest('.datetimepicker').length === 0) {
-            that.hide();
-        }
+      // Clicked outside the datetimepicker, hide it
+      if ($(e.target).closest('.datetimepicker').length === 0) {
+        that.hide();
+      }
     }
 
     this.formatViewType = 'datetime';
@@ -230,7 +233,13 @@
       this.picker.find(selector).toggleClass(this.icons.leftArrow + ' ' + this.icons.rightArrow);
     }
 
-    $(document).on('mousedown touchend', this.clickedOutside);
+    $(document).on('mousedown', function (e) {
+      // Clicked outside the datetimepicker, hide it
+      if ($(e.target).closest('.datetimepicker').length === 0) {
+        that.hide();
+      }
+    });
+
 
     this.autoclose = false;
     if ('autoclose' in options) {
@@ -425,11 +434,11 @@
 
       if (
         this.forceParse &&
-          (
-            this.isInput && this.element.val() ||
-              this.hasInput && this.element.find('input').val()
-            )
+        (
+          this.isInput && this.element.val() ||
+          this.hasInput && this.element.find('input').val()
         )
+      )
         this.setValue();
       this.isVisible = false;
       this.element.trigger({
@@ -855,7 +864,14 @@
           html.push('<span class="' + classes.join(' ') + '">' + hours + ':' + (i < 10 ? '0' + i : i) + '</span>');
         }
       }
-      this.picker.find('.datetimepicker-minutes td').html(html.join(''));
+      var addSec = /,s{1,2},/.test(',' + this.format.parts.join(',') + ','), sSec = addSec ? '<select style="width:100%">' : '';
+      this.addSec = addSec;
+      if (addSec) {
+        var orgSec = this.viewDate.getSeconds();
+        for (var _i = 0; _i < 60; _i++) sSec += '<option value="' + _i + '"' + (_i == orgSec ? ' selected' : '') + '>' + (_i < 10 ? '0' : '') + _i + '</option>';
+        sSec += '</select>';
+      }
+      this.picker.find('.datetimepicker-minutes td').html(html.join('') + sSec);
 
       var currentYear = this.date.getUTCFullYear();
       var months = this.setTitle('.datetimepicker-months', year)
@@ -971,7 +987,11 @@
 
       e.preventDefault();
       e.stopPropagation();
-
+      if (e.target.tagName == 'SELECT' || e.target.tagName == 'OPTION') return;
+      var target = $(e.target).closest('span, td, th, legend');
+      if (target.is('.' + this.icontype)) {
+        target = $(target).parent().closest('span, td, th, legend');
+      }
       if (this.wheelPause) {
         return;
       }
@@ -1001,6 +1021,7 @@
     click: function (e) {
       e.stopPropagation();
       e.preventDefault();
+      if (e.target.tagName == 'SELECT' || e.target.tagName == 'OPTION') return;
       var target = $(e.target).closest('span, td, th, legend');
       if (target.is('.' + this.icontype)) {
         target = $(target).parent().closest('span, td, th, legend');
@@ -1078,7 +1099,7 @@
                 day = this.viewDate.getUTCDate(),
                 hours = this.viewDate.getUTCHours(),
                 minutes = this.viewDate.getUTCMinutes(),
-                seconds = this.viewDate.getUTCSeconds();
+                seconds = this.addSec ? this.picker.find('select').val() : this.viewDate.getUTCSeconds();
 
               if (target.is('.month')) {
                 this.viewDate.setUTCDate(1);
@@ -1205,6 +1226,11 @@
       }
       if (element) {
         element.change();
+        // 添加的
+        if (this.autoclose && (!which || which == 'date')) {
+          //this.hide();
+        }
+
       }
       this.element.trigger({
         type: 'changeDate',
@@ -1251,13 +1277,13 @@
           // If going back one month, make sure month is not current month
           // (eg, Mar 31 -> Feb 31 === Feb 28, not Mar 02)
           ? function () {
-          return new_date.getUTCMonth() === month;
-        }
+            return new_date.getUTCMonth() === month;
+          }
           // If going forward one month, make sure month is as expected
           // (eg, Jan 31 -> Feb 31 === Feb 28, not Mar 02)
           : function () {
-          return new_date.getUTCMonth() !== new_month;
-        };
+            return new_date.getUTCMonth() !== new_month;
+          };
         new_month = month + dir;
         new_date.setUTCMonth(new_month);
         // Dec -> Jan (12) or Jan -> Dec (-1) -- limit expected date to 0-11
@@ -1843,24 +1869,24 @@
       return viewMode;
     },
     headTemplate: '<thead>' +
-                '<tr>' +
-                '<th class="prev"><i class="{iconType} {leftArrow}"/></th>' +
-                '<th colspan="5" class="switch"></th>' +
-                '<th class="next"><i class="{iconType} {rightArrow}"/></th>' +
-                '</tr>' +
-      '</thead>',
+    '<tr>' +
+    '<th class="prev"><i class="{iconType} {leftArrow}"/></th>' +
+    '<th colspan="5" class="switch"></th>' +
+    '<th class="next"><i class="{iconType} {rightArrow}"/></th>' +
+    '</tr>' +
+    '</thead>',
     headTemplateV3: '<thead>' +
-                '<tr>' +
-                '<th class="prev"><span class="{iconType} {leftArrow}"></span> </th>' +
-                '<th colspan="5" class="switch"></th>' +
-                '<th class="next"><span class="{iconType} {rightArrow}"></span> </th>' +
-                '</tr>' +
-      '</thead>',
+    '<tr>' +
+    '<th class="prev"><span class="{iconType} {leftArrow}"></span> </th>' +
+    '<th colspan="5" class="switch"></th>' +
+    '<th class="next"><span class="{iconType} {rightArrow}"></span> </th>' +
+    '</tr>' +
+    '</thead>',
     contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
-    footTemplate: '<tfoot>' + 
-                    '<tr><th colspan="7" class="today"></th></tr>' +
-                    '<tr><th colspan="7" class="clear"></th></tr>' +
-                  '</tfoot>'
+    footTemplate: '<tfoot>' +
+    '<tr><th colspan="7" class="today"></th></tr>' +
+    '<tr><th colspan="7" class="clear"></th></tr>' +
+    '</tfoot>'
   };
   DPGlobal.template = '<div class="datetimepicker">' +
     '<div class="datetimepicker-minutes">' +
@@ -1961,6 +1987,7 @@
     }
   );
   $(function () {
+    console.log(1234);
     $('[data-provide="datetimepicker-inline"]').datetimepicker();
   });
 
