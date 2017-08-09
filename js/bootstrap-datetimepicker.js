@@ -596,11 +596,13 @@
         if (this.pickerPosition != 'auto') { 
             return this.pickerPosition; 
         }
- 
-        var offset = this.component ? this.component.offset() : this.element.offset(); 
+        var el = this.component ? this.component : this.element;
+        var scrollElement = this.getScrollParent(el[0]);
+
+        var leftOffset = scrollElement ? el.offset().left + scrollElement.scrollLeft : el.offset().left; 
         var pickerWidth = this.picker.outerWidth();
         var pickerWidthWithMargin = this.picker.outerWidth(true);
-        var leftOverflow = $(window).width() - (offset.left + pickerWidthWithMargin + pickerWidth);
+        var leftOverflow = $(window).width() - (leftOffset + pickerWidthWithMargin + pickerWidth);
 
         var side = leftOverflow < 0 ? 'left' : 'right';
 
@@ -617,11 +619,15 @@
         if (this.pickerPosition != 'auto') { 
             return this.pickerPosition; 
         }
- 
-        var offset = this.component ? this.component.offset() : this.element.offset(); 
+
+        var el = this.component ? this.component : this.element;
+        var scrollElement = this.getScrollParent(el[0]);
+
+        var topOffset = scrollElement ? el.offset().top + scrollElement.scrollTop : el.offset().top;
+
         var pickerHeight = this.picker.outerHeight(); 
         var pickerHeightWithMargin = this.picker.outerHeight(true); 
-        var bottomOverflow = $(window).height() - (offset.top + pickerHeightWithMargin + pickerHeight); 
+        var bottomOverflow = $(window).height() - (topOffset + pickerHeightWithMargin + pickerHeight);
  
         return bottomOverflow < 0 ? 'top' : 'bottom';
     },
@@ -632,6 +638,23 @@
         }
  
         return this.getAutoVerticalPosition() + '-' + this.getAutoHorizonalPosition(inverse);
+    },
+
+    getScrollParent: function(element, includeHidden) {
+        var style = getComputedStyle(element);
+        var excludeStaticParent = style.position === "absolute";
+        var overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/;
+
+        if (style.position === "fixed") return document.body;
+        for (var parent = element; (parent = parent.parentElement);) {
+            style = getComputedStyle(parent);
+            if (excludeStaticParent && style.position === "static") {
+                continue;
+            }
+            if (overflowRegex.test(style.overflow + style.overflowY + style.overflowX)) return parent;
+        }
+
+        return document.body;
     },
 
     place: function () {
