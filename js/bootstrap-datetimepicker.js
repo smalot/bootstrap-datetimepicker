@@ -351,7 +351,7 @@
       else if (this.component && this.hasInput) { // component: input + button
         this._events = [
           // For components that are not readonly, allow keyboard nav
-          [this.element.find('input'), {
+          [this.element.find('input[type=text]'), {
             focus:   $.proxy(this.show, this),
             keyup:   $.proxy(this.update, this),
             keydown: $.proxy(this.keydown, this)
