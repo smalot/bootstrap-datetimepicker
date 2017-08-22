@@ -222,7 +222,7 @@
     if (this.isInline) {
       this.picker.addClass('datetimepicker-inline');
     } else {
-      this.picker.addClass('datetimepicker-dropdown-' + this.getAutoPosition(true) + ' dropdown-menu');
+      this.picker.addClass('datetimepicker-dropdown-' + this.getAutoPosition() + ' dropdown-menu');
     }
     if (this.isRTL) {
       this.picker.addClass('datetimepicker-rtl');
@@ -600,19 +600,10 @@
         var scrollElement = this.getScrollParent(el[0]);
 
         var leftOffset = scrollElement ? el.offset().left + scrollElement.scrollLeft : el.offset().left; 
-        var pickerWidth = this.picker.outerWidth();
         var pickerWidthWithMargin = this.picker.outerWidth(true);
-        var leftOverflow = $(window).width() - (leftOffset + pickerWidthWithMargin + pickerWidth);
+        var leftOverflow = $(window).width() - (leftOffset + pickerWidthWithMargin);
 
-        var side = leftOverflow < 0 ? 'left' : 'right';
-
-        var position = side;
-
-        if (!!inverse) {
-            position = side == 'left' ? 'right' : 'left'
-        }
- 
-        return position;
+        return leftOverflow < 0 ? 'left' : 'right';
     },
 
     getAutoVerticalPosition: function() {
@@ -624,20 +615,18 @@
         var scrollElement = this.getScrollParent(el[0]);
 
         var topOffset = scrollElement ? el.offset().top + scrollElement.scrollTop : el.offset().top;
-
-        var pickerHeight = this.picker.outerHeight(); 
         var pickerHeightWithMargin = this.picker.outerHeight(true); 
-        var bottomOverflow = $(window).height() - (topOffset + pickerHeightWithMargin + pickerHeight);
+        var bottomOverflow = $(window).height() - (topOffset + pickerHeightWithMargin);
  
         return bottomOverflow < 0 ? 'top' : 'bottom';
     },
 
-    getAutoPosition: function (inverse) { 
+    getAutoPosition: function () { 
         if (this.pickerPosition != 'auto') { 
             return this.pickerPosition; 
         }
  
-        return this.getAutoVerticalPosition() + '-' + this.getAutoHorizonalPosition(inverse);
+        return this.getAutoVerticalPosition() + '-' + this.getAutoHorizonalPosition();
     },
 
     getScrollParent: function(element, includeHidden) {
@@ -671,27 +660,28 @@
         this.zIndex = index_highest + 10;
       }
 
-      var offset, top, left, containerOffset;
+      var offset, top, left, containerOffset, position;
       if (this.container instanceof $) {
         containerOffset = this.container.offset();
       } else {
         containerOffset = $(this.container).offset();
       }
 
-      if (this.pickerPosition == 'auto') { 
-          this.pickerPosition = this.getAutoPosition(); 
-      } 
+      var isAutoPosition = this.pickerPosition == 'auto';
+      position = isAutoPosition ? this.getAutoPosition() : this.pickerPosition;
+      this.picker.removeClass('datetimepicker-dropdown-top-right datetimepicker-dropdown-top-left datetimepicker-dropdown-bottom-right datetimepicker-dropdown-bottom-left');
+      this.picker.addClass('datetimepicker-dropdown-' + this.getAutoPosition(true) + ' dropdown-menu');
 
       if (this.component) {
         offset = this.component.offset();
         left = offset.left;
-        if (this.pickerPosition === 'bottom-left' || this.pickerPosition === 'top-left') {
+        if (position == 'bottom-left' || position == 'top-left') {
           left += this.component.outerWidth() - this.picker.outerWidth();
         }
       } else {
         offset = this.element.offset();
         left = offset.left;
-        if (this.pickerPosition === 'bottom-left' || this.pickerPosition === 'top-left') {
+        if (position == 'bottom-left' || position == 'top-left') {
           left += this.element.outerWidth() - this.picker.outerWidth();
         }
       }
@@ -701,7 +691,7 @@
         left = bodyWidth - 220;
       }
 
-      if (this.pickerPosition === 'top-left' || this.pickerPosition === 'top-right') {
+      if (position == 'top-left' || position == 'top-right') {
         top = offset.top - this.picker.outerHeight();
       } else {
         top = offset.top + this.height;
