@@ -401,6 +401,10 @@
       }
       this.place();
       $(window).on('resize', $.proxy(this.place, this));
+      
+      var scrollElement = this.getScrollParent(this.element[0]); 
+      $(scrollElement).on('scroll', $.proxy(this.place, this));
+
       if (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -417,6 +421,10 @@
       if (this.isInline) return;
       this.picker.hide();
       $(window).off('resize', this.place);
+      
+      var scrollElement = this.getScrollParent(this.element[0]); 
+      $(scrollElement).off('scroll', this.place);
+
       this.viewMode = this.startViewMode;
       this.showMode();
       if (!this.isInput) {
