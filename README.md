@@ -11,6 +11,9 @@
 
 This project is a fork of [bootstrap-datepicker project](https://github.com/smalot/bootstrap-datetimepicker).
 
+# Contribute
+
+Before creating an issue/pull request, please for [this](https://jsfiddle.net/AuspeXeu/sqwwcjzu/2/) jsFiddle and create a working example of your problem.
 
 # Home
 
