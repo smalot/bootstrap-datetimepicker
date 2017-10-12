@@ -7,10 +7,6 @@
 
 [Demo page](http://www.malot.fr/bootstrap-datetimepicker/demo.php)
 
-# Project forked
-
-This project is a fork of [bootstrap-datepicker project](https://github.com/smalot/bootstrap-datetimepicker).
-
 # Contribute
 
 Before creating an issue/pull request, please for [this](https://jsfiddle.net/AuspeXeu/sqwwcjzu/2/) jsFiddle and create a working example of your problem.
@@ -719,3 +715,7 @@ If your browser (or those of your users) is displaying characters wrong, chances
 ```html
 <script type="text/javascript" src="bootstrap-datetimepicker.de.js" charset="UTF-8"></script>
 ```
+
+# Project forked
+
+This project is a fork of [bootstrap-datepicker project](https://github.com/smalot/bootstrap-datetimepicker).
