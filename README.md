@@ -1,5 +1,4 @@
-# Project : bootstrap-datetimepicker
-======================================
+# bootstrap-datetimepicker
 
 [![Build Status](https://travis-ci.org/AuspeXeu/bootstrap-datetimepicker.svg?branch=master)](https://travis-ci.org/AuspeXeu/bootstrap-datetimepicker)
 
