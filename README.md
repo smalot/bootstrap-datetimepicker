@@ -1,6 +1,4 @@
-# bootstrap-datetimepicker
-
-[![Build Status](https://travis-ci.org/AuspeXeu/bootstrap-datetimepicker.svg?branch=master)](https://travis-ci.org/AuspeXeu/bootstrap-datetimepicker)
+# bootstrap-datetimepicker [![Build Status](https://travis-ci.org/AuspeXeu/bootstrap-datetimepicker.svg?branch=master)](https://travis-ci.org/AuspeXeu/bootstrap-datetimepicker)
 
 [Homepage](http://www.malot.fr/bootstrap-datetimepicker/)
 
