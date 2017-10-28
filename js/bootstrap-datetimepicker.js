@@ -1,4 +1,4 @@
-﻿/* =========================================================
+/* =========================================================
  * bootstrap-datetimepicker.js
  * =========================================================
  * Copyright 2012 Stefan Petre
@@ -766,7 +766,7 @@
           prevMonth.getUTCDate() === today.getDate()) {
           classes.push('today');
         }
-        if (prevMonth.valueOf() === currentDate) {
+        if (prevMonth.valueOf() === currentDate && this.todayHighlight) {
           classes.push('active');
         }
         if ((prevMonth.valueOf() + 86400000) <= this.startDate || prevMonth.valueOf() > this.endDate ||
