@@ -288,6 +288,23 @@ test('DaysOfWeekDisabled', function(){
     ok(target.hasClass('disabled'), 'Day of week is disabled');
 });
 
+test('setDatesDisabled', function(){
+    var input = $('<input />')
+                .appendTo('#qunit-fixture')
+                .val('2012-10-26')
+                .datetimepicker({
+                    format: 'yyyy-mm-dd',
+                }),
+        dp = input.data('datetimepicker'),
+        picker = dp.picker,
+        target;
+
+    input.datetimepicker('setDatesDisabled', ['2012-10-28']);
+    input.focus();
+    target = picker.find('.datetimepicker-days tbody td:nth(28)');
+    ok(target.hasClass('disabled'), 'Set dates disabled');
+});
+
 test('startDate: Custom value', function(){
     var input = $('<input />')
                 .appendTo('#qunit-fixture')

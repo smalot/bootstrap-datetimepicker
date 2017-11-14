@@ -547,7 +547,7 @@
       this.datesDisabled = $.map(this.datesDisabled, function (d) {
         return DPGlobal.parseDate(d, mThis.format, mThis.language, mThis.formatType, mThis.timezone).toDateString();
       });
-      this.update();
+      this.fill();
       this.updateNavArrows();
     },
 
@@ -678,11 +678,11 @@
 
       if (fromArgs) this.setValue();
 
-      if (this.viewDate < this.startDate) {
+      if (this.date < this.startDate) {
         this.viewDate = new Date(this.startDate);
-      } else if (this.viewDate > this.endDate) {
+      } else if (this.date > this.endDate) {
         this.viewDate = new Date(this.endDate);
-      } else if(!this.viewDate){
+      } else {
         this.viewDate = new Date(this.date);
       }
       this.fill();
