@@ -546,7 +546,7 @@
       this.datesDisabled = $.map(this.datesDisabled, function (d) {
         return DPGlobal.parseDate(d, mThis.format, mThis.language, mThis.formatType, mThis.timezone).toDateString();
       });
-      this.update();
+      this.fill();
       this.updateNavArrows();
     },
 
