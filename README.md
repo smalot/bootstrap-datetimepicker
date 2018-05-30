@@ -363,7 +363,7 @@ This event is fired when a hour is rendered inside the datepicker. Should return
 ```javascript
 $('#date')
     .datetimepicker({
-        onRenderHour: function(hour) {
+        onRenderHour: function(date) {
             //Disable any time between 12:00 and 13:59
             if (date.getUTCHours() === 12 || date.getUTCHours() === 13)
                 return ['disabled'];
