@@ -274,6 +274,10 @@
       if (typeof render === 'string') {
         render = [render];
       }
+      if ($.inArray(date.getUTCDay(), this.daysOfWeekDisabled) !== -1 ||
+        $.inArray(date.toDateString(), this.datesDisabled) !== -1) {
+        res.push('disabled');
+      }
       return res.concat((render ? render : []));
     };
     this.onRenderMinute = function (date) {
@@ -282,7 +286,12 @@
       if (typeof render === 'string') {
         render = [render];
       }
-      if (date < this.startDate || date > this.endDate) {
+      var hoursDisabled = this.hoursDisabled || [];
+      if (date < this.startDate || date > this.endDate ||
+        $.inArray(date.getUTCDay(), this.daysOfWeekDisabled) !== -1 ||
+        $.inArray(date.toDateString(), this.datesDisabled) !== -1 ||
+        hoursDisabled.indexOf(date.getUTCHours()) !== -1
+      ) {
         res.push('disabled');
       } else if (Math.floor(this.date.getUTCMinutes() / this.minuteStep) === Math.floor(date.getUTCMinutes() / this.minuteStep)) {
         res.push('active');
@@ -1857,7 +1866,7 @@
                 '</tr>' +
       '</thead>',
     contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
-    footTemplate: '<tfoot>' + 
+    footTemplate: '<tfoot>' +
                     '<tr><th colspan="7" class="today"></th></tr>' +
                     '<tr><th colspan="7" class="clear"></th></tr>' +
                   '</tfoot>'
