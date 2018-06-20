@@ -4,6 +4,15 @@
 
 [Demo page](http://www.malot.fr/bootstrap-datetimepicker/demo.php)
 
+# Dependencies
+
+This component has now switched to *only* support solid [FontAwesome](https://fontawesome.com/) icons. Therefore the following dependencies must be included for more instructions on how to include these in your project please visit their [website](https://fontawesome.com/get-started).
+
+```
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/solid.css" integrity="sha384-Rw5qeepMFvJVEZdSo1nDQD5B6wX0m7c5Z/pLNvjkB14W6Yki1hKbSEQaX9ffUbWe" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/fontawesome.css" integrity="sha384-GVa9GOgVQgOk+TNYXu7S/InPTfSDTtBalSgkgqQ7sCik56N9ztlkoTr2f/T44oKV" crossorigin="anonymous">
+```
+
 # Contribute
 
 Before creating an issue/pull request, please for [this](https://jsfiddle.net/AuspeXeu/sqwwcjzu/2/) jsFiddle and create a working example of your problem.
@@ -385,12 +394,6 @@ $('#date')
         }
     });
 ```
-
-### fontAwesome
-
-Boolean. Default: false
-
-If true, [Font Awesome](http://fontawesome.io/) will be used.
 
 ## Markup
 
