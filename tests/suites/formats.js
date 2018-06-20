@@ -252,5 +252,5 @@ test('With timezone option', patch_date(function(Date){
       .val('2012-03-05')
       .datetimepicker({format: 'yyyy-mm-dd hh:ii P Z'})
       .datetimepicker('setValue');
-  equal(this.input.val(), '2012-03-05 00:00 AM UTC');
+  equal(this.input.val(), '2012-03-05 00:00 AM ' + new Date().toString().match(/\((.*)\)/)[1]);
 }));
