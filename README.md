@@ -411,11 +411,17 @@ Format as component.
 Format as component with reset button to clear the input field.
 
 ```html
-<div class="input-append date" id="datetimepicker" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
-    <input class="span2" size="16" type="text" value="12-02-2012">
-    <span class="add-on"><i class="icon-remove dtp-clear"></i></span>
-    <span class="add-on"><i class="icon-th dtp-trigger"></i></span>
+<div class="input-group date" id="datetimepicker" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+    <input type="text" class="form-control" type="text" size="16/>
+    <span class="input-group-addon"><i class="fas fa-times dtp-close"></i></span>
+    <span class="input-group-addon"><i class="fas fa-th dtp-trigger"></i></span>
 </div>
+```
+
+```js
+$('#datetimepicker').datetimepicker({
+  format: 'yyyy-mm-dd hh:ii'
+})
 ```
 
 ## Methods
