@@ -3,12 +3,12 @@
  * =========================================================
  * Copyright 2012 Stefan Petre
  *
+ * Improvements by Christian Vaas <auspex@auspex.eu>
  * Improvements by Andrew Rowls
  * Improvements by Sébastien Malot
  * Improvements by Yun Lai
  * Improvements by Kenneth Henderick
  * Improvements by CuGBabyBeaR
- * Improvements by Christian Vaas <auspex@auspex.eu>
  *
  * Project URL : http://www.malot.fr/bootstrap-datetimepicker
  *
