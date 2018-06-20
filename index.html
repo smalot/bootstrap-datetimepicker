@@ -15,9 +15,6 @@
     <link rel="stylesheet" href="./css/bootstrap-datetimepicker.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
     <style>
-      .my_dtp_c {
-        margin: 10px;
-      }
       body {
         padding-top: 20px;
         padding-bottom: 20px;
@@ -60,7 +57,11 @@
           <a class="btn btn-lg btn-primary" href="../../components/#navbar" role="button">View navbar docs &raquo;</a>
         </p>
         <p>
-          <input id="my_dtp" class="my_dtp_c" size="16" type="text">
+          <!-- <input id="my_dtp" class="my_dtp_c" size="16" type="text"> -->
+          <div class="input-group date" id="my_dtp">
+            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+            <span class="input-group-addon"><i class="fas fa-calendar dtp-trigger"></i></span>
+          </div>
         </p>
       </div>
 

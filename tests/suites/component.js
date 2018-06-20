@@ -2,7 +2,7 @@ module('Component', {
     setup: function(){
         this.component = $('<div class="input-group date" id="datetimepicker">'+
                                 '<input size="16" type="text" value="12-02-2012" readonly>'+
-                                '<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>'+
+                                '<span class="input-group-addon"><span class="fas fa-th dtp-trigger"></span></span>'+
                             '</div>')
                         .appendTo('#qunit-fixture')
                         .datetimepicker({format: "dd-mm-yyyy", viewSelect: 2});

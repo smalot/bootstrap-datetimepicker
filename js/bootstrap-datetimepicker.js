@@ -91,8 +91,8 @@
     this.isInline = false;
     this.isVisible = false;
     this.isInput = this.element.is('input');
-    this.component = this.element.is('.date') ? this.element.find('.input-group-addon .fa-calendar, .input-group-addon .fa-clock-o').parent() : false;
-    this.componentReset = this.element.is('.date') ? this.element.find('.input-group-addon .fa-times').parent() : false;
+    this.component = this.element.is('.date') ? this.element.find('.input-group-addon .dtp-trigger').parent() : false;
+    this.componentReset = this.element.is('.date') ? this.element.find('.input-group-addon .dtp-clear').parent() : false;
     this.hasInput = this.component && this.element.find('input').length;
     if (this.component && this.component.length === 0) {
       this.component = false;

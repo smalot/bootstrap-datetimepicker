@@ -90,10 +90,12 @@ $('#datetimepicker').datetimepicker();
 
 As component:
 
+The class `dtp-trigger` is used to mark the element that shows the picker.
+
 ```html
 <div class="input-append date" id="datetimepicker" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
     <input size="16" type="text" value="12-02-2012" readonly>
-    <span class="add-on"><i class="icon-th"></i></span>
+    <span class="add-on"><i class="icon-th dtp-trigger"></i></span>
 </div>
 ```
 ```javascript
@@ -402,7 +404,7 @@ Format as component.
 ```html
 <div class="input-append date" id="datetimepicker" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
     <input class="span2" size="16" type="text" value="12-02-2012">
-    <span class="add-on"><i class="icon-th"></i></span>
+    <span class="add-on"><i class="icon-th dtp-trigger"></i></span>
 </div>
 ```
 
@@ -411,8 +413,8 @@ Format as component with reset button to clear the input field.
 ```html
 <div class="input-append date" id="datetimepicker" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
     <input class="span2" size="16" type="text" value="12-02-2012">
-    <span class="add-on"><i class="icon-remove"></i></span>
-    <span class="add-on"><i class="icon-th"></i></span>
+    <span class="add-on"><i class="icon-remove dtp-clear"></i></span>
+    <span class="add-on"><i class="icon-th dtp-trigger"></i></span>
 </div>
 ```
 
