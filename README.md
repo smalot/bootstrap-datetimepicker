@@ -15,7 +15,7 @@ This component has now switched to *only* support solid [FontAwesome](https://fo
 
 # Contribute
 
-Before creating an issue/pull request, please for [this](https://jsfiddle.net/AuspeXeu/sqwwcjzu/2/) jsFiddle and create a working example of your problem.
+Before creating an issue/pull request, please for [this](https://jsfiddle.net/AuspeXeu/sqwwcjzu/) jsFiddle and create a working example of your problem.
 
 # Home
 
