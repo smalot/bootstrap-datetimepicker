@@ -1,2 +1,2 @@
 # Deprecation warning!
-We are going to move this project to [this repository](https://github.com/AuspeXeu/bootstrap-datetimepicker). Please do not file new issues or pull requests!
+This repository has been deprecated in favour of [this](https://eonasdan.github.io/bootstrap-datetimepicker/).
