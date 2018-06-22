@@ -104,7 +104,7 @@
     this.linkField = options.linkField || this.element.data('link-field') || false;
     this.linkFormat = DPGlobal.parseFormat(options.linkFormat || this.element.data('link-format') || DPGlobal.getDefaultFormat(this.formatType, 'link'), this.formatType);
     this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
-    this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
+    this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'auto';
     this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
     this.initialDate = options.initialDate || new Date();
     this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
@@ -222,7 +222,7 @@
     if (this.isInline) {
       this.picker.addClass('datetimepicker-inline');
     } else {
-      this.picker.addClass('datetimepicker-dropdown-' + this.pickerPosition + ' dropdown-menu');
+      this.picker.addClass('datetimepicker-dropdown-' + this.getAutoPosition() + ' dropdown-menu');
     }
     if (this.isRTL) {
       this.picker.addClass('datetimepicker-rtl');
@@ -401,6 +401,10 @@
       }
       this.place();
       $(window).on('resize', $.proxy(this.place, this));
+      
+      var scrollElement = this.getScrollParent(this.element[0]); 
+      $(scrollElement).on('scroll', $.proxy(this.place, this));
+
       if (e) {
         e.stopPropagation();
         e.preventDefault();
@@ -417,6 +421,10 @@
       if (this.isInline) return;
       this.picker.hide();
       $(window).off('resize', this.place);
+      
+      var scrollElement = this.getScrollParent(this.element[0]); 
+      $(scrollElement).off('scroll', this.place);
+
       this.viewMode = this.startViewMode;
       this.showMode();
       if (!this.isInput) {
@@ -592,6 +600,60 @@
       this.updateNavArrows();
     },
 
+    getAutoHorizonalPosition: function(inverse) {
+        if (this.pickerPosition != 'auto') { 
+            return this.pickerPosition; 
+        }
+        var el = this.component ? this.component : this.element;
+        var scrollElement = this.getScrollParent(el[0]);
+
+        var leftOffset = scrollElement ? el.offset().left + scrollElement.scrollLeft : el.offset().left; 
+        var pickerWidthWithMargin = this.picker.outerWidth(true);
+        var leftOverflow = $(window).width() - (leftOffset + pickerWidthWithMargin);
+
+        return leftOverflow < 0 ? 'left' : 'right';
+    },
+
+    getAutoVerticalPosition: function() {
+        if (this.pickerPosition != 'auto') { 
+            return this.pickerPosition; 
+        }
+
+        var el = this.component ? this.component : this.element;
+        var scrollElement = this.getScrollParent(el[0]);
+
+        var topOffset = scrollElement ? el.offset().top + scrollElement.scrollTop : el.offset().top;
+        var pickerHeightWithMargin = this.picker.outerHeight(true); 
+        var bottomOverflow = $(window).height() - (topOffset + pickerHeightWithMargin);
+ 
+        return bottomOverflow < 0 ? 'top' : 'bottom';
+    },
+
+    getAutoPosition: function () { 
+        if (this.pickerPosition != 'auto') { 
+            return this.pickerPosition; 
+        }
+ 
+        return this.getAutoVerticalPosition() + '-' + this.getAutoHorizonalPosition();
+    },
+
+    getScrollParent: function(element, includeHidden) {
+        var style = getComputedStyle(element);
+        var excludeStaticParent = style.position === "absolute";
+        var overflowRegex = includeHidden ? /(auto|scroll|hidden)/ : /(auto|scroll)/;
+
+        if (style.position === "fixed") return document.body;
+        for (var parent = element; (parent = parent.parentElement);) {
+            style = getComputedStyle(parent);
+            if (excludeStaticParent && style.position === "static") {
+                continue;
+            }
+            if (overflowRegex.test(style.overflow + style.overflowY + style.overflowX)) return parent;
+        }
+
+        return document.body;
+    },
+
     place: function () {
       if (this.isInline) return;
 
@@ -606,23 +668,28 @@
         this.zIndex = index_highest + 10;
       }
 
-      var offset, top, left, containerOffset;
+      var offset, top, left, containerOffset, position;
       if (this.container instanceof $) {
         containerOffset = this.container.offset();
       } else {
         containerOffset = $(this.container).offset();
       }
 
+      var isAutoPosition = this.pickerPosition == 'auto';
+      position = isAutoPosition ? this.getAutoPosition() : this.pickerPosition;
+      this.picker.removeClass('datetimepicker-dropdown-top-right datetimepicker-dropdown-top-left datetimepicker-dropdown-bottom-right datetimepicker-dropdown-bottom-left');
+      this.picker.addClass('datetimepicker-dropdown-' + this.getAutoPosition(true) + ' dropdown-menu');
+
       if (this.component) {
         offset = this.component.offset();
         left = offset.left;
-        if (this.pickerPosition === 'bottom-left' || this.pickerPosition === 'top-left') {
+        if (position == 'bottom-left' || position == 'top-left') {
           left += this.component.outerWidth() - this.picker.outerWidth();
         }
       } else {
         offset = this.element.offset();
         left = offset.left;
-        if (this.pickerPosition === 'bottom-left' || this.pickerPosition === 'top-left') {
+        if (position == 'bottom-left' || position == 'top-left') {
           left += this.element.outerWidth() - this.picker.outerWidth();
         }
       }
@@ -632,7 +699,7 @@
         left = bodyWidth - 220;
       }
 
-      if (this.pickerPosition === 'top-left' || this.pickerPosition === 'top-right') {
+      if (position == 'top-left' || position == 'top-right') {
         top = offset.top - this.picker.outerHeight();
       } else {
         top = offset.top + this.height;
