@@ -413,7 +413,20 @@
     },
 
     hide: function () {
-      if (!this.isVisible) return;
+      function _setValue() {
+        if (
+          this.forceParse &&
+            (
+              this.isInput && this.element.val() ||
+                this.hasInput && this.element.find('input').val()
+              )
+          )
+          this.setValue();
+      };
+      if (!this.isVisible) {
+        _setValue.call(this);
+        return;
+      }
       if (this.isInline) return;
       this.picker.hide();
       $(window).off('resize', this.place);
@@ -423,14 +436,8 @@
         $(document).off('mousedown', this.hide);
       }
 
-      if (
-        this.forceParse &&
-          (
-            this.isInput && this.element.val() ||
-              this.hasInput && this.element.find('input').val()
-            )
-        )
-        this.setValue();
+      _setValue.call(this);
+
       this.isVisible = false;
       this.element.trigger({
         type: 'hide',
