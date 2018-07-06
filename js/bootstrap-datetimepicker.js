@@ -407,7 +407,7 @@
       }
       this.isVisible = true;
       this.element.trigger({
-        type: 'show',
+        type: 'showDatetimePicker',
         date: this.date
       });
     },
@@ -433,7 +433,7 @@
         this.setValue();
       this.isVisible = false;
       this.element.trigger({
-        type: 'hide',
+        type: 'hideDatetimePicker',
         date: this.date
       });
     },
