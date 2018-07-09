@@ -448,7 +448,7 @@
 
     getDate: function () {
       var d = this.getUTCDate();
-      if (d === null) {
+      if (d === null || typeof d === 'undefined') {
         return null;
       }
       return new Date(d.getTime() + (d.getTimezoneOffset() * 60000));
