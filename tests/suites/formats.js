@@ -134,7 +134,7 @@ test('yyyy-MM-dd: Regression: Infinite loop when numbers used for month', functi
 });
 
 test('+1d: Tomorrow', patch_date(function(Date){
-    Date.now = UTCDate(2012, 2, 15);
+    Date.now = new Date(2012, 2, 15);
     this.input
         .val('+1d')
         .datetimepicker({format: 'dd-mm-yyyy'})
@@ -143,7 +143,7 @@ test('+1d: Tomorrow', patch_date(function(Date){
 }));
 
 test('-1d: Yesterday', patch_date(function(Date){
-    Date.now = UTCDate(2012, 2, 15);
+    Date.now = new Date(2012, 2, 15);
     this.input
         .val('-1d')
         .datetimepicker({format: 'dd-mm-yyyy'})
@@ -152,7 +152,7 @@ test('-1d: Yesterday', patch_date(function(Date){
 }));
 
 test('+1w: Next week', patch_date(function(Date){
-    Date.now = UTCDate(2012, 2, 15);
+    Date.now = new Date(2012, 2, 15);
     this.input
         .val('+1w')
         .datetimepicker({format: 'dd-mm-yyyy'})
@@ -161,7 +161,7 @@ test('+1w: Next week', patch_date(function(Date){
 }));
 
 test('-1w: Last week', patch_date(function(Date){
-    Date.now = UTCDate(2012, 2, 15);
+    Date.now = new Date(2012, 2, 15);
     this.input
         .val('-1w')
         .datetimepicker({format: 'dd-mm-yyyy'})
@@ -170,7 +170,7 @@ test('-1w: Last week', patch_date(function(Date){
 }));
 
 test('+1m: Next month', patch_date(function(Date){
-    Date.now = UTCDate(2012, 2, 15);
+    Date.now = new Date(2012, 2, 15);
     this.input
         .val('+1m')
         .datetimepicker({format: 'dd-mm-yyyy'})
@@ -179,7 +179,7 @@ test('+1m: Next month', patch_date(function(Date){
 }));
 
 test('-1m: Last month', patch_date(function(Date){
-    Date.now = UTCDate(2012, 2, 15);
+    Date.now = new Date(2012, 2, 15);
     this.input
         .val('-1m')
         .datetimepicker({format: 'dd-mm-yyyy'})
@@ -188,7 +188,7 @@ test('-1m: Last month', patch_date(function(Date){
 }));
 
 test('+1y: Next year', patch_date(function(Date){
-    Date.now = UTCDate(2012, 2, 15);
+    Date.now = new Date(2012, 2, 15);
     this.input
         .val('+1y')
         .datetimepicker({format: 'dd-mm-yyyy'})
@@ -197,7 +197,7 @@ test('+1y: Next year', patch_date(function(Date){
 }));
 
 test('-1y: Last year', patch_date(function(Date){
-    Date.now = UTCDate(2012, 2, 15);
+    Date.now = new Date(2012, 2, 15);
     this.input
         .val('-1y')
         .datetimepicker({format: 'dd-mm-yyyy'})
@@ -206,7 +206,7 @@ test('-1y: Last year', patch_date(function(Date){
 }));
 
 test('-1y +2m: Multiformat', patch_date(function(Date){
-    Date.now = UTCDate(2012, 2, 15);
+    Date.now = new Date(2012, 2, 15);
     this.input
         .val('-1y +2m')
         .datetimepicker({format: 'dd-mm-yyyy'})
@@ -214,8 +214,17 @@ test('-1y +2m: Multiformat', patch_date(function(Date){
     equal(this.input.val(), '15-05-2011');
 }));
 
+test('-1d: Day before with Reference date', patch_date(function (Date) {
+    Date.now = new Date(2012, 2, 15);
+    this.input
+        .val('-1d')
+        .datetimepicker({ format: 'dd-mm-yyyy', referenceUTCDate: new Date('2010-12-10T00:00:00Z') })
+        .datetimepicker('setValue');
+    equal(this.input.val(), '09-12-2010');
+}));
+
 test('Regression: End-of-month bug', patch_date(function(Date){
-    Date.now = UTCDate(2012, 4, 31);
+    Date.now = new Date(2012, 4, 31);
     this.input
         .val('29-02-2012')
         .datetimepicker({format: 'dd-mm-yyyy'})
@@ -224,7 +233,7 @@ test('Regression: End-of-month bug', patch_date(function(Date){
 }));
 
 test('Invalid formats are force-parsed into a valid date on tab', patch_date(function(Date){
-    Date.now = UTCDate(2012, 4, 31);
+    Date.now = new Date(2012, 4, 31);
     this.input
         .val('44-44-4444')
         .datetimepicker({format: 'yyyy-MM-dd'})
@@ -250,7 +259,7 @@ test('Untrimmed datetime value', patch_date(function(Date){
 test('With timezone option', patch_date(function(Date){
   this.input
       .val('2012-03-05')
-      .datetimepicker({format: 'yyyy-mm-dd hh:ii P Z'})
+      .datetimepicker({format: 'yyyy-mm-dd hh:ii P Z', timezone: 'UTC'})
       .datetimepicker('setValue');
   equal(this.input.val(), '2012-03-05 00:00 AM UTC');
 }));

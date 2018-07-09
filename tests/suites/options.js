@@ -192,6 +192,29 @@ test('Today Button: moves to today\'s date', function(){
         //datesEqual(dp.date, UTCDate(2012, 2, 5));
 });
 
+test('Clear Button: moves to null\'s date', function () {
+    var input = $('<input />')
+        .appendTo('#qunit-fixture')
+        .val('2012-03-05')
+        .datetimepicker({
+            format: 'yyyy-mm-dd',
+            clearBtn: true
+        }),
+        dp = input.data('datetimepicker'),
+        picker = dp.picker,
+        target;
+
+    input.focus();
+    ok(picker.find('.datetimepicker-days').is(':visible'), 'Days view visible');
+    ok(picker.find('.datetimepicker-days tfoot .clear').is(':visible'), 'Clear button visible');
+
+    target = picker.find('.datetimepicker-days tfoot .clear');
+    target.click();
+
+    ok((dp.date == null), 'Date is null');
+});
+
+
 test('Today Button: "linked" selects today\'s date', function(){
     var input = $('<input />')
                 .appendTo('#qunit-fixture')

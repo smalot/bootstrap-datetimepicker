@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+</head>
+
+<body>
+<div class="container">
+    <form action="" class="form-horizontal"  role="form">
+        <fieldset>
+            <legend>Test knockout binding</legend>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Reference Date</label>
+                <div class="input-group date col-md-5"
+                     data-date-autoclose="true"
+                     data-date-format="mm/dd/yyyy HH:ii p"
+                     date-today-btn="true"
+                     data-date-clear-btn="true"
+                     data-bind="datetimepicker: {currentDate : ReferenceDate}">
+                    <input class="form-control" size="16" type="text">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+                <p>point of reference for +1d or -1d operations, etc..</p>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Start Date</label>
+                <div class="input-group date col-md-5"
+                     data-date-autoclose="true"
+                     data-date-format="mm/dd/yyyy HH:ii p"
+                     date-today-btn="true"
+                     data-date-clear-btn="true"
+                     data-bind="datetimepicker: {currentDate : StartDate}">
+                    <input class="form-control" size="16" type="text">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">End Date</label>
+                <div class="input-group date col-md-5"
+                     data-date-autoclose="true"
+                     data-date-format="mm/dd/yyyy HH:ii p"
+                     date-today-btn="true"
+                     data-date-clear-btn="true"
+                     data-bind="datetimepicker: {currentDate : EndDate}">
+                    <input class="form-control" size="16" type="text">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Test Picker</label>
+                <div class="input-group date col-md-5" 
+                     data-date-autoclose="true"
+                     data-date-format="mm/dd/yyyy HH:ii p"
+                     date-today-btn="true"
+                     data-date-clear-btn="true"
+                     data-bind="datetimepicker: {currentDate : CurrentDate, referenceDate : ReferenceDate, startDate : StartDate, endDate : EndDate}">
+                    <input class="form-control" size="16" type="text">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon" data-start-view="2" data-min-view="2"><span class="glyphicon glyphicon-calendar"></span></span>
+                    <span class="input-group-addon" data-start-view="1" data-min-view="0" data-max-view="1"><span class="glyphicon glyphicon-time"></span></span>
+                </div>               
+            </div>
+            <div class="row">
+                <button class="btn btn-primary" data-bind="click:GetCurrentDate">Get Current Date</button>
+                <button class="btn btn-primary" data-bind="click:SetCalendarFromISO">Set ISO Date '2017-10-11T11:00:00Z'</button>
+            </div>
+        </fieldset>
+    </form>
+    <div class="row">
+        <p></p>
+        <p>Model:</p>
+        <div>Model.CurrentDate:<b> <span data-bind="text:CurrentDate"></span></b></div>
+        <div>Model.StartDate:<b> <span data-bind="text:StartDate"></span></b></div>
+        <div>Model.ReferenceDate:<b> <span data-bind="text:ReferenceDate"></span></b></div>
+        <div>Model.EndDate:<b> <span data-bind="text:EndDate"></span></b></div>
+    </div>
+</div>
+
+<script type="text/javascript" src="./jquery/jquery-1.8.3.min.js" charset="UTF-8"></script>
+<script type="text/javascript" src="./bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="./knockout/knockout.js" charset="UTF-8"></script>
+<script type="text/javascript" src="./knockout/bootstrap-datetimepicker-ko.js" charset="UTF-8"></script>
+
+<script type="text/javascript">
+    var model = {
+        CurrentDate: ko.observable(null),
+        StartDate: ko.observable(null),
+        ReferenceDate: ko.observable(null),
+        EndDate: ko.observable(null),
+        GetCurrentDate: function (viewModel, element, args) {
+            viewModel.CurrentDate(new Date());
+        },      
+        SetCalendarFromISO: function (viewModel, element, args) {
+            var date = '2017-10-11T11:00:00Z'; // Date format in Iso8601
+            viewModel.CurrentDate(date == null ? null : new Date(date));            
+        }
+    }    
+    ko.applyBindings(model);
+</script>
+
+</body>
+</html>
