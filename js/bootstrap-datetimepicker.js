@@ -418,6 +418,7 @@
       this.picker.hide();
       $(window).off('resize', this.place);
       this.viewMode = this.startViewMode;
+      this.viewDate = new Date(this.date);
       this.showMode();
       if (!this.isInput) {
         $(document).off('mousedown', this.hide);
@@ -546,7 +547,7 @@
       this.datesDisabled = $.map(this.datesDisabled, function (d) {
         return DPGlobal.parseDate(d, mThis.format, mThis.language, mThis.formatType, mThis.timezone).toDateString();
       });
-      this.update();
+      this.fill();
       this.updateNavArrows();
     },
 

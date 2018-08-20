@@ -53,8 +53,8 @@ page.onError = function (msg, trace) {
         console.log('  ', item.file, ':', item.line);
     })
 }
-
-var _openPath = phantom.args[0].replace(/^.*(\\|\/)/, '');
+args = system.args.toString().split(',');
+var _openPath = args[1].replace(/^.*(\\|\/)/, '');
 var openPath = _openPath;
 var origdir = '../js/';
 var basedir = '../instrumented/';
