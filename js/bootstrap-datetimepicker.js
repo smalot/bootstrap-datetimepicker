@@ -53,7 +53,7 @@
   // Add timezone abbreviation support for ie6+, Chrome, Firefox
   function timeZoneAbbreviation() {
     var abbreviation, date, formattedStr, i, len, matchedStrings, ref, str;
-    date = (new Date()).toString();
+    date = (new DPGlobal.Date()).toString();
     formattedStr = ((ref = date.split('(')[1]) != null ? ref.slice(0, -1) : 0) || date.split(' ');
     if (formattedStr instanceof Array) {
       matchedStrings = [];
@@ -69,7 +69,7 @@
   }
 
   function UTCDate() {
-    return new Date(Date.UTC.apply(Date, arguments));
+    return new DPGlobal.Date(DPGlobal.Date.UTC.apply(DPGlobal.Date, arguments));
   }
 
   // Picker object
@@ -92,6 +92,9 @@
     this.isVisible = false;
     this.isInput = this.element.is('input');
     this.fontAwesome = options.fontAwesome || this.element.data('font-awesome') || false;
+    if (typeof dates[this.language].init == 'function') {
+      dates[this.language].init();
+    }
 
     this.bootcssVer = options.bootcssVer || (this.isInput ? (this.element.is('.form-control') ? 3 : 2) : ( this.bootcssVer = this.element.is('.input-group') ? 3 : 2 ));
 
@@ -106,7 +109,7 @@
     this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
     this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
     this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
-    this.initialDate = options.initialDate || new Date();
+    this.initialDate = options.initialDate || new DPGlobal.Date();
     this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
     this.title = typeof options.title === 'undefined' ? false : options.title;
     this.timezone = options.timezone || timeZoneAbbreviation();
@@ -313,8 +316,8 @@
       }
       return res.concat((render ? render : []));
     }
-    this.startDate = new Date(-8639968443048000);
-    this.endDate = new Date(8639968443048000);
+    this.startDate = new DPGlobal.Date(-8639968443048000);
+    this.endDate = new DPGlobal.Date(8639968443048000);
     this.datesDisabled = [];
     this.daysOfWeekDisabled = [];
     this.setStartDate(options.startDate || this.element.data('date-startdate'));
@@ -451,7 +454,8 @@
       if (d === null) {
         return null;
       }
-      return new Date(d.getTime() + (d.getTimezoneOffset() * 60000));
+
+      return new DPGlobal.Date(d.getTime() + (d.getTimezoneOffset() * 60000));
     },
 
     getUTCDate: function () {
@@ -467,7 +471,7 @@
     },
 
     setDate: function (d) {
-      this.setUTCDate(new Date(d.getTime() - (d.getTimezoneOffset() * 60000)));
+      this.setUTCDate(new DPGlobal.Date(d.getTime() - (d.getTimezoneOffset() * 60000)));
     },
 
     setUTCDate: function (d) {
@@ -652,7 +656,7 @@
 
     update: function () {
       var date, fromArgs = false;
-      if (arguments && arguments.length && (typeof arguments[0] === 'string' || arguments[0] instanceof Date)) {
+      if (arguments && arguments.length && (typeof arguments[0] === 'string' || arguments[0] instanceof DPGlobal.Date)) {
         date = arguments[0];
         fromArgs = true;
       } else {
@@ -663,7 +667,7 @@
       }
 
       if (!date) {
-        date = new Date();
+        date = new DPGlobal.Date();
         fromArgs = false;
       }
 
@@ -678,11 +682,11 @@
       if (fromArgs) this.setValue();
 
       if (this.date < this.startDate) {
-        this.viewDate = new Date(this.startDate);
+        this.viewDate = new DPGlobal.Date(this.startDate);
       } else if (this.date > this.endDate) {
-        this.viewDate = new Date(this.endDate);
+        this.viewDate = new DPGlobal.Date(this.endDate);
       } else {
-        this.viewDate = new Date(this.date);
+        this.viewDate = new DPGlobal.Date(this.date);
       }
       this.fill();
     },
@@ -699,7 +703,8 @@
 
     fillMonths: function () {
       var html = '';
-      var d = new Date(this.viewDate);
+
+      var d = new DPGlobal.Date(this.viewDate);
       for (var i = 0; i < 12; i++) {
         d.setUTCMonth(i);
         var classes = this.onRenderMonth(d);
@@ -712,7 +717,7 @@
       if (!this.date || !this.viewDate) {
         return;
       }
-      var d = new Date(this.viewDate),
+      var d =  new DPGlobal.Date(this.viewDate),
         year = d.getUTCFullYear(),
         month = d.getUTCMonth(),
         dayMonth = d.getUTCDate(),
@@ -722,7 +727,7 @@
         endYear = this.endDate.getUTCFullYear(),
         endMonth = this.endDate.getUTCMonth() + 1,
         currentDate = (new UTCDate(this.date.getUTCFullYear(), this.date.getUTCMonth(), this.date.getUTCDate())).valueOf(),
-        today = new Date();
+        today = new DPGlobal.Date();
       this.setTitle('.datetimepicker-days', dates[this.language].months[month] + ' ' + year)
       if (this.formatViewType === 'time') {
         var formatted = this.getFormattedDate();
@@ -744,7 +749,7 @@
         day = DPGlobal.getDaysInMonth(prevMonth.getUTCFullYear(), prevMonth.getUTCMonth());
       prevMonth.setUTCDate(day);
       prevMonth.setUTCDate(day - (prevMonth.getUTCDay() - this.weekStart + 7) % 7);
-      var nextMonth = new Date(prevMonth);
+      var nextMonth = new DPGlobal.Date(prevMonth);
       nextMonth.setUTCDate(nextMonth.getUTCDate() + 42);
       nextMonth = nextMonth.valueOf();
       var html = [];
@@ -785,7 +790,7 @@
       html = [];
       var txt = '', meridian = '', meridianOld = '';
       var hoursDisabled = this.hoursDisabled || [];
-      d = new Date(this.viewDate)
+      d = new DPGlobal.Date(this.viewDate)
       for (var i = 0; i < 24; i++) {
         d.setUTCHours(i);
         classes = this.onRenderHour(d);
@@ -830,7 +835,7 @@
       meridian = '';
       meridianOld = '';
       var minutesDisabled = this.minutesDisabled || [];
-      d = new Date(this.viewDate);
+      d = new DPGlobal.Date(this.viewDate);
       for (var i = 0; i < 60; i += this.minuteStep) {
         if (minutesDisabled.indexOf(i) !== -1) continue;
         d.setUTCMinutes(i);
@@ -882,7 +887,7 @@
         .end()
         .find('td');
       year -= 1;
-      d = new Date(this.viewDate);
+      d = new DPGlobal.Date(this.viewDate);
       for (var i = -1; i < 11; i++) {
         d.setUTCFullYear(year);
         classes = this.onRenderYear(d);
@@ -897,7 +902,7 @@
     },
 
     updateNavArrows: function () {
-      var d = new Date(this.viewDate),
+      var d = new DPGlobal.Date(this.viewDate),
         year = d.getUTCFullYear(),
         month = d.getUTCMonth(),
         day = d.getUTCDate(),
@@ -1054,7 +1059,7 @@
                 }
                 break;
               case 'today':
-                var date = new Date();
+                var date =  new DPGlobal.Date();
                 date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), 0);
 
                 // Respect startDate and endDate.
@@ -1216,7 +1221,7 @@
 
     moveMinute: function (date, dir) {
       if (!dir) return date;
-      var new_date = new Date(date.valueOf());
+      var new_date =  new DPGlobal.Date(date.valueOf());
       //dir = dir > 0 ? 1 : -1;
       new_date.setUTCMinutes(new_date.getUTCMinutes() + (dir * this.minuteStep));
       return new_date;
@@ -1224,7 +1229,7 @@
 
     moveHour: function (date, dir) {
       if (!dir) return date;
-      var new_date = new Date(date.valueOf());
+      var new_date =  new DPGlobal.Date(date.valueOf());;
       //dir = dir > 0 ? 1 : -1;
       new_date.setUTCHours(new_date.getUTCHours() + dir);
       return new_date;
@@ -1232,7 +1237,7 @@
 
     moveDate: function (date, dir) {
       if (!dir) return date;
-      var new_date = new Date(date.valueOf());
+      var new_date =  new DPGlobal.Date(date.valueOf());
       //dir = dir > 0 ? 1 : -1;
       new_date.setUTCDate(new_date.getUTCDate() + dir);
       return new_date;
@@ -1240,11 +1245,12 @@
 
     moveMonth: function (date, dir) {
       if (!dir) return date;
-      var new_date = new Date(date.valueOf()),
+      var new_date = new DPGlobal.Date(date.valueOf()),
         day = new_date.getUTCDate(),
         month = new_date.getUTCMonth(),
         mag = Math.abs(dir),
         new_month, test;
+
       dir = dir > 0 ? 1 : -1;
       if (mag === 1) {
         test = dir === -1
@@ -1258,7 +1264,9 @@
           : function () {
           return new_date.getUTCMonth() !== new_month;
         };
+
         new_month = month + dir;
+
         new_date.setUTCMonth(new_month);
         // Dec -> Jan (12) or Jan -> Dec (-1) -- limit expected date to 0-11
         if (new_month < 0 || new_month > 11)
@@ -1279,7 +1287,6 @@
       // end of month
       while (test()) {
         new_date.setUTCDate(--day);
-        new_date.setUTCMonth(new_month);
       }
       return new_date;
     },
@@ -1535,6 +1542,7 @@
         navStep: 10
       }
     ],
+    Date: Date,
     isLeapYear:       function (year) {
       return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0))
     },
@@ -1577,8 +1585,8 @@
       return {separators: separators, parts: parts};
     },
     parseDate: function (date, format, language, type, timezone) {
-      if (date instanceof Date) {
-        var dateUTC = new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
+      if (date instanceof  DPGlobal.Date) {
+        var dateUTC = new DPGlobal.Date(date.valueOf() - date.getTimezoneOffset() * 60000);
         dateUTC.setMilliseconds(0);
         return dateUTC;
       }
@@ -1595,7 +1603,7 @@
         var part_re = /([-+]\d+)([dmwy])/,
           parts = date.match(/([-+]\d+)([dmwy])/g),
           part, dir;
-        date = new Date();
+        date = new DPGlobal.Date();
         for (var i = 0; i < parts.length; i++) {
           part = part_re.exec(parts[i]);
           dir = parseInt(part[1]);
@@ -1617,7 +1625,7 @@
         return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), 0);
       }
       var parts = date && date.toString().match(this.nonpunctuation) || [],
-        date = new Date(0, 0, 0, 0, 0, 0, 0),
+        date = new DPGlobal.Date(0, 0, 0, 0, 0, 0, 0),
         parsed = {},
         setters_order = ['hh', 'h', 'ii', 'i', 'ss', 's', 'yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'D', 'DD', 'd', 'dd', 'H', 'HH', 'p', 'P', 'z', 'Z'],
         setters_map = {
