@@ -82,6 +82,7 @@
     // when page switch the datetimepicker div will be removed also.
     this.container = options.container || 'body';
 
+    this.noHeaderNav = ('noHeaderNav' in options) ? options.noHeaderNav: false; // take user's option for header
     this.language = options.language || this.element.data('date-language') || 'en';
     this.language = this.language in dates ? this.language : this.language.split('-')[0]; // fr-CA fallback to fr
     this.language = this.language in dates ? this.language : 'en';
@@ -210,6 +211,11 @@
         click:     $.proxy(this.click, this),
         mousedown: $.proxy(this.mousedown, this)
       });
+
+    if (this.noHeaderNav) { // if header option is available
+		    this.picker.find('thead').css({ display: 'none' }); // remove header navigation
+		    this.picker.find('tbody > tr > td').css({ width: '188.5px' }); // add fix for body width shrinking
+		}
 
     if (this.wheelViewModeNavigation) {
       if ($.fn.mousewheel) {
